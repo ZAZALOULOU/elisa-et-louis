@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f5f0e8">
+<title>Elisa & Louis ♡</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Cinzel+Decorative:wght@700&family=Fredoka+One&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f0e8;--bg2:#ece5d8;--bg3:#e0d8c5;--surface:#fffdf9;
+  --accent:#b05a35;--accent2:#4a7c6b;--accent-travel:#2e6d7e;--accent-film:#6b3fa0;--gold:#c9a040;
+  --text:#1e1710;--muted:#9a8e7e;--border:#d8cfc2;
+  --radius:16px;--font-title:'DM Serif Display',serif;--font-body:'DM Sans',sans-serif;
+  --shadow:0 2px 16px rgba(30,23,16,.07);--shadow-md:0 8px 32px rgba(30,23,16,.13);
+  --nav-h:56px;--bnav-h:64px;--tr:.3s cubic-bezier(.4,0,.2,1)
+}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100dvh;overflow-x:hidden;padding-bottom:var(--bnav-h)}
+body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+.top-nav{position:sticky;top:0;z-index:100;background:rgba(245,240,232,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 1rem;display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);gap:.5rem}
+.nav-brand{font-family:var(--font-title);font-size:1rem;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.nav-brand em{color:var(--accent);font-style:italic}
+.top-nav-links{display:flex;gap:.1rem;overflow-x:auto;scrollbar-width:none}
+.top-nav-links::-webkit-scrollbar{display:none}
+.tnav-btn{display:flex;align-items:center;gap:.3rem;padding:.34rem .7rem;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:var(--font-body);font-size:.75rem;font-weight:500;cursor:pointer;transition:.16s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.tnav-btn:hover{background:var(--bg2);color:var(--text)}
+.tnav-btn.active{background:var(--accent);color:#fff;font-weight:600}
+.nav-user{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg2);cursor:pointer;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.16s}
+.nav-user:hover{border-color:var(--accent)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(245,240,232,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);height:var(--bnav-h);padding-bottom:env(safe-area-inset-bottom,0px);display:none}
+.bnav-inner{display:flex;height:64px;align-items:center}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;border:none;background:transparent;color:var(--muted);font-family:var(--font-body);font-size:.57rem;font-weight:500;cursor:pointer;padding:.38rem .1rem;transition:.15s;-webkit-tap-highlight-color:transparent}
+.bnav-icon{font-size:1.25rem;transition:transform .16s;line-height:1}
+.bnav-btn.active{color:var(--accent)}
+.bnav-btn.active .bnav-icon{transform:scale(1.1)}
+@media(max-width:680px){.top-nav-links{display:none}.bottom-nav{display:block}}
+@media(min-width:681px){body{padding-bottom:0}}
+.page{display:none;position:relative;z-index:1}
+.page.active{display:block;animation:fadeUp .28s ease both}
+.container{max-width:820px;margin:0 auto;padding:1.4rem 1rem}
+@media(min-width:700px){.container{padding:1.9rem 1.4rem}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes floatUp{0%{opacity:0;transform:translateY(100vh) rotate(0)}20%{opacity:.18}80%{opacity:.08}100%{opacity:0;transform:translateY(-10vh) rotate(360deg)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.page-header{text-align:center;margin-bottom:1.5rem;animation:fadeDown .45s ease both}
+.eyebrow{font-size:.63rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.5rem;display:block}
+.page-header h1{font-family:var(--font-title);font-size:clamp(1.6rem,4vw,2.6rem);letter-spacing:-.01em;line-height:1.1;margin-bottom:.3rem}
+.page-header h1 em{font-style:italic;color:var(--accent)}
+.page-header p{color:var(--muted);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:.95rem;box-shadow:var(--shadow);transition:box-shadow var(--tr)}
+.card h2{font-family:var(--font-title);font-size:.96rem;margin-bottom:.85rem;display:flex;align-items:center;gap:.35rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.68rem}
+.form-group{display:flex;flex-direction:column;gap:.24rem}
+.form-group.full{grid-column:1/-1}
+label{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500}
+input,select,textarea{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:.62rem .85rem;color:var(--text);font-family:var(--font-body);font-size:.88rem;transition:.18s;outline:none;width:100%;-webkit-appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,90,53,.1);background:var(--surface)}
+textarea{resize:vertical;min-height:68px}
+.btn{padding:.68rem 1.2rem;border:none;border-radius:11px;font-family:var(--font-body);font-size:.84rem;font-weight:600;cursor:pointer;transition:.18s;-webkit-tap-highlight-color:transparent}
+.btn-primary{background:var(--accent);color:#fff;width:100%;margin-top:.32rem}
+.btn-primary:hover{background:color-mix(in srgb,var(--accent) 83%,#000)}
+.btn-primary:active{transform:scale(.98)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-sm{padding:.27rem .7rem;font-size:.66rem;background:var(--bg2);color:var(--muted);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;font-family:var(--font-body)}
+.btn-sm:hover{background:var(--border);color:var(--text)}
+.btn-ghost{padding:.33rem .76rem;font-size:.71rem;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:.15s;font-family:var(--font-body);font-weight:500}
+.btn-ghost:hover{background:var(--bg2);color:var(--text)}
+.tabs-bar{display:flex;gap:.2rem;margin-bottom:.95rem;background:var(--bg2);border-radius:12px;padding:.2rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tabs-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex:1;min-width:max-content;padding:.42rem .58rem;border-radius:9px;border:none;background:transparent;color:var(--muted);font-family:var(--font-body);font-size:.72rem;font-weight:500;cursor:pointer;transition:.15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.tab-btn.active{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 4px rgba(30,23,16,.1)}
+.tab-pane{display:none}.tab-pane.active{display:block}
+.pill-filter{display:flex;gap:.26rem;flex-wrap:wrap;margin-bottom:.8rem}
+.pill{padding:.2rem .68rem;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);font-size:.67rem;font-weight:500;cursor:pointer;transition:.14s;-webkit-tap-highlight-color:transparent}
+.pill.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.empty-state{text-align:center;padding:1.8rem .8rem;color:var(--muted)}
+.empty-state .big-emoji{font-size:2.1rem;margin-bottom:.45rem}
+.empty-state p{font-size:.81rem;line-height:1.5}
+.history-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.68rem;flex-wrap:wrap;gap:.38rem}
+.spinner{width:18px;height:18px;border:2px solid rgba(176,90,53,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .65s linear infinite;display:inline-block;vertical-align:middle}
+#toast{position:fixed;bottom:calc(var(--bnav-h) + .7rem);left:50%;transform:translateX(-50%) translateY(55px);background:var(--text);color:#fff;padding:.6rem 1.2rem;border-radius:22px;font-weight:600;font-size:.8rem;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;z-index:9999;white-space:nowrap;box-shadow:var(--shadow-md);opacity:0;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media(min-width:681px){#toast{bottom:1.1rem}}
+#theme-overlay{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:9998;transition:opacity .12s}
+#theme-overlay.flash{opacity:.04}
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;font-size:1.1rem;opacity:0;animation:floatUp 6s ease-in infinite}
+.modal-overlay{position:fixed;inset:0;background:rgba(30,23,16,.52);z-index:400;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex;animation:fadeUp .2s ease both}
+@media(min-width:600px){.modal-overlay{align-items:center}}
+.modal{background:var(--surface);border-radius:22px 22px 0 0;width:100%;max-height:90dvh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+@media(min-width:600px){.modal{border-radius:22px;max-width:540px;max-height:87vh}}
+.modal-head{padding:1.2rem 1.3rem 0;display:flex;justify-content:space-between;align-items:flex-start;gap:.7rem;position:sticky;top:0;background:var(--surface);z-index:1;border-bottom:1px solid var(--border);padding-bottom:.8rem}
+.modal-head h3{font-family:var(--font-title);font-size:1.25rem;flex:1;line-height:1.2}
+.modal-x{background:var(--bg2);border:none;border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:.85rem;color:var(--muted);transition:.14s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.modal-x:hover{background:var(--border)}
+.modal-body{padding:1rem 1.3rem 1.5rem}
+.modal-section{background:var(--bg);border-radius:12px;padding:.82rem .95rem;margin-bottom:.75rem}
+.modal-section h4{font-size:.63rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.45rem;font-weight:500}
+.modal-section ul{list-style:none;font-size:.83rem;line-height:1.75}
+.modal-section ul li::before{content:'· ';color:var(--accent)}
+.modal-section ol{padding-left:.95rem;font-size:.82rem;line-height:1.62}
+.modal-section ol li{margin-bottom:.2rem}
+.modal-note-box{background:rgba(201,160,64,.08);border:1px solid rgba(201,160,64,.2);border-radius:10px;padding:.65rem .85rem;font-size:.78rem;color:#7a5c0a;margin-bottom:.75rem}
+/* Auth */
+#auth-screen{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:1.2rem}
+.auth-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:1.8rem 1.5rem;max-width:360px;width:100%;box-shadow:var(--shadow-md);text-align:center}
+.auth-heart{font-size:2.2rem;animation:pulse 2.5s ease-in-out infinite;display:block;margin-bottom:.85rem}
+.auth-title{font-family:var(--font-title);font-size:1.7rem;margin-bottom:.28rem}
+.auth-title em{color:var(--accent);font-style:italic}
+.auth-sub{font-size:.78rem;color:var(--muted);margin-bottom:1.3rem}
+.auth-google-btn{display:flex;align-items:center;justify-content:center;gap:.65rem;width:100%;padding:.78rem 1.1rem;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;font-family:var(--font-body);font-size:.86rem;font-weight:600;color:var(--text);transition:.16s;margin-bottom:.65rem;-webkit-tap-highlight-color:transparent}
+.auth-google-btn:hover{border-color:var(--accent)}
+.auth-google-btn svg{width:18px;height:18px;flex-shrink:0}
+.auth-divider{font-size:.7rem;color:var(--muted);margin:.28rem 0 .65rem;position:relative}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
+.auth-divider::before{left:0}.auth-divider::after{right:0}
+.auth-email-form{display:flex;flex-direction:column;gap:.5rem;text-align:left}
+.auth-error{font-size:.73rem;color:#c0392b;margin-top:.28rem;text-align:left;min-height:1rem}
+/* Home */
+.home-hero{text-align:center;padding:2.2rem .8rem 1.6rem;animation:fadeDown .55s ease both}
+.home-hero .heart{font-size:2rem;animation:pulse 2.5s ease-in-out infinite;display:block;margin-bottom:.75rem}
+.home-hero h1{font-family:var(--font-title);font-size:clamp(2rem,6vw,3.6rem);letter-spacing:-.02em;line-height:1.05;margin-bottom:.42rem}
+.home-hero h1 em{color:var(--accent);font-style:italic}
+.home-hero p{color:var(--muted);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+.home-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;max-width:600px;margin:1.8rem auto 0}
+@media(min-width:460px){.home-grid{grid-template-columns:repeat(4,1fr)}}
+.home-card{background:var(--surface);border:1px solid var(--border);border-radius:17px;padding:1.3rem .85rem;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.home-card:hover,.home-card:active{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.hcard-icon{font-size:1.85rem;margin-bottom:.65rem}
+.home-card h3{font-family:var(--font-title);font-size:.9rem;margin-bottom:.18rem}
+.home-card p{font-size:.66rem;color:var(--muted);line-height:1.4}
+.hcard-badge{position:absolute;top:.55rem;right:.55rem;color:#fff;font-size:.56rem;font-weight:700;padding:.09rem .4rem;border-radius:20px}
+.since-strip{text-align:center;margin-top:1.6rem;color:var(--muted);font-size:.74rem;letter-spacing:.06em}
+.since-strip strong{color:var(--accent);font-family:var(--font-title);font-size:1rem;display:block;margin-bottom:.13rem}
+/* Recipes */
+.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.75rem;margin-bottom:.9rem}
+.recipe-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;overflow:hidden;cursor:pointer;transition:.18s;box-shadow:var(--shadow);-webkit-tap-highlight-color:transparent}
+.recipe-card:hover,.recipe-card:active{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.rc-img{height:105px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+.rc-body{padding:.78rem}
+.rc-title{font-weight:600;font-size:.85rem;margin-bottom:.22rem}
+.rc-meta{font-size:.66rem;color:var(--muted);display:flex;gap:.4rem;flex-wrap:wrap}
+.recipe-tag{display:inline-flex;align-items:center;border-radius:20px;padding:.09rem .42rem;font-size:.6rem;font-weight:600}
+.tag-fav{background:rgba(201,160,64,.12);color:#8a6010;border:1px solid rgba(201,160,64,.25)}
+.tag-tried{background:rgba(74,124,107,.1);color:#2d6b58;border:1px solid rgba(74,124,107,.2)}
+.tag-want{background:rgba(176,90,53,.1);color:#7a3515;border:1px solid rgba(176,90,53,.2)}
+.stars{color:var(--gold);font-size:.72rem}
+.srv-ctrl{display:flex;align-items:center;gap:.55rem}
+.srv-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:.14s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.srv-btn:hover,.srv-btn:active{background:var(--bg3)}
+.srv-num{font-family:var(--font-title);font-size:1.25rem;color:var(--accent);min-width:20px;text-align:center}
+.gen-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:.64rem 1.05rem;font-family:var(--font-body);font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:.16s;-webkit-tap-highlight-color:transparent}
+.gen-btn:disabled{opacity:.6;cursor:not-allowed}
+.ai-loading{text-align:center;padding:1.6rem;color:var(--muted)}
+.ai-icon{font-size:1.7rem;animation:pulse .95s ease-in-out infinite;display:block;margin-bottom:.45rem}
+.recipe-preview{background:var(--bg);border-radius:13px;padding:1rem 1.1rem;margin-bottom:.85rem;border:1px solid var(--border)}
+.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:.7rem}
+@media(max-width:460px){.preview-grid{grid-template-columns:1fr}}
+.prev-section-title{font-size:.63rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;margin-bottom:.42rem}
+.prev-ings{list-style:none;font-size:.8rem;line-height:1.72}
+.prev-ings li::before{content:'· ';color:var(--accent)}
+.prev-steps{padding-left:.85rem;font-size:.79rem;line-height:1.62}
+.prev-steps li{margin-bottom:.18rem}
+.preview-note{margin-top:.65rem;background:rgba(201,160,64,.08);border:1px solid rgba(201,160,64,.2);border-radius:8px;padding:.5rem .75rem;font-size:.76rem;color:#7a5c0a}
+.modal-servings{display:flex;align-items:center;gap:.55rem;background:var(--bg);border-radius:10px;padding:.52rem .85rem;margin-bottom:.75rem;border:1px solid var(--border)}
+.comment-item{display:flex;gap:.55rem;padding:.55rem 0;border-bottom:1px solid var(--border)}
+.comment-item:last-child{border-bottom:none}
+.comment-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+.av-louis{background:rgba(37,99,235,.12);color:#1d4ed8}
+.av-elisa{background:rgba(219,39,119,.12);color:#be185d}
+.comment-body{flex:1}
+.comment-author{font-size:.68rem;font-weight:600;margin-bottom:.1rem}
+.comment-text{font-size:.8rem;line-height:1.5}
+.comment-date{font-size:.61rem;color:var(--muted);margin-top:.12rem}
+.comment-del{background:none;border:none;color:var(--border);cursor:pointer;font-size:.72rem;padding:.13rem;border-radius:3px;transition:.13s;flex-shrink:0;margin-top:.06rem}
+.comment-del:hover{color:#c0392b}
+/* Shopping */
+.shop-progress{height:4px;background:var(--bg2);border-radius:4px;overflow:hidden;margin-bottom:.85rem}
+.shop-progress-bar{height:100%;background:var(--accent2);border-radius:4px;transition:width .38s}
+.shop-cat-title{font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;margin-bottom:.38rem}
+.shop-item{display:flex;align-items:center;gap:.6rem;padding:.35rem 0;border-bottom:1px solid rgba(0,0,0,.033)}
+.shop-item:last-child{border-bottom:none}
+.shop-check{width:19px;height:19px;border-radius:5px;border:1.5px solid var(--border);cursor:pointer;flex-shrink:0;transition:.15s;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
+.shop-check.done{background:var(--accent2);border-color:var(--accent2)}
+.shop-check.done::after{content:'✓';color:#fff;font-size:.62rem;font-weight:700}
+.shop-label{font-size:.83rem;flex:1;transition:.17s}
+.shop-label.done{text-decoration:line-through;opacity:.4}
+.shop-qty{font-size:.68rem;color:var(--muted)}
+.shop-del{background:none;border:none;color:var(--border);cursor:pointer;font-size:.72rem;padding:.13rem;transition:.13s}
+.shop-del:hover{color:#c0392b}
+/* Travel */
+.travel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.75rem;margin-bottom:.9rem}
+.travel-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;overflow:hidden;cursor:pointer;transition:.18s;box-shadow:var(--shadow);-webkit-tap-highlight-color:transparent}
+.travel-card:hover,.travel-card:active{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.travel-flag{height:90px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2.8rem}
+.travel-body{padding:.78rem}
+.travel-title{font-weight:600;font-size:.88rem;margin-bottom:.13rem}
+.travel-country{font-size:.68rem;color:var(--muted);margin-bottom:.38rem}
+.travel-badge{display:inline-flex;align-items:center;border-radius:20px;padding:.09rem .48rem;font-size:.61rem;font-weight:700}
+.badge-done{background:rgba(74,124,107,.1);color:#2d6b58;border:1px solid rgba(74,124,107,.2)}
+.badge-planned{background:rgba(46,109,126,.1);color:#1a5c6e;border:1px solid rgba(46,109,126,.2)}
+.badge-dream{background:rgba(123,94,167,.1);color:#5a3585;border:1px solid rgba(123,94,167,.2)}
+.map-pin{display:inline-flex;align-items:center;gap:.32rem;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:.28rem .72rem;font-size:.76rem;box-shadow:var(--shadow);cursor:pointer;transition:.15s;-webkit-tap-highlight-color:transparent}
+.map-pin:hover,.map-pin:active{border-color:var(--accent)}
+.bucket-item{display:flex;align-items:center;gap:.75rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.bucket-item:last-child{border-bottom:none}
+.bucket-check{width:21px;height:21px;border-radius:6px;border:2px solid var(--border);cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.bucket-check.done{background:var(--accent2);border-color:var(--accent2)}
+.bucket-check.done::after{content:'✓';color:#fff;font-size:.66rem;font-weight:700}
+.budget-bar{height:6px;background:var(--bg2);border-radius:6px;overflow:hidden;margin:.45rem 0 .28rem}
+.budget-fill{height:100%;border-radius:6px;transition:width .5s}
+.expense-item{display:flex;align-items:center;gap:.6rem;padding:.48rem 0;border-bottom:1px solid var(--border)}
+.expense-item:last-child{border-bottom:none}
+.exp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.expense-label{flex:1;font-size:.82rem}
+.expense-amount{font-size:.82rem;font-weight:600}
+.expense-del{background:none;border:none;color:var(--border);cursor:pointer;font-size:.7rem;padding:.12rem;transition:.13s}
+.expense-del:hover{color:#c0392b}
+.journal-entry{padding:.65rem 0;border-bottom:1px solid var(--border);position:relative}
+.journal-entry:last-child{border-bottom:none}
+.journal-date{font-size:.63rem;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.16rem}
+.journal-text{font-size:.82rem;line-height:1.58;padding-right:1.3rem}
+.journal-del{position:absolute;top:.65rem;right:0;background:none;border:none;color:var(--border);cursor:pointer;font-size:.72rem;transition:.13s}
+.journal-del:hover{color:#c0392b}
+/* Films */
+.film-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:.7rem;margin-bottom:.9rem}
+.film-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;overflow:hidden;cursor:pointer;transition:.18s;box-shadow:var(--shadow);-webkit-tap-highlight-color:transparent;position:relative}
+.film-card:hover,.film-card:active{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.film-poster{height:170px;background:linear-gradient(135deg,var(--bg2),var(--bg3));display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
+.film-poster img{width:100%;height:100%;object-fit:cover}
+.film-year-badge{position:absolute;bottom:.38rem;right:.38rem;background:rgba(0,0,0,.6);color:#fff;font-size:.58rem;padding:.1rem .38rem;border-radius:20px;backdrop-filter:blur(4px)}
+.film-body{padding:.75rem}
+.film-title{font-weight:600;font-size:.82rem;margin-bottom:.25rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.film-scores{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+.film-score{display:flex;align-items:center;gap:.18rem;font-size:.7rem;font-weight:600}
+.score-louis{color:#2563eb}.score-elisa{color:#db2777}
+.film-heart{position:absolute;top:.45rem;right:.45rem;font-size:.95rem;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+.film-tag{display:inline-flex;align-items:center;border-radius:20px;padding:.09rem .42rem;font-size:.58rem;font-weight:600;margin-top:.28rem}
+.tag-seen{background:rgba(74,124,107,.1);color:#2d6b58;border:1px solid rgba(74,124,107,.2)}
+.tag-watchlist{background:rgba(107,63,160,.1);color:#5a3585;border:1px solid rgba(107,63,160,.15)}
+.star-rating{display:flex;gap:.18rem;align-items:center}
+.star{font-size:1.35rem;cursor:pointer;transition:.13s;color:#d8cfc2;-webkit-tap-highlight-color:transparent;line-height:1}
+.star.filled{color:var(--gold)}
+.star:hover{transform:scale(1.18)}
+.dual-score{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:.85rem}
+.score-card{background:var(--bg);border-radius:12px;padding:.85rem;text-align:center;border:1px solid var(--border)}
+.score-card-name{font-size:.63rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.35rem}
+.score-card-val{font-family:var(--font-title);font-size:1.9rem;line-height:1}
+.reco-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:1rem;margin-bottom:.7rem;animation:slideIn .3s ease both;cursor:default;transition:.17s}
+.reco-card:hover{box-shadow:var(--shadow-md);border-color:rgba(107,63,160,.3)}
+.reco-title{font-family:var(--font-title);font-size:1rem;margin-bottom:.18rem}
+.reco-why{font-size:.79rem;color:var(--muted);line-height:1.5}
+.reco-meta{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.45rem}
+.reco-tag{font-size:.63rem;padding:.08rem .48rem;border-radius:20px;background:rgba(107,63,160,.08);color:#5a3585;border:1px solid rgba(107,63,160,.15)}
+.suggest-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;margin-bottom:.5rem;animation:slideIn .28s ease both;position:relative}
+.suggest-from{font-size:.68rem;color:var(--accent-film);font-weight:600;margin-bottom:.18rem}
+.suggest-title-text{font-weight:600;font-size:.88rem;margin-bottom:.15rem}
+.suggest-why{font-size:.77rem;color:var(--muted);line-height:1.48}
+.suggest-del{position:absolute;top:.85rem;right:.85rem;background:none;border:none;color:var(--border);cursor:pointer;font-size:.72rem;transition:.13s}
+.suggest-del:hover{color:#c0392b}
+/* Games */
+.score-banner{display:flex;align-items:stretch;background:var(--surface);border:1px solid var(--border);border-radius:17px;overflow:hidden;margin-bottom:.95rem;box-shadow:var(--shadow)}
+.player-score{display:flex;flex-direction:column;align-items:center;gap:.3rem;flex:1;padding:1.1rem .75rem}
+.player-score.louis-side{border-right:1px solid var(--border)}
+.player-score.elisa-side{border-left:1px solid var(--border)}
+.player-name{font-size:.6rem;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);font-weight:500}
+.player-wins{font-family:var(--font-title);font-size:2.4rem;color:var(--text);line-height:1;transition:color var(--tr)}
+.player-wins.leading{color:var(--accent)}
+.score-center{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.75rem .9rem;gap:.25rem}
+.vs-crown{font-size:1.2rem;animation:pulse 2.5s ease-in-out infinite}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:.95rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.82rem .75rem;text-align:center;box-shadow:var(--shadow);transition:.16s}
+.stat-value{font-family:var(--font-title);font-size:1.28rem;color:var(--accent);line-height:1;margin-bottom:.22rem}
+.stat-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.search-wrapper{position:relative;margin-bottom:.82rem}
+.search-icon{position:absolute;left:.82rem;top:50%;transform:translateY(-50%);font-size:.82rem;pointer-events:none;z-index:1;opacity:.35}
+#game-search{padding:.65rem .85rem .65rem 2.3rem}
+#search-results{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;z-index:200;box-shadow:var(--shadow-md);max-height:250px;overflow-y:auto;display:none}
+#search-results.open{display:block}
+.result-item{display:flex;align-items:center;gap:.7rem;padding:.65rem .85rem;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--border);-webkit-tap-highlight-color:transparent}
+.result-item:last-child{border-bottom:none}
+.result-item:hover,.result-item.focused{background:rgba(176,90,53,.05)}
+.result-thumb{width:34px;height:34px;border-radius:6px;object-fit:cover;flex-shrink:0}
+.result-thumb-ph{width:34px;height:34px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.result-name{font-weight:600;font-size:.82rem}
+.result-year{font-size:.66rem;color:var(--muted);margin-top:.04rem}
+.search-status{padding:.75rem .85rem;color:var(--muted);font-size:.78rem;text-align:center}
+#selected-game-display{display:none;align-items:center;gap:.75rem;background:rgba(176,90,53,.07);border:1.5px solid rgba(176,90,53,.28);border-radius:12px;padding:.75rem .88rem;margin-bottom:.82rem}
+#selected-game-display.visible{display:flex}
+.sel-thumb{width:38px;height:38px;border-radius:7px;object-fit:cover}
+.sel-thumb-ph{width:38px;height:38px;border-radius:7px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.sel-info{flex:1}.sel-name{font-weight:600;font-size:.88rem}.sel-meta{font-size:.66rem;color:var(--muted);margin-top:.07rem}
+.clear-sel{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;padding:.18rem .38rem;border-radius:5px;transition:.14s}
+.clear-sel:hover{color:var(--accent)}
+#recents-section{margin-bottom:.75rem;display:none}
+#recents-section h3{font-size:.6rem;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-bottom:.38rem;font-weight:500}
+.recent-chips{display:flex;flex-wrap:wrap;gap:.28rem}
+.recent-chip{display:flex;align-items:center;gap:.28rem;padding:.22rem .64rem;background:var(--bg2);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:.7rem;white-space:nowrap;transition:.14s;-webkit-tap-highlight-color:transparent}
+.recent-chip:hover,.recent-chip:active{border-color:var(--accent);background:rgba(176,90,53,.07)}
+.game-entry{display:flex;align-items:center;gap:.75rem;background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:.78rem .92rem;animation:slideIn .28s ease both;position:relative;overflow:hidden;transition:box-shadow .15s;margin-bottom:.44rem}
+.game-entry:hover{box-shadow:var(--shadow)}
+.game-entry::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--entry-color,var(--accent));border-radius:3px 0 0 3px}
+.entry-thumb{width:36px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0}
+.entry-thumb-ph{width:36px;height:36px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.entry-info{flex:1;min-width:0}
+.entry-game{font-weight:600;font-size:.83rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.entry-meta{font-size:.66rem;color:var(--muted);margin-top:.07rem}
+.entry-winner{font-family:var(--font-title);font-size:.78rem;color:var(--accent);text-align:right;flex-shrink:0}
+.entry-winner small{display:block;font-family:var(--font-body);font-size:.6rem;color:var(--muted);margin-bottom:.04rem}
+.delete-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.78rem;padding:.22rem;border-radius:5px;transition:.14s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.delete-btn:hover{color:#c0392b}
+.h2h-wrap{display:flex;align-items:center;gap:.82rem}
+.h2h-side{flex:1;text-align:center}
+.h2h-name{font-size:.6rem;text-transform:uppercase;letter-spacing:.17em;color:var(--muted);font-weight:500;margin-bottom:.25rem}
+.h2h-wins{font-family:var(--font-title);font-size:2.4rem;line-height:1}
+#h2h-wins-louis{color:#2563eb}#h2h-wins-elisa{color:#db2777}
+.h2h-label{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-top:.1rem}
+.h2h-pct{font-size:.74rem;font-weight:600;margin-top:.35rem;color:var(--muted)}
+.h2h-bar-wrap{flex:1.2;display:flex;flex-direction:column;align-items:center;gap:.35rem}
+.h2h-bar{width:100%;height:6px;border-radius:6px;overflow:hidden;background:var(--bg2);display:flex}
+.h2h-bar-louis{height:100%;background:#2563eb;transition:width .5s;border-radius:6px 0 0 6px}
+.h2h-bar-elisa{height:100%;background:#db2777;transition:width .5s;border-radius:0 6px 6px 0}
+.records-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.record-card{background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:.78rem .9rem}
+.record-icon{font-size:1.1rem;margin-bottom:.25rem}
+.record-val{font-family:var(--font-title);font-size:1.05rem;color:var(--accent);line-height:1.1;margin-bottom:.12rem}
+.record-label{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.stats-empty{text-align:center;padding:1.5rem .8rem;color:var(--muted);font-size:.82rem}
+.chart-wrap{position:relative;width:100%}
+.game-stat-row{display:flex;align-items:center;gap:.7rem;padding:.55rem 0;border-bottom:1px solid var(--border)}
+.game-stat-row:last-child{border-bottom:none}
+.gs-thumb{width:30px;height:30px;border-radius:6px;background:var(--bg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.gs-thumb img{width:30px;height:30px;border-radius:6px;object-fit:cover}
+.gs-info{flex:1;min-width:0}
+.gs-name{font-weight:600;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gs-count{font-size:.64rem;color:var(--muted);margin-top:.04rem}
+.gs-bar-wrap{width:84px;flex-shrink:0}
+.gs-bar{height:5px;border-radius:5px;overflow:hidden;background:var(--bg2);display:flex;margin-bottom:.16rem}
+.gs-bar-l{height:100%;background:#2563eb;border-radius:5px 0 0 5px;transition:width .5s}
+.gs-bar-e{height:100%;background:#db2777;border-radius:0 5px 5px 0;transition:width .5s}
+.gs-bar-legend{display:flex;justify-content:space-between;font-size:.58rem;color:var(--muted)}
+.bets-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:.95rem}
+.bets-sum-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.78rem;text-align:center;box-shadow:var(--shadow)}
+.bets-sum-val{font-family:var(--font-title);font-size:1.25rem;color:var(--accent);line-height:1;margin-bottom:.16rem}
+.bets-sum-label{font-size:.58rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.bet-entry{background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:.82rem .95rem;animation:slideIn .28s ease both;position:relative;overflow:hidden;margin-bottom:.44rem;transition:box-shadow .15s}
+.bet-entry:hover{box-shadow:var(--shadow)}
+.bet-entry::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--bet-color,var(--accent))}
+.bet-top{display:flex;align-items:flex-start;gap:.6rem}
+.bet-emoji-wrap{font-size:1.15rem;flex-shrink:0;line-height:1;margin-top:.05rem}
+.bet-body{flex:1;min-width:0}
+.bet-desc{font-weight:600;font-size:.83rem;line-height:1.4;margin-bottom:.22rem}
+.bet-meta{font-size:.65rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:.35rem;align-items:center}
+.bet-stake{display:inline-flex;align-items:center;background:var(--bg2);border-radius:20px;padding:.1rem .48rem;font-size:.64rem;font-weight:600;border:1px solid var(--border)}
+.bet-actions{display:flex;gap:.32rem;margin-top:.6rem;flex-wrap:wrap;align-items:center}
+.bet-btn{padding:.26rem .64rem;border-radius:7px;border:none;font-family:var(--font-body);font-size:.66rem;font-weight:600;cursor:pointer;transition:.14s;-webkit-tap-highlight-color:transparent}
+.bet-btn-louis{background:rgba(37,99,235,.08);color:#2563eb;border:1px solid rgba(37,99,235,.2)}
+.bet-btn-louis:hover{background:rgba(37,99,235,.14)}
+.bet-btn-elisa{background:rgba(219,39,119,.08);color:#db2777;border:1px solid rgba(219,39,119,.2)}
+.bet-btn-elisa:hover{background:rgba(219,39,119,.14)}
+.bet-btn-cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+.bet-btn-delete{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.72rem;padding:.2rem .38rem;border-radius:5px;transition:.14s}
+.bet-btn-delete:hover{color:#c0392b}
+.bet-status-badge{display:inline-flex;align-items:center;border-radius:20px;padding:.09rem .48rem;font-size:.6rem;font-weight:700;text-transform:uppercase;flex-shrink:0}
+.badge-open{background:rgba(217,119,6,.08);color:#b45309;border:1px solid rgba(217,119,6,.2)}
+.badge-louis{background:rgba(37,99,235,.08);color:#2563eb;border:1px solid rgba(37,99,235,.16)}
+.badge-elisa{background:rgba(219,39,119,.08);color:#db2777;border:1px solid rgba(219,39,119,.16)}
+.badge-cancelled{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+.bet-filter-wrap{display:flex;gap:.28rem;flex-wrap:wrap}
+.bet-filter{padding:.22rem .66rem;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);font-family:var(--font-body);font-size:.65rem;font-weight:500;cursor:pointer;transition:.14s;-webkit-tap-highlight-color:transparent}
+.bet-filter.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+body.game-dark{--bg:#1a1a2e;--bg2:#1f1f38;--surface:#20203a;--border:rgba(255,255,255,.09);--text:#eaeaea;--muted:#888}
+body.game-dark input,body.game-dark select{background:rgba(0,0,0,.3);color:#eaeaea}
+body.game-dark select option{background:#1a1a2e}
+body.game-dark .tabs-bar{background:rgba(255,255,255,.06)}
+body.game-dark .tab-btn.active{background:rgba(255,255,255,.12);color:#eaeaea}
+body.game-dark #search-results{background:#12122a}
+body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)}
+@media(max-width:460px){.form-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}.records-grid{grid-template-columns:1fr}.h2h-wins{font-size:1.9rem}}
+</style>
+</head>
+<body>
+<div id="theme-overlay"></div>
+<div id="particles"></div>
+<div id="toast"></div>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <span class="auth-heart">♡</span>
+    <h1 class="auth-title">Elisa <em>&</em> Louis</h1>
+    <p class="auth-sub">Notre espace privé ✨</p>
+    <button class="auth-google-btn" onclick="signInGoogle()">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuer avec Google
+    </button>
+    <div class="auth-divider">ou</div>
+    <div class="auth-email-form">
+      <div class="form-group"><label>Email</label><input type="email" id="auth-email" placeholder="email@exemple.com" autocomplete="email"></div>
+      <div class="form-group"><label>Mot de passe</label><input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')signInEmail()"></div>
+      <button class="btn btn-primary" onclick="signInEmail()" style="margin-top:.15rem">Se connecter</button>
+      <button class="btn-ghost" onclick="signUpEmail()" style="width:100%;text-align:center;margin-top:.25rem">Créer un compte</button>
+      <div class="auth-error" id="auth-error"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOP NAV -->
+<nav class="top-nav" id="top-nav" style="display:none">
+  <div class="nav-brand" onclick="showPage('home')">Elisa <em>&</em> Louis</div>
+  <div class="top-nav-links">
+    <button class="tnav-btn active" onclick="showPage('home')">🏠 Accueil</button>
+    <button class="tnav-btn" onclick="showPage('recipes')">🍳 Recettes</button>
+    <button class="tnav-btn" onclick="showPage('travel')">✈️ Voyages</button>
+    <button class="tnav-btn" onclick="showPage('films')">🎬 Films</button>
+    <button class="tnav-btn" onclick="showPage('games')">🎲 Jeux</button>
+  </div>
+  <button class="nav-user" id="user-btn" onclick="doSignOut()" title="Se déconnecter">👤</button>
+</nav>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bnav-inner">
+    <button class="bnav-btn active" onclick="showPage('home')"><span class="bnav-icon">🏠</span>Accueil</button>
+    <button class="bnav-btn" onclick="showPage('recipes')"><span class="bnav-icon">🍳</span>Recettes</button>
+    <button class="bnav-btn" onclick="showPage('travel')"><span class="bnav-icon">✈️</span>Voyages</button>
+    <button class="bnav-btn" onclick="showPage('films')"><span class="bnav-icon">🎬</span>Films</button>
+    <button class="bnav-btn" onclick="showPage('games')"><span class="bnav-icon">🎲</span>Jeux</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="container">
+    <div class="home-hero">
+      <span class="heart">♡</span>
+      <h1>Elisa <em>&</em> Louis</h1>
+      <p>Notre espace à nous</p>
+    </div>
+    <div class="home-grid">
+      <div class="home-card" onclick="showPage('recipes')">
+        <div class="hcard-icon">🍳</div><h3>Recettes</h3><p>Nos plats & courses</p>
+        <span class="hcard-badge" id="badge-recipes" style="background:var(--accent2)">…</span>
+      </div>
+      <div class="home-card" onclick="showPage('travel')">
+        <div class="hcard-icon">✈️</div><h3>Voyages</h3><p>Destinations & souvenirs</p>
+        <span class="hcard-badge" id="badge-travels" style="background:var(--accent-travel)">…</span>
+      </div>
+      <div class="home-card" onclick="showPage('films')">
+        <div class="hcard-icon">🎬</div><h3>Films</h3><p>Notes & à voir</p>
+        <span class="hcard-badge" id="badge-films" style="background:var(--accent-film)">…</span>
+      </div>
+      <div class="home-card" onclick="showPage('games')">
+        <div class="hcard-icon">🎲</div><h3>Jeux</h3><p>Parties & stats</p>
+        <span class="hcard-badge" id="badge-games" style="background:var(--accent)">…</span>
+      </div>
+    </div>
+    <div class="since-strip"><strong id="home-date-str">—</strong>Ensemble depuis</div>
+  </div>
+</div>
+
+<!-- RECIPES -->
+<div class="page" id="page-recipes">
+  <div class="container">
+    <div class="page-header"><span class="eyebrow">Elisa & Louis</span><h1>Nos <em>Recettes</em></h1><p>Cuisiner ensemble</p></div>
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('recipes','list',this)">📋 Toutes</button>
+      <button class="tab-btn" onclick="switchTab('recipes','shopping',this)">🛒 Courses</button>
+      <button class="tab-btn" onclick="switchTab('recipes','add',this)">✨ Ajouter</button>
+    </div>
+    <div class="tab-pane active" id="rtab-list">
+      <div class="pill-filter">
+        <button class="pill active" onclick="filterRecipes('all',this)">Toutes</button>
+        <button class="pill" onclick="filterRecipes('fav',this)">⭐ Favorites</button>
+        <button class="pill" onclick="filterRecipes('tried',this)">✅ Testées</button>
+        <button class="pill" onclick="filterRecipes('want',this)">🔖 À tester</button>
+      </div>
+      <div class="recipe-grid" id="recipe-grid"><div class="empty-state" style="grid-column:1/-1"><div class="spinner"></div></div></div>
+    </div>
+    <div class="tab-pane" id="rtab-shopping">
+      <div class="card">
+        <div class="history-header">
+          <h2>🛒 Liste de courses</h2>
+          <div style="display:flex;gap:.38rem"><button class="btn-sm" onclick="clearCheckedShop()">✓ Cochés</button><button class="btn-sm" onclick="clearShopList()">🗑 Vider</button></div>
+        </div>
+        <div class="shop-progress"><div class="shop-progress-bar" id="shop-progress-bar" style="width:0%"></div></div>
+        <div id="shopping-list-content"></div>
+        <div style="display:flex;gap:.45rem;margin-top:.85rem;border-top:1px solid var(--border);padding-top:.85rem;flex-wrap:wrap">
+          <input type="text" id="shop-item-name" placeholder="Ajouter un article..." style="flex:1;min-width:110px">
+          <input type="text" id="shop-item-qty" placeholder="Qté" style="width:58px">
+          <select id="shop-item-cat" style="width:auto"><option>🥩 Viande</option><option>🐟 Poisson</option><option>🥦 Légumes</option><option>🍎 Fruits</option><option>🥛 Laitier</option><option>🍞 Boulangerie</option><option>🥫 Épicerie</option><option>🧴 Hygiène</option><option>❓ Autre</option></select>
+          <button class="btn" style="background:var(--accent);color:#fff;margin-top:0;width:auto;padding:.62rem .9rem" onclick="addShopItem()">+</button>
+        </div>
+        <p style="font-size:.68rem;color:var(--muted);margin-top:.55rem">💡 Générez depuis une recette avec le bouton 🛒</p>
+      </div>
+    </div>
+    <div class="tab-pane" id="rtab-add">
+      <div class="card">
+        <h2>✨ Nouvelle Recette</h2>
+        <div class="form-grid" style="margin-bottom:.75rem">
+          <div class="form-group full">
+            <label>Nom de la recette</label>
+            <div style="display:flex;gap:.45rem">
+              <input type="text" id="r-name" placeholder="ex: Risotto aux champignons..." style="flex:1" onkeydown="if(event.key==='Enter')generateRecipeAI()">
+              <button class="gen-btn" onclick="generateRecipeAI()" id="gen-btn">✨ Générer</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Personnes</label>
+            <div class="srv-ctrl">
+              <button class="srv-btn" onclick="changeServings(-1)">−</button>
+              <span class="srv-num" id="servings-display">2</span>
+              <button class="srv-btn" onclick="changeServings(1)">+</button>
+              <span style="font-size:.74rem;color:var(--muted)">pers.</span>
+            </div>
+          </div>
+          <div class="form-group"><label>Statut</label>
+            <select id="r-status"><option value="want">🔖 À tester</option><option value="tried">✅ Testée</option><option value="fav">⭐ Favorite</option></select>
+          </div>
+        </div>
+        <div id="recipe-ai-loading" class="ai-loading" style="display:none"><span class="ai-icon">🍳</span>L'IA prépare votre recette…</div>
+        <div id="recipe-preview" style="display:none">
+          <div class="recipe-preview">
+            <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.65rem">
+              <span id="preview-emoji" style="font-size:1.75rem">🍳</span>
+              <div><div id="preview-title" style="font-family:var(--font-title);font-size:.98rem;font-weight:600"></div><div id="preview-meta" style="font-size:.7rem;color:var(--muted);margin-top:.09rem"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.5rem;background:var(--surface);border-radius:9px;padding:.48rem .75rem;margin-bottom:.65rem;border:1px solid var(--border)">
+              <span style="font-size:.72rem;color:var(--muted);flex:1">Ajuster les quantités</span>
+              <button class="srv-btn" style="width:25px;height:25px" onclick="changeServings(-1)">−</button>
+              <span class="srv-num" id="servings-display-2" style="font-size:.95rem">2</span>
+              <button class="srv-btn" style="width:25px;height:25px" onclick="changeServings(1)">+</button>
+              <span style="font-size:.72rem;color:var(--muted)">pers.</span>
+            </div>
+            <div class="preview-grid">
+              <div><div class="prev-section-title">Ingrédients</div><ul class="prev-ings" id="preview-ingredients"></ul></div>
+              <div><div class="prev-section-title">Étapes</div><ol class="prev-steps" id="preview-steps"></ol></div>
+            </div>
+            <div class="preview-note" id="preview-note" style="display:none"></div>
+          </div>
+          <div style="display:flex;gap:.45rem;flex-wrap:wrap">
+            <button class="btn btn-primary" style="flex:1;margin-top:0" onclick="saveGeneratedRecipe()">💾 Sauvegarder</button>
+            <button class="btn-ghost" onclick="generateRecipeAI()">🔄 Regénérer</button>
+          </div>
+        </div>
+        <details style="margin-top:.85rem">
+          <summary style="font-size:.72rem;color:var(--muted);cursor:pointer;list-style:none">✏️ Options avancées</summary>
+          <div class="form-grid" style="margin-top:.65rem">
+            <div class="form-group"><label>Catégorie</label>
+              <select id="r-cat"><option>🍝 Pâtes & Riz</option><option>🥩 Viande</option><option>🐟 Poisson</option><option>🥗 Végétarien</option><option>🍰 Dessert</option><option>🍳 Petit-déj</option><option>🍲 Soupe</option><option>🌮 Street food</option></select>
+            </div>
+            <div class="form-group"><label>Note (/5)</label>
+              <select id="r-rating"><option value="">—</option><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option><option value="3">⭐⭐⭐</option><option value="2">⭐⭐</option><option value="1">⭐</option></select>
+            </div>
+            <div class="form-group full"><label>Astuce</label><input type="text" id="r-note" placeholder="Conseil du chef..."></div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recipe Modal -->
+<div class="modal-overlay" id="recipe-modal" onclick="closeModal('recipe-modal',event)">
+  <div class="modal">
+    <div class="modal-head"><h3 id="rm-title">—</h3><button class="modal-x" onclick="closeModal('recipe-modal')">✕</button></div>
+    <div class="modal-body">
+      <span style="font-size:2.4rem;text-align:center;display:block;margin-bottom:.75rem" id="rm-emoji">🍳</span>
+      <div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.75rem" id="rm-tags"></div>
+      <div class="modal-servings">
+        <span style="font-size:.73rem;color:var(--muted);flex:1">Personnes</span>
+        <button class="srv-btn" style="width:25px;height:25px" onclick="changeModalServings(-1)">−</button>
+        <span class="srv-num" id="modal-servings-display" style="font-size:.95rem">2</span>
+        <button class="srv-btn" style="width:25px;height:25px" onclick="changeModalServings(1)">+</button>
+      </div>
+      <div class="modal-section" id="rm-ing-section"><h4>Ingrédients</h4><ul id="rm-ing"></ul></div>
+      <div class="modal-section" id="rm-steps-section"><h4>Préparation</h4><ol id="rm-steps"></ol></div>
+      <div class="modal-note-box" id="rm-note" style="display:none"></div>
+      <div style="margin-bottom:.75rem">
+        <h4 style="font-size:.63rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.45rem;font-weight:500">💬 Commentaires</h4>
+        <div id="rm-comments"></div>
+        <div style="display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap">
+          <select id="rm-comment-author" style="width:90px;flex-shrink:0;padding:.48rem .62rem;font-size:.78rem"><option value="Louis">Louis</option><option value="Elisa">Elisa</option></select>
+          <input type="text" id="rm-comment-text" placeholder="Commentaire..." style="flex:1;padding:.48rem .72rem;font-size:.8rem">
+          <button class="btn-ghost" onclick="addComment()" style="padding:.48rem .78rem;flex-shrink:0">Envoyer</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:.42rem;flex-wrap:wrap">
+        <button class="btn-ghost" onclick="addToShoppingList()" style="color:var(--accent2);border-color:var(--accent2)">🛒 Courses</button>
+        <button class="btn-ghost" onclick="deleteCurrentRecipe()" style="color:#c0392b;border-color:rgba(192,57,43,.22)">🗑 Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRAVEL -->
+<div class="page" id="page-travel">
+  <div class="container">
+    <div class="page-header"><span class="eyebrow">Elisa & Louis</span><h1>Nos <em>Voyages</em></h1><p>Le monde nous appartient</p></div>
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('travel','map',this)">🗺️ Carte</button>
+      <button class="tab-btn" onclick="switchTab('travel','list',this)">📋 Liste</button>
+      <button class="tab-btn" onclick="switchTab('travel','bucket',this)">🔖 Bucket</button>
+      <button class="tab-btn" onclick="switchTab('travel','add',this)">➕ Ajouter</button>
+    </div>
+    <div class="tab-pane active" id="ttab-map">
+      <div class="card">
+        <h2>🌍 Destinations visitées</h2>
+        <div id="travel-map-pins" style="display:flex;flex-wrap:wrap;gap:.38rem;min-height:28px"></div>
+        <div id="travel-map-empty" class="empty-state" style="padding:1.1rem 0;display:none"><div class="big-emoji">🗺️</div><p>Ajoutez vos premiers voyages !</p></div>
+      </div>
+      <div class="card"><h2>📊 En chiffres</h2>
+        <div class="stats-row" style="margin-bottom:0">
+          <div class="stat-card"><div class="stat-value" id="t-stat-done">0</div><div class="stat-label">Visités</div></div>
+          <div class="stat-card"><div class="stat-value" id="t-stat-budget">0€</div><div class="stat-label">Dépensé</div></div>
+          <div class="stat-card"><div class="stat-value" id="t-stat-planned">0</div><div class="stat-label">Planifiés</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="ttab-list">
+      <div class="pill-filter">
+        <button class="pill active" onclick="filterTravel('all',this)">Tous</button>
+        <button class="pill" onclick="filterTravel('done',this)">✅ Visités</button>
+        <button class="pill" onclick="filterTravel('planned',this)">📅 Planifiés</button>
+        <button class="pill" onclick="filterTravel('dream',this)">💭 Rêves</button>
+      </div>
+      <div class="travel-grid" id="travel-grid"></div>
+      <div id="travel-empty" class="empty-state" style="display:none"><div class="big-emoji">✈️</div><p>Aucun voyage.</p></div>
+    </div>
+    <div class="tab-pane" id="ttab-bucket">
+      <div class="card">
+        <h2>🔖 Destinations de rêve</h2>
+        <div id="bucket-list"></div>
+        <div style="display:flex;gap:.45rem;margin-top:.75rem;border-top:1px solid var(--border);padding-top:.75rem">
+          <input type="text" id="bucket-dest" placeholder="Destination..." style="flex:1">
+          <input type="text" id="bucket-flag" placeholder="🏳️" maxlength="4" style="width:55px;text-align:center">
+          <button class="btn" style="background:var(--accent);color:#fff;margin-top:0;width:auto;padding:.62rem .85rem" onclick="addBucketItem()">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="ttab-add">
+      <div class="card">
+        <h2>✈️ Nouveau Voyage</h2>
+        <div class="form-grid">
+          <div class="form-group full"><label>Destination</label><input type="text" id="t-dest" placeholder="ex: Tokyo"></div>
+          <div class="form-group"><label>Pays</label><input type="text" id="t-country" placeholder="ex: Japon"></div>
+          <div class="form-group"><label>Drapeau</label><input type="text" id="t-flag" placeholder="🇯🇵" maxlength="4"></div>
+          <div class="form-group"><label>Statut</label>
+            <select id="t-status"><option value="done">✅ Visité</option><option value="planned">📅 Planifié</option><option value="dream">💭 Rêve</option></select>
+          </div>
+          <div class="form-group"><label>Date / Période</label><input type="text" id="t-date" placeholder="ex: Été 2024"></div>
+          <div class="form-group"><label>Budget prévu (€)</label><input type="number" id="t-budget" placeholder="ex: 1500"></div>
+          <div class="form-group full"><label>Description / Souvenir</label><textarea id="t-note" placeholder="Ce voyage était incroyable..."></textarea></div>
+        </div>
+        <button class="btn btn-primary" onclick="addTravel()">🌍 Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Travel Modal -->
+<div class="modal-overlay" id="travel-modal" onclick="closeModal('travel-modal',event)">
+  <div class="modal">
+    <div class="modal-head"><h3 id="tm-title">—</h3><button class="modal-x" onclick="closeModal('travel-modal')">✕</button></div>
+    <div class="modal-body">
+      <div style="text-align:center;font-size:2.7rem;margin-bottom:.65rem" id="tm-flag">🌍</div>
+      <div style="display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center;margin-bottom:.85rem" id="tm-tags"></div>
+      <div class="modal-section">
+        <h4>📸 Photo souvenir (Instagram)</h4>
+        <div id="tm-insta-preview"></div>
+        <div style="display:flex;gap:.4rem;margin-top:.55rem">
+          <input type="url" id="tm-insta-url" placeholder="https://www.instagram.com/p/..." style="flex:1;font-size:.8rem;padding:.5rem .7rem">
+          <button class="btn-ghost" onclick="saveInstaLink()" style="padding:.5rem .78rem;flex-shrink:0">💾</button>
+        </div>
+        <p style="font-size:.66rem;color:var(--muted);margin-top:.38rem">Collez le lien d'un post Instagram pour l'afficher.</p>
+      </div>
+      <div class="modal-section">
+        <h4>💰 Budget</h4>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.22rem">
+          <span style="font-size:.78rem;color:var(--muted)">Dépensé / Prévu</span>
+          <span style="font-family:var(--font-title);font-size:1rem;color:var(--accent)" id="tm-budget-display">—</span>
+        </div>
+        <div class="budget-bar"><div class="budget-fill" id="tm-budget-bar" style="width:0%;background:var(--accent2)"></div></div>
+        <div style="display:flex;gap:.38rem;margin-top:.55rem;flex-wrap:wrap">
+          <input type="text" id="tm-exp-label" placeholder="Dépense..." style="flex:1;min-width:105px;padding:.5rem .65rem;font-size:.78rem">
+          <input type="number" id="tm-exp-amount" placeholder="€" style="width:65px;padding:.5rem .65rem;font-size:.78rem">
+          <select id="tm-exp-cat" style="padding:.5rem .65rem;font-size:.78rem;width:auto">
+            <option>🏨 Hébergement</option><option>✈️ Transport</option><option>🍽️ Nourriture</option><option>🎟️ Activités</option><option>🛍️ Shopping</option><option>❓ Autre</option>
+          </select>
+          <button class="btn-ghost" onclick="addExpense()" style="padding:.5rem .75rem">+</button>
+        </div>
+        <div id="tm-expenses" style="margin-top:.6rem"></div>
+      </div>
+      <div class="modal-section">
+        <h4>📔 Journal</h4>
+        <div id="tm-journal"></div>
+        <div style="display:flex;gap:.38rem;margin-top:.5rem">
+          <textarea id="tm-journal-text" placeholder="Raconte ce moment..." style="flex:1;min-height:52px;padding:.5rem .65rem;font-size:.78rem;resize:vertical"></textarea>
+          <button class="btn-ghost" onclick="addJournalEntry()" style="padding:.5rem .75rem;align-self:flex-end;flex-shrink:0">✍️</button>
+        </div>
+      </div>
+      <button class="btn-ghost" onclick="deleteCurrentTravel()" style="color:#c0392b;border-color:rgba(192,57,43,.22);width:100%">🗑 Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- FILMS -->
+<div class="page" id="page-films">
+  <div class="container">
+    <div class="page-header"><span class="eyebrow">Elisa & Louis</span><h1>Nos <em>Films</em></h1><p>Critiques & découvertes</p></div>
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('films','seen',this)">🎬 Vus</button>
+      <button class="tab-btn" onclick="switchTab('films','watchlist',this)">📋 À voir</button>
+      <button class="tab-btn" onclick="switchTab('films','reco',this)">✨ Reco IA</button>
+      <button class="tab-btn" onclick="switchTab('films','suggest',this)">💌 Suggestions</button>
+      <button class="tab-btn" onclick="switchTab('films','add',this)">➕ Ajouter</button>
+    </div>
+    <div class="tab-pane active" id="ftab-seen">
+      <div class="pill-filter">
+        <button class="pill active" onclick="filterFilms('all',this)">Tous</button>
+        <button class="pill" onclick="filterFilms('heart',this)">❤️ Coups de cœur</button>
+        <button class="pill" onclick="filterFilms('rewatchable',this)">🔄 À revoir</button>
+      </div>
+      <div class="film-grid" id="film-grid"><div class="empty-state" style="grid-column:1/-1"><div class="spinner"></div></div></div>
+    </div>
+    <div class="tab-pane" id="ftab-watchlist">
+      <div class="film-grid" id="watchlist-grid"><div class="empty-state" style="grid-column:1/-1"><div class="big-emoji">📋</div><p>Aucun film à voir.<br>Ajoutez-en !</p></div></div>
+    </div>
+    <div class="tab-pane" id="ftab-reco">
+      <div class="card">
+        <h2>✨ Recommandations IA</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:.9rem">L'IA analyse vos films notés et vous suggère quoi regarder ce soir.</p>
+        <button class="btn btn-primary" onclick="generateFilmRecos()" id="reco-btn">🎬 Générer des recommandations</button>
+      </div>
+      <div id="reco-loading" class="ai-loading" style="display:none"><span class="ai-icon">🎬</span>L'IA analyse vos goûts…</div>
+      <div id="reco-list"></div>
+    </div>
+    <div class="tab-pane" id="ftab-suggest">
+      <div class="card">
+        <h2>💌 Suggestions mutuelles</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:.85rem">Louis et Elisa se font des suggestions l'un à l'autre.</p>
+        <div style="background:var(--bg);border-radius:12px;padding:.95rem;margin-bottom:.85rem;border:1px solid var(--border)">
+          <div class="form-grid">
+            <div class="form-group full"><label>Titre du film</label><input type="text" id="sug-title" placeholder="ex: Everything Everywhere…"></div>
+            <div class="form-group"><label>De</label><select id="sug-from"><option value="Louis">Louis → Elisa</option><option value="Elisa">Elisa → Louis</option></select></div>
+            <div class="form-group"><label>Pourquoi ?</label><input type="text" id="sug-why" placeholder="Tu vas adorer parce que…"></div>
+          </div>
+          <button class="btn btn-primary" onclick="addSuggestion()">💌 Envoyer</button>
+        </div>
+        <div id="suggestions-list"></div>
+      </div>
+    </div>
+    <div class="tab-pane" id="ftab-add">
+      <div class="card">
+        <h2>➕ Ajouter un Film</h2>
+        <div class="form-grid">
+          <div class="form-group full"><label>Titre</label><input type="text" id="f-title" placeholder="ex: Inception"></div>
+          <div class="form-group"><label>Année</label><input type="text" id="f-year" placeholder="ex: 2010"></div>
+          <div class="form-group"><label>Réalisateur</label><input type="text" id="f-director" placeholder="ex: Nolan"></div>
+          <div class="form-group"><label>Genre</label>
+            <select id="f-genre"><option>🎭 Drame</option><option>😂 Comédie</option><option>🚀 Sci-Fi</option><option>😱 Horreur</option><option>💕 Romance</option><option>🔫 Action</option><option>🔍 Thriller</option><option>🧙 Fantastique</option><option>📖 Biopic</option><option>🌍 Animation</option></select>
+          </div>
+          <div class="form-group"><label>Statut</label>
+            <select id="f-status"><option value="seen">✅ Vu</option><option value="watchlist">📋 À voir</option></select>
+          </div>
+          <div class="form-group"><label>Date de visionnage</label><input type="date" id="f-date"></div>
+          <div class="form-group"><label>Lieu</label><input type="text" id="f-location" placeholder="ex: Cinéma, Maison…"></div>
+          <div class="form-group"><label>Coup de cœur ❤️</label>
+            <select id="f-heart"><option value="0">Non</option><option value="1">Oui ❤️</option></select>
+          </div>
+          <div class="form-group"><label>À revoir 🔄</label>
+            <select id="f-rewatch"><option value="0">Non</option><option value="1">Oui 🔄</option></select>
+          </div>
+          <div class="form-group full"><label>Note de Louis /10</label><div class="star-rating" id="star-louis" data-val="0"></div></div>
+          <div class="form-group full"><label>Note de Elisa /10</label><div class="star-rating" id="star-elisa" data-val="0"></div></div>
+          <div class="form-group full"><label>Citation mémorable</label><input type="text" id="f-quote" placeholder="La meilleure réplique…"></div>
+          <div class="form-group full"><label>Notre avis</label><textarea id="f-comment" placeholder="Ce qu'on en a pensé…"></textarea></div>
+        </div>
+        <button class="btn btn-primary" onclick="addFilm()">🎬 Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Film Modal -->
+<div class="modal-overlay" id="film-modal" onclick="closeModal('film-modal',event)">
+  <div class="modal">
+    <div class="modal-head"><h3 id="fm-title">—</h3><button class="modal-x" onclick="closeModal('film-modal')">✕</button></div>
+    <div class="modal-body">
+      <div style="display:flex;gap:.42rem;flex-wrap:wrap;margin-bottom:.85rem" id="fm-tags"></div>
+      <div class="dual-score">
+        <div class="score-card"><div class="score-card-name">Louis</div><div class="score-card-val score-louis" id="fm-score-louis">—</div><div style="font-size:.68rem;color:var(--muted)">/ 10</div></div>
+        <div class="score-card"><div class="score-card-name">Elisa</div><div class="score-card-val score-elisa" id="fm-score-elisa">—</div><div style="font-size:.68rem;color:var(--muted)">/ 10</div></div>
+      </div>
+      <div class="modal-section"><h4>Détails</h4><div id="fm-details" style="font-size:.82rem;line-height:1.7"></div></div>
+      <div class="modal-section" id="fm-quote-section" style="display:none"><h4>💬 Citation mémorable</h4><p id="fm-quote" style="font-size:.86rem;font-style:italic;line-height:1.6"></p></div>
+      <div class="modal-section" id="fm-comment-section" style="display:none"><h4>Notre avis</h4><p id="fm-comment" style="font-size:.84rem;line-height:1.6"></p></div>
+      <button class="btn-ghost" onclick="deleteCurrentFilm()" style="color:#c0392b;border-color:rgba(192,57,43,.22)">🗑 Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAMES -->
+<div class="page" id="page-games">
+  <div class="container">
+    <div class="page-header"><span class="eyebrow">Elisa & Louis</span><h1 id="main-title">Notre <em>Arène</em></h1><p>Chaque partie, une histoire</p></div>
+    <div class="score-banner">
+      <div class="player-score louis-side"><div class="player-name">Louis</div><div class="player-wins" id="wins-p1">0</div></div>
+      <div class="score-center"><div class="vs-crown" id="crown">🤝</div><div style="font-size:.58rem;color:var(--muted);letter-spacing:.14em">VS</div></div>
+      <div class="player-score elisa-side"><div class="player-name">Elisa</div><div class="player-wins" id="wins-p2">0</div></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Parties</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-fav" style="font-size:.82rem">—</div><div class="stat-label">Favori</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-streak">0</div><div class="stat-label">Série 🔥</div></div>
+    </div>
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchGameTab('add',this)">➕ Ajouter</button>
+      <button class="tab-btn" onclick="switchGameTab('history',this)">📜 Historique</button>
+      <button class="tab-btn" onclick="switchGameTab('stats',this)">📊 Stats</button>
+      <button class="tab-btn" onclick="switchGameTab('bets',this)">🎰 Paris</button>
+    </div>
+    <div class="tab-pane active" id="gtab-add">
+      <div class="card">
+        <h2 id="form-title">✨ Nouvelle Partie</h2>
+        <div id="selected-game-display"><div id="sel-thumb-wrap"></div><div class="sel-info"><div class="sel-name" id="sel-name"></div><div class="sel-meta" id="sel-meta"></div></div><button class="clear-sel" onclick="clearGame()">✕</button></div>
+        <div id="recents-section"><h3>🕐 Récemment joués</h3><div class="recent-chips" id="recent-chips"></div></div>
+        <div class="search-wrapper" id="search-wrapper"><span class="search-icon">🔍</span><input type="text" id="game-search" placeholder="Chercher un jeu…" autocomplete="off" spellcheck="false"><div id="search-results"></div></div>
+        <div class="form-grid" style="margin-top:.32rem">
+          <div class="form-group"><label>Date</label><input type="date" id="game-date"></div>
+          <div class="form-group"><label>Gagnant(e)</label><select id="game-winner"><option value="">Sélectionner…</option><option value="Louis">Louis</option><option value="Elisa">Elisa</option><option value="Égalité">🤝 Égalité</option></select></div>
+          <div class="form-group"><label>Score Louis_TMP</label><input type="text" id="score-p1" placeholder="ex: 42"></div>
+          <div class="form-group"><label>Score Louis</label><input type="text" id="score-p2" placeholder="ex: 17"></div>
+          <div class="form-group full"><label>Notes</label><input type="text" id="game-notes" placeholder="Remontada épique…"></div>
+        </div>
+        <button class="btn btn-primary" onclick="addGame()">🎯 Enregistrer</button>
+      </div>
+    </div>
+    <div class="tab-pane" id="gtab-history">
+      <div class="card"><div class="history-header"><h2>📜 Parties</h2><button class="btn-sm" onclick="clearAllGames()">🗑 Tout</button></div><div id="history-list"></div></div>
+    </div>
+    <div class="tab-pane" id="gtab-stats">
+      <div class="card"><h2>⚔️ Face à Face</h2>
+        <div class="h2h-wrap">
+          <div class="h2h-side"><div class="h2h-name">Louis</div><div class="h2h-wins" id="h2h-wins-louis">0</div><div class="h2h-label">victoires</div><div class="h2h-pct" id="h2h-pct-louis">—</div></div>
+          <div class="h2h-bar-wrap"><div class="h2h-bar"><div class="h2h-bar-louis" id="h2h-bar-l"></div><div class="h2h-bar-elisa" id="h2h-bar-e"></div></div><div style="font-size:.64rem;color:var(--muted)" id="h2h-draws">0 égalité</div></div>
+          <div class="h2h-side"><div class="h2h-name">Elisa</div><div class="h2h-wins" id="h2h-wins-elisa">0</div><div class="h2h-label">victoires</div><div class="h2h-pct" id="h2h-pct-elisa">—</div></div>
+        </div>
+      </div>
+      <div class="card"><h2>📅 Parties par mois</h2><div class="chart-wrap"><canvas id="chart-monthly" height="180"></canvas></div></div>
+      <div class="card"><h2>🎲 Victoires par jeu</h2><div id="stats-by-game"></div></div>
+      <div class="card"><h2>🏆 Records</h2><div class="records-grid" id="stats-records"></div></div>
+    </div>
+    <div class="tab-pane" id="gtab-bets">
+      <div class="bets-summary">
+        <div class="bets-sum-card"><div class="bets-sum-val" id="bet-stat-open">0</div><div class="bets-sum-label">En cours</div></div>
+        <div class="bets-sum-card"><div class="bets-sum-val" id="bet-stat-louis" style="color:#2563eb">0</div><div class="bets-sum-label">Louis gagne</div></div>
+        <div class="bets-sum-card"><div class="bets-sum-val" id="bet-stat-elisa" style="color:#db2777">0</div><div class="bets-sum-label">Elisa gagne</div></div>
+      </div>
+      <div class="card">
+        <h2>🎰 Nouveau Pari</h2>
+        <div class="form-grid">
+          <div class="form-group full"><label>Description</label><input type="text" id="bet-desc" placeholder="ex: Louis finira Elden Ring avant juin…"></div>
+          <div class="form-group full"><label>Enjeu 🏆</label><input type="text" id="bet-stake" placeholder="ex: Le perdant fait la vaisselle une semaine"></div>
+          <div class="form-group"><label>Proposé par</label><select id="bet-proposer"><option value="Louis">Louis</option><option value="Elisa">Elisa</option></select></div>
+          <div class="form-group"><label>Échéance</label><input type="date" id="bet-deadline"></div>
+          <div class="form-group full"><label>Catégorie</label><select id="bet-category"><option value="🎮 Jeux">🎮 Jeux</option><option value="🎬 Films">🎬 Films</option><option value="🏃 Sport">🏃 Sport</option><option value="🍕 Nourriture">🍕 Nourriture</option><option value="📚 Culture">📚 Culture</option><option value="💼 Quotidien">💼 Quotidien</option><option value="❓ Autre">❓ Autre</option></select></div>
+        </div>
+        <button class="btn btn-primary" onclick="addBet()">🤝 Créer le Pari</button>
+      </div>
+      <div class="card">
+        <div class="history-header"><h2>📋 Paris</h2>
+          <div class="bet-filter-wrap">
+            <button class="bet-filter active" onclick="filterBets('all',this)">Tous</button>
+            <button class="bet-filter" onclick="filterBets('open',this)">En cours</button>
+            <button class="bet-filter" onclick="filterBets('louis',this)">Louis ✓</button>
+            <button class="bet-filter" onclick="filterBets('elisa',this)">Elisa ✓</button>
+          </div>
+        </div>
+        <div id="bets-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, deleteDoc, onSnapshot, updateDoc, query, orderBy, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBqw_v6BJvzcAixtlyE1DPjECBdi6L1SXo",
+  authDomain: "elisa-et-louis.firebaseapp.com",
+  projectId: "elisa-et-louis",
+  storageBucket: "elisa-et-louis.firebasestorage.app",
+  messagingSenderId: "560943480296",
+  appId: "1:560943480296:web:62a221ea848431127e385d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+await setPersistence(auth, browserLocalPersistence);
+
+// ── Firebase helpers ──
+function col(name){ return collection(db, name); }
+function docRef(c, id){ return doc(db, c, id); }
+async function fbAdd(c, data){ return addDoc(col(c), {...data, createdAt: serverTimestamp()}); }
+async function fbSet(c, id, data){ return setDoc(docRef(c,id), data, {merge:true}); }
+async function fbDel(c, id){ return deleteDoc(docRef(c,id)); }
+async function fbGetAll(c){ const s=await getDocs(col(c)); return s.docs.map(d=>({id:d.id,...d.data()})); }
+function fbListen(c, cb){
+  const q = query(col(c), orderBy('createdAt','desc'));
+  return onSnapshot(q, s=>cb(s.docs.map(d=>({id:d.id,...d.data()}))));
+}
+async function fbGetDoc(c, id){ const d=await getDoc(docRef(c,id)); return d.exists()?{id:d.id,...d.data()}:null; }
+
+// ── Toast ──
+function showToast(msg, dur=2600){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+// ── Auth ──
+window.signInGoogle = async()=>{
+  try{ await signInWithPopup(auth, googleProvider); }
+  catch(e){ showAuthError('Connexion Google annulée.'); }
+};
+window.signInEmail = async()=>{
+  const em=document.getElementById('auth-email').value;
+  const pw=document.getElementById('auth-password').value;
+  try{ await signInWithEmailAndPassword(auth, em, pw); }
+  catch(e){ showAuthError('Email ou mot de passe incorrect.'); }
+};
+window.signUpEmail = async()=>{
+  const em=document.getElementById('auth-email').value;
+  const pw=document.getElementById('auth-password').value;
+  if(!em||!pw){ showAuthError('Remplissez email et mot de passe.'); return; }
+  try{ await createUserWithEmailAndPassword(auth, em, pw); }
+  catch(e){ showAuthError('Erreur : '+(e.message||e)); }
+};
+window.doSignOut = async()=>{
+  if(confirm('Se déconnecter ?')){ await signOut(auth); location.reload(); }
+};
+function showAuthError(msg){ document.getElementById('auth-error').textContent=msg; }
+
+// ── Auth state ──
+const ALLOWED_EMAILS = ['louis.brondin.laplace@hotmail.com', 'elisagabela@gmail.com'];
+let unsubscribers = [];
+onAuthStateChanged(auth, async user=>{
+  if(user){
+    if(!ALLOWED_EMAILS.includes(user.email?.toLowerCase())){
+      await signOut(auth);
+      showAuthError('❌ Accès refusé. Ce site est privé.');
+      return;
+    }
+    document.getElementById('auth-screen').style.display='none';
+    document.getElementById('top-nav').style.display='flex';
+    document.getElementById('bottom-nav').style.display='block';
+    const initials = (user.displayName||user.email||'U').charAt(0).toUpperCase();
+    document.getElementById('user-btn').textContent = initials;
+    initApp();
+  } else {
+    document.getElementById('auth-screen').style.display='flex';
+    document.getElementById('top-nav').style.display='none';
+    document.getElementById('bottom-nav').style.display='none';
+    unsubscribers.forEach(u=>u()); unsubscribers=[];
+  }
+});
+
+// ── Page navigation ──
+let currentPage = 'home';
+window.showPage = function(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.tnav-btn').forEach((b,i)=>{
+    const pages=['home','recipes','travel','films','games'];
+    b.classList.toggle('active', pages[i]===page);
+  });
+  document.querySelectorAll('.bnav-btn').forEach((b,i)=>{
+    const pages=['home','recipes','travel','films','games'];
+    b.classList.toggle('active', pages[i]===page);
+  });
+  currentPage=page;
+  if(page==='games') document.body.classList.add('game-dark');
+  else document.body.classList.remove('game-dark');
+  window.scrollTo(0,0);
+};
+window.switchTab = function(section, tab, btn){
+  const prefix = {recipes:'rtab',travel:'ttab',films:'ftab'}[section];
+  document.querySelectorAll(`#page-${section} .tab-pane`).forEach(p=>p.classList.remove('active'));
+  document.getElementById(prefix+'-'+tab).classList.add('active');
+  document.querySelectorAll(`#page-${section} .tab-btn`).forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+};
+window.switchGameTab = function(tab, btn){
+  document.querySelectorAll('#page-games .tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('gtab-'+tab).classList.add('active');
+  document.querySelectorAll('#page-games .tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  if(tab==='stats') setTimeout(renderStats, 100);
+};
+window.closeModal = function(id, e){
+  if(!e || e.target.classList.contains('modal-overlay')) document.getElementById(id).classList.remove('open');
+};
+
+// ── Anniversary ──
+const ANNIVERSARY = new Date('2022-06-15');
+function updateAnniversary(){
+  const now = new Date();
+  const diff = now - ANNIVERSARY;
+  const days = Math.floor(diff/(1000*60*60*24));
+  const years = Math.floor(days/365);
+  const months = Math.floor((days%365)/30);
+  const rem = days%30;
+  let s = '';
+  if(years>0) s+=`${years} an${years>1?'s':''}, `;
+  if(months>0) s+=`${months} mois, `;
+  s+=`${rem} jour${rem>1?'s':''}`;
+  document.getElementById('home-date-str').textContent = s;
+}
+
+// ── Particles ──
+function initParticles(){
+  const emojis=['♡','✨','🌟','💫','🎲','🍳','✈️','🎬'];
+  const c=document.getElementById('particles');
+  for(let i=0;i<8;i++){
+    const p=document.createElement('div'); p.className='particle';
+    p.textContent=emojis[i%emojis.length];
+    p.style.cssText=`left:${Math.random()*100}%;animation-delay:${Math.random()*6}s;animation-duration:${5+Math.random()*4}s`;
+    c.appendChild(p);
+  }
+}
+
+// ═══════════════════════════════════════
+// RECIPES
+// ═══════════════════════════════════════
+let recipes=[], recipeFilter='all', currentRecipeId=null;
+let currentServings=2, baseServings=2, generatedRecipeData=null;
+let modalServings=2, modalBaseServings=2;
+
+function scaleIngredients(ings, from, to){
+  if(!ings||from===to) return ings;
+  const ratio=to/from;
+  return ings.map(ing=>ing.replace(/(\d+([.,]\d+)?|\d+\/\d+)/g, m=>{
+    let v; if(m.includes('/')){ const p=m.split('/'); v=+p[0]/+p[1]; } else v=parseFloat(m.replace(',','.'));
+    const s=v*ratio;
+    if(s===Math.round(s)) return String(Math.round(s));
+    if(s<1) return (Math.round(s*4)/4).toLocaleString('fr-FR',{maximumFractionDigits:2});
+    return (Math.round(s*10)/10).toLocaleString('fr-FR',{maximumFractionDigits:1});
+  }));
+}
+
+window.changeServings = function(d){
+  currentServings=Math.max(1,Math.min(20,currentServings+d));
+  document.getElementById('servings-display').textContent=currentServings;
+  const s2=document.getElementById('servings-display-2'); if(s2) s2.textContent=currentServings;
+  if(generatedRecipeData) updatePreviewServings();
+};
+window.changeModalServings = function(d){
+  modalServings=Math.max(1,Math.min(20,modalServings+d));
+  document.getElementById('modal-servings-display').textContent=modalServings;
+  const r=recipes.find(x=>x.id===currentRecipeId); if(r) renderModalIngredients(r);
+};
+function updatePreviewServings(){
+  if(!generatedRecipeData) return;
+  const sc=scaleIngredients(generatedRecipeData.ingredients, baseServings, currentServings);
+  document.getElementById('preview-ingredients').innerHTML=sc.map(i=>`<li>${i}</li>`).join('');
+}
+
+window.generateRecipeAI = async function(){
+  const name=document.getElementById('r-name').value.trim();
+  if(!name){ showToast('⚠️ Entrez le nom d\'une recette !'); return; }
+  const btn=document.getElementById('gen-btn');
+  btn.disabled=true; btn.textContent='…';
+  document.getElementById('recipe-ai-loading').style.display='block';
+  document.getElementById('recipe-preview').style.display='none';
+  baseServings=currentServings;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
+        messages:[{role:'user',content:`Génère une recette pour "${name}" pour ${currentServings} personne${currentServings>1?'s':''}. Réponds UNIQUEMENT en JSON valide sans markdown:\n{"emoji":"un emoji","cat":"catégorie parmi Pâtes & Riz/Viande/Poisson/Végétarien/Dessert/Petit-déj/Soupe/Street food","time":"temps total","ingredients":["quantité + ingrédient pour ${currentServings} pers."],"steps":["étape 1","étape 2"],"note":"astuce ou null"}`}]})
+    });
+    const data=await resp.json();
+    const text=data.content.map(b=>b.text||'').join('');
+    const recipe=JSON.parse(text.replace(/```json|```/g,'').trim());
+    generatedRecipeData=recipe;
+    showRecipePreview(name, recipe);
+  } catch(e){ showToast('❌ Erreur IA. Réessayez !'); console.error(e); }
+  finally{ document.getElementById('recipe-ai-loading').style.display='none'; btn.disabled=false; btn.textContent='✨ Générer'; }
+};
+
+function showRecipePreview(name, recipe){
+  document.getElementById('preview-emoji').textContent=recipe.emoji||'🍳';
+  document.getElementById('preview-title').textContent=name;
+  document.getElementById('preview-meta').textContent=[recipe.cat, recipe.time?`⏱ ${recipe.time}`:'', `${currentServings} pers.`].filter(Boolean).join(' · ');
+  document.getElementById('preview-ingredients').innerHTML=recipe.ingredients.map(i=>`<li>${i}</li>`).join('');
+  document.getElementById('preview-steps').innerHTML=recipe.steps.map(s=>`<li>${s}</li>`).join('');
+  const n=document.getElementById('preview-note');
+  if(recipe.note){ n.textContent='💡 '+recipe.note; n.style.display='block'; } else n.style.display='none';
+  const s2=document.getElementById('servings-display-2'); if(s2) s2.textContent=currentServings;
+  document.getElementById('recipe-preview').style.display='block';
+}
+
+window.saveGeneratedRecipe = async function(){
+  if(!generatedRecipeData){ showToast('⚠️ Générez d\'abord une recette !'); return; }
+  const name=document.getElementById('r-name').value.trim();
+  if(!name){ showToast('⚠️ Entrez un nom !'); return; }
+  const scaledIng=scaleIngredients(generatedRecipeData.ingredients, baseServings, currentServings);
+  await fbAdd('recipes',{
+    name, emoji:generatedRecipeData.emoji||'🍳',
+    status:document.getElementById('r-status').value,
+    cat:generatedRecipeData.cat||'',
+    time:generatedRecipeData.time||'',
+    rating:document.getElementById('r-rating')?.value||'',
+    ingredients:scaledIng, steps:generatedRecipeData.steps||[],
+    note:document.getElementById('r-note')?.value||generatedRecipeData.note||'',
+    servings:currentServings, baseServings:currentServings, comments:[]
+  });
+  showToast(`🍳 "${name}" sauvegardée !`);
+  document.getElementById('r-name').value='';
+  document.getElementById('recipe-preview').style.display='none';
+  generatedRecipeData=null;
+  switchTab('recipes','list', document.querySelector('#page-recipes .tab-btn'));
+};
+
+window.filterRecipes = function(f, btn){
+  recipeFilter=f;
+  document.querySelectorAll('#rtab-list .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderRecipes();
+};
+
+function renderRecipes(){
+  const grid=document.getElementById('recipe-grid');
+  let list=recipes;
+  if(recipeFilter!=='all') list=recipes.filter(r=>r.status===recipeFilter);
+  if(!list.length){ grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="big-emoji">🍳</div><p>Aucune recette ici.</p></div>'; return; }
+  grid.innerHTML=list.map(r=>`
+    <div class="recipe-card" onclick="openRecipe('${r.id}')">
+      <div class="rc-img">${r.emoji||'🍳'}</div>
+      <div class="rc-body">
+        <div class="rc-title">${r.name}</div>
+        <div class="rc-meta">
+          <span class="recipe-tag ${r.status==='fav'?'tag-fav':r.status==='tried'?'tag-tried':'tag-want'}">${r.status==='fav'?'⭐ Fav':r.status==='tried'?'✅ Testée':'🔖 À tester'}</span>
+          ${r.time?`<span>⏱ ${r.time}</span>`:''}
+          ${r.rating?`<span class="stars">${'⭐'.repeat(+r.rating)}</span>`:''}
+        </div>
+      </div>
+    </div>`).join('');
+  document.getElementById('badge-recipes').textContent=recipes.length;
+}
+
+window.openRecipe = function(id){
+  const r=recipes.find(x=>x.id===id); if(!r) return;
+  currentRecipeId=id;
+  modalBaseServings=r.baseServings||r.servings||2;
+  modalServings=modalBaseServings;
+  document.getElementById('modal-servings-display').textContent=modalServings;
+  document.getElementById('rm-title').textContent=r.name;
+  document.getElementById('rm-emoji').textContent=r.emoji||'🍳';
+  const tag=r.status==='fav'?'<span class="recipe-tag tag-fav">⭐ Favorite</span>':r.status==='tried'?'<span class="recipe-tag tag-tried">✅ Testée</span>':'<span class="recipe-tag tag-want">🔖 À tester</span>';
+  const stars=r.rating?`<span class="stars">${'⭐'.repeat(+r.rating)}</span>`:'';
+  document.getElementById('rm-tags').innerHTML=tag+(r.cat?`<span style="font-size:.7rem;color:var(--muted)">${r.cat}</span>`:'')+( r.time?`<span style="font-size:.7rem;color:var(--muted)">⏱ ${r.time}</span>`:'')+stars;
+  renderModalIngredients(r);
+  const stepsS=document.getElementById('rm-steps-section');
+  if(r.steps?.length){ stepsS.style.display='block'; document.getElementById('rm-steps').innerHTML=r.steps.map(s=>`<li>${s}</li>`).join(''); } else stepsS.style.display='none';
+  const noteEl=document.getElementById('rm-note');
+  if(r.note){ noteEl.textContent='💡 '+r.note; noteEl.style.display='block'; } else noteEl.style.display='none';
+  renderComments(r);
+  document.getElementById('recipe-modal').classList.add('open');
+};
+
+function renderModalIngredients(r){
+  const s=document.getElementById('rm-ing-section');
+  if(!r?.ingredients?.length){ s.style.display='none'; return; }
+  s.style.display='block';
+  const sc=scaleIngredients(r.ingredients, modalBaseServings, modalServings);
+  document.getElementById('rm-ing').innerHTML=sc.map(i=>`<li>${i}</li>`).join('');
+}
+
+function renderComments(r){
+  const comments=r.comments||[];
+  document.getElementById('rm-comments').innerHTML=!comments.length?'<p style="font-size:.78rem;color:var(--muted)">Aucun commentaire.</p>':
+    comments.map((c,i)=>`<div class="comment-item">
+      <div class="comment-av ${c.author==='Louis'?'av-louis':'av-elisa'}">${c.author.charAt(0)}</div>
+      <div class="comment-body"><div class="comment-author">${c.author}</div><div class="comment-text">${c.text}</div><div class="comment-date">${c.date||''}</div></div>
+      <button class="comment-del" onclick="deleteComment(${i})">✕</button>
+    </div>`).join('');
+}
+
+window.addComment = async function(){
+  const r=recipes.find(x=>x.id===currentRecipeId); if(!r) return;
+  const text=document.getElementById('rm-comment-text').value.trim(); if(!text) return;
+  const author=document.getElementById('rm-comment-author').value;
+  const comments=[...(r.comments||[]),{author,text,date:new Date().toLocaleDateString('fr-FR')}];
+  await fbSet('recipes',currentRecipeId,{comments});
+  document.getElementById('rm-comment-text').value='';
+};
+window.deleteComment = async function(i){
+  const r=recipes.find(x=>x.id===currentRecipeId); if(!r) return;
+  const comments=[...(r.comments||[])]; comments.splice(i,1);
+  await fbSet('recipes',currentRecipeId,{comments});
+};
+window.deleteCurrentRecipe = async function(){
+  if(!confirm('Supprimer cette recette ?')) return;
+  await fbDel('recipes',currentRecipeId);
+  closeModal('recipe-modal');
+  showToast('🗑 Recette supprimée');
+};
+
+// Shopping list (Firestore)
+let shopList=[];
+window.addToShoppingList = async function(){
+  const r=recipes.find(x=>x.id===currentRecipeId); if(!r||!r.ingredients?.length){ showToast('⚠️ Pas d\'ingrédients'); return; }
+  const scaled=scaleIngredients(r.ingredients, modalBaseServings, modalServings);
+  const current=await fbGetAll('shopping');
+  for(const ing of scaled){
+    const m=ing.match(/^([\d.,/]+\s*(?:g|kg|ml|l|cl|pcs?|unité|unités|c\.s\.|c\.c\.|cs|cc|tbsp|tsp|cup|oz|lb)?\s+)(.*)/i);
+    const qty=m?m[1].trim():''; const name=m?m[2].trim():ing;
+    if(!current.find(s=>s.name?.toLowerCase()===name.toLowerCase()))
+      await fbAdd('shopping',{name,qty,cat:'🥫 Épicerie',done:false});
+  }
+  closeModal('recipe-modal');
+  switchTab('recipes','shopping', document.querySelectorAll('#page-recipes .tab-btn')[1]);
+  showToast(`🛒 Courses ajoutées (${modalServings} pers.) !`);
+};
+window.addShopItem = async function(){
+  const name=document.getElementById('shop-item-name').value.trim(); if(!name) return;
+  await fbAdd('shopping',{name,qty:document.getElementById('shop-item-qty').value,cat:document.getElementById('shop-item-cat').value,done:false});
+  document.getElementById('shop-item-name').value=''; document.getElementById('shop-item-qty').value='';
+};
+window.toggleShopItem = async function(id, done){
+  await fbSet('shopping',id,{done:!done});
+};
+window.removeShopItem = async function(id){
+  await fbDel('shopping',id);
+};
+window.clearCheckedShop = async function(){
+  const all=await fbGetAll('shopping');
+  for(const i of all.filter(x=>x.done)) await fbDel('shopping',i.id);
+};
+window.clearShopList = async function(){
+  if(!confirm('Vider toute la liste ?')) return;
+  const all=await fbGetAll('shopping');
+  for(const i of all) await fbDel('shopping',i.id);
+};
+
+function renderShoppingList(list){
+  shopList=list;
+  const total=list.length, done=list.filter(x=>x.done).length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('shop-progress-bar').style.width=pct+'%';
+  const cats={};
+  list.forEach(item=>{ if(!cats[item.cat]) cats[item.cat]=[]; cats[item.cat].push(item); });
+  const content=document.getElementById('shopping-list-content');
+  if(!list.length){ content.innerHTML='<div class="empty-state"><div class="big-emoji">🛒</div><p>Liste vide !</p></div>'; return; }
+  content.innerHTML=Object.entries(cats).map(([cat,items])=>`
+    <div style="margin-bottom:.7rem">
+      <div class="shop-cat-title">${cat}</div>
+      ${items.map(item=>`<div class="shop-item">
+        <div class="shop-check ${item.done?'done':''}" onclick="toggleShopItem('${item.id}',${item.done})"></div>
+        <span class="shop-label ${item.done?'done':''}">${item.name}</span>
+        ${item.qty?`<span class="shop-qty">${item.qty}</span>`:''}
+        <button class="shop-del" onclick="removeShopItem('${item.id}')">✕</button>
+      </div>`).join('')}
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+// TRAVEL
+// ═══════════════════════════════════════
+let travels=[], travelFilter='all', currentTravelId=null;
+let bucketList=[];
+
+window.addTravel = async function(){
+  const dest=document.getElementById('t-dest').value.trim(); if(!dest){ showToast('⚠️ Entrez une destination !'); return; }
+  await fbAdd('travels',{
+    dest, country:document.getElementById('t-country').value,
+    flag:document.getElementById('t-flag').value||'🌍',
+    status:document.getElementById('t-status').value,
+    date:document.getElementById('t-date').value,
+    budget:parseFloat(document.getElementById('t-budget').value)||0,
+    note:document.getElementById('t-note').value,
+    expenses:[], journal:[], instaUrl:''
+  });
+  showToast('✈️ Voyage ajouté !');
+  ['t-dest','t-country','t-flag','t-date','t-budget','t-note'].forEach(id=>document.getElementById(id).value='');
+  switchTab('travel','list', document.querySelectorAll('#page-travel .tab-btn')[1]);
+};
+
+window.filterTravel = function(f, btn){
+  travelFilter=f;
+  document.querySelectorAll('#ttab-list .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active'); renderTravelList();
+};
+
+function renderTravelList(){
+  const grid=document.getElementById('travel-grid');
+  const empty=document.getElementById('travel-empty');
+  let list=travelFilter==='all'?travels:travels.filter(t=>t.status===travelFilter);
+  if(!list.length){ grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML=list.map(t=>`
+    <div class="travel-card" onclick="openTravel('${t.id}')">
+      <div class="travel-flag">${t.flag||'🌍'}</div>
+      <div class="travel-body">
+        <div class="travel-title">${t.dest}</div>
+        <div class="travel-country">${t.country||''} ${t.date?`· ${t.date}`:''}</div>
+        <span class="travel-badge ${t.status==='done'?'badge-done':t.status==='planned'?'badge-planned':'badge-dream'}">${t.status==='done'?'✅ Visité':t.status==='planned'?'📅 Planifié':'💭 Rêve'}</span>
+      </div>
+    </div>`).join('');
+}
+
+function renderTravelMap(){
+  const pins=document.getElementById('travel-map-pins');
+  const empty=document.getElementById('travel-map-empty');
+  const done=travels.filter(t=>t.status==='done');
+  if(!done.length){ pins.innerHTML=''; empty.style.display='block'; }
+  else{
+    empty.style.display='none';
+    pins.innerHTML=done.map(t=>`<div class="map-pin" onclick="openTravel('${t.id}')">${t.flag||'🌍'} ${t.dest}</div>`).join('');
+  }
+  const totalSpent=travels.reduce((s,t)=>(t.expenses||[]).reduce((a,e)=>a+(+e.amount||0),s),0);
+  document.getElementById('t-stat-done').textContent=travels.filter(t=>t.status==='done').length;
+  document.getElementById('t-stat-budget').textContent=totalSpent>0?Math.round(totalSpent)+'€':'0€';
+  document.getElementById('t-stat-planned').textContent=travels.filter(t=>t.status==='planned').length;
+  document.getElementById('badge-travels').textContent=travels.length;
+}
+
+window.openTravel = function(id){
+  const t=travels.find(x=>x.id===id); if(!t) return;
+  currentTravelId=id;
+  document.getElementById('tm-title').textContent=t.dest;
+  document.getElementById('tm-flag').textContent=t.flag||'🌍';
+  const badge=t.status==='done'?'<span class="travel-badge badge-done">✅ Visité</span>':t.status==='planned'?'<span class="travel-badge badge-planned">📅 Planifié</span>':'<span class="travel-badge badge-dream">💭 Rêve</span>';
+  document.getElementById('tm-tags').innerHTML=badge+(t.country?`<span style="font-size:.76rem;color:var(--muted)">${t.country}</span>`:'')+( t.date?`<span style="font-size:.76rem;color:var(--muted)">${t.date}</span>`:'');
+  document.getElementById('tm-insta-url').value=t.instaUrl||'';
+  renderInstaPreview(t.instaUrl||'');
+  renderExpenses(t);
+  renderJournal(t);
+  document.getElementById('travel-modal').classList.add('open');
+};
+
+function renderInstaPreview(url){
+  const el=document.getElementById('tm-insta-preview');
+  if(!url){ el.innerHTML=''; return; }
+  el.innerHTML=`<div style="background:var(--bg2);border-radius:10px;padding:.8rem;display:flex;align-items:center;gap:.65rem;margin-top:.5rem">
+    <span style="font-size:1.6rem">📸</span>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:.78rem;font-weight:600;margin-bottom:.12rem">Photo Instagram</div>
+      <a href="${url}" target="_blank" style="font-size:.7rem;color:var(--accent);word-break:break-all;text-decoration:none">Voir sur Instagram →</a>
+    </div>
+  </div>`;
+}
+
+window.saveInstaLink = async function(){
+  const url=document.getElementById('tm-insta-url').value.trim();
+  await fbSet('travels',currentTravelId,{instaUrl:url});
+  renderInstaPreview(url);
+  showToast('📸 Lien sauvegardé !');
+};
+
+const EXP_COLORS={'🏨 Hébergement':'#e67e22','✈️ Transport':'#3498db','🍽️ Nourriture':'#2ecc71','🎟️ Activités':'#9b59b6','🛍️ Shopping':'#e91e63','❓ Autre':'#95a5a6'};
+function renderExpenses(t){
+  const exps=t.expenses||[];
+  const total=exps.reduce((s,e)=>s+(+e.amount||0),0);
+  const budget=t.budget||0;
+  const pct=budget>0?Math.min(100,Math.round(total/budget*100)):0;
+  document.getElementById('tm-budget-display').textContent=budget>0?`${Math.round(total)}€ / ${budget}€`:`${Math.round(total)}€ dépensé`;
+  const bar=document.getElementById('tm-budget-bar');
+  bar.style.width=pct+'%';
+  bar.style.background=pct>90?'#c0392b':pct>70?'#e67e22':'var(--accent2)';
+  document.getElementById('tm-expenses').innerHTML=!exps.length?'<p style="font-size:.78rem;color:var(--muted)">Aucune dépense.</p>':
+    exps.map((e,i)=>`<div class="expense-item">
+      <div class="exp-dot" style="background:${EXP_COLORS[e.cat]||'#95a5a6'}"></div>
+      <span class="expense-label">${e.label} <span style="font-size:.66rem;color:var(--muted)">${e.cat}</span></span>
+      <span class="expense-amount">${(+e.amount).toFixed(0)}€</span>
+      <button class="expense-del" onclick="deleteExpense(${i})">✕</button>
+    </div>`).join('');
+}
+
+window.addExpense = async function(){
+  const label=document.getElementById('tm-exp-label').value.trim();
+  const amount=parseFloat(document.getElementById('tm-exp-amount').value);
+  if(!label||!amount){ showToast('⚠️ Remplissez le libellé et le montant'); return; }
+  const t=travels.find(x=>x.id===currentTravelId); if(!t) return;
+  const exps=[...(t.expenses||[]),{label,amount,cat:document.getElementById('tm-exp-cat').value,date:new Date().toLocaleDateString('fr-FR')}];
+  await fbSet('travels',currentTravelId,{expenses:exps});
+  document.getElementById('tm-exp-label').value=''; document.getElementById('tm-exp-amount').value='';
+};
+window.deleteExpense = async function(i){
+  const t=travels.find(x=>x.id===currentTravelId); if(!t) return;
+  const exps=[...(t.expenses||[])]; exps.splice(i,1);
+  await fbSet('travels',currentTravelId,{expenses:exps});
+};
+
+function renderJournal(t){
+  const entries=t.journal||[];
+  document.getElementById('tm-journal').innerHTML=!entries.length?'<p style="font-size:.78rem;color:var(--muted)">Aucune note.</p>':
+    [...entries].reverse().map((e,i)=>`<div class="journal-entry">
+      <div class="journal-date">${e.date||''}</div>
+      <div class="journal-text">${e.text}</div>
+      <button class="journal-del" onclick="deleteJournal(${entries.length-1-i})">✕</button>
+    </div>`).join('');
+}
+window.addJournalEntry = async function(){
+  const text=document.getElementById('tm-journal-text').value.trim(); if(!text) return;
+  const t=travels.find(x=>x.id===currentTravelId); if(!t) return;
+  const journal=[...(t.journal||[]),{text,date:new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}];
+  await fbSet('travels',currentTravelId,{journal});
+  document.getElementById('tm-journal-text').value='';
+};
+window.deleteJournal = async function(i){
+  const t=travels.find(x=>x.id===currentTravelId); if(!t) return;
+  const journal=[...(t.journal||[])]; journal.splice(i,1);
+  await fbSet('travels',currentTravelId,{journal});
+};
+window.deleteCurrentTravel = async function(){
+  if(!confirm('Supprimer ce voyage ?')) return;
+  await fbDel('travels',currentTravelId);
+  closeModal('travel-modal'); showToast('🗑 Voyage supprimé');
+};
+
+// Bucket list
+window.addBucketItem = async function(){
+  const dest=document.getElementById('bucket-dest').value.trim(); if(!dest) return;
+  await fbAdd('bucket',{dest,flag:document.getElementById('bucket-flag').value||'🌍',done:false});
+  document.getElementById('bucket-dest').value=''; document.getElementById('bucket-flag').value='';
+};
+window.toggleBucket = async function(id, done){ await fbSet('bucket',id,{done:!done}); };
+window.deleteBucket = async function(id){ await fbDel('bucket',id); };
+
+function renderBucketList(list){
+  bucketList=list;
+  const el=document.getElementById('bucket-list');
+  if(!list.length){ el.innerHTML='<div class="empty-state"><div class="big-emoji">🔖</div><p>Votre bucket list est vide !</p></div>'; return; }
+  el.innerHTML=list.map(b=>`<div class="bucket-item">
+    <div class="bucket-check ${b.done?'done':''}" onclick="toggleBucket('${b.id}',${b.done})"></div>
+    <span style="font-size:1.2rem">${b.flag||'🌍'}</span>
+    <span style="flex:1;font-size:.88rem;${b.done?'text-decoration:line-through;opacity:.5':''}">${b.dest}</span>
+    <button class="delete-btn" onclick="deleteBucket('${b.id}')">🗑</button>
+  </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+// FILMS
+// ═══════════════════════════════════════
+let films=[], filmFilter='all', currentFilmId=null;
+let suggestions=[];
+let starValLouis=0, starValElisa=0;
+
+function initStarRatings(){
+  ['star-louis','star-elisa'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    let html='';
+    for(let i=1;i<=10;i++) html+=`<span class="star" data-v="${i}" onclick="setStar('${id}',${i})">★</span>`;
+    el.innerHTML=html;
+  });
+}
+window.setStar = function(id, val){
+  if(id==='star-louis') starValLouis=val; else starValElisa=val;
+  document.querySelectorAll(`#${id} .star`).forEach(s=>{
+    s.classList.toggle('filled', +s.dataset.v<=val);
+  });
+};
+
+window.addFilm = async function(){
+  const title=document.getElementById('f-title').value.trim(); if(!title){ showToast('⚠️ Entrez un titre !'); return; }
+  await fbAdd('films',{
+    title, year:document.getElementById('f-year').value,
+    director:document.getElementById('f-director').value,
+    genre:document.getElementById('f-genre').value,
+    status:document.getElementById('f-status').value,
+    date:document.getElementById('f-date').value,
+    location:document.getElementById('f-location').value,
+    heart:+document.getElementById('f-heart').value,
+    rewatch:+document.getElementById('f-rewatch').value,
+    scoreLouis:starValLouis, scoreElisa:starValElisa,
+    quote:document.getElementById('f-quote').value,
+    comment:document.getElementById('f-comment').value
+  });
+  showToast('🎬 Film ajouté !');
+  ['f-title','f-year','f-director','f-location','f-quote','f-comment','f-date'].forEach(id=>document.getElementById(id).value='');
+  starValLouis=0; starValElisa=0;
+  document.querySelectorAll('.star').forEach(s=>s.classList.remove('filled'));
+  switchTab('films','seen', document.querySelector('#page-films .tab-btn'));
+};
+
+window.filterFilms = function(f, btn){
+  filmFilter=f;
+  document.querySelectorAll('#ftab-seen .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active'); renderFilms();
+};
+
+function renderFilms(){
+  const grid=document.getElementById('film-grid');
+  const watchGrid=document.getElementById('watchlist-grid');
+  const seen=films.filter(f=>f.status==='seen');
+  const watchlist=films.filter(f=>f.status==='watchlist');
+  let list=seen;
+  if(filmFilter==='heart') list=seen.filter(f=>f.heart);
+  if(filmFilter==='rewatchable') list=seen.filter(f=>f.rewatch);
+  grid.innerHTML=!list.length?'<div class="empty-state" style="grid-column:1/-1"><div class="big-emoji">🎬</div><p>Aucun film vu.</p></div>':
+    list.map(f=>`<div class="film-card" onclick="openFilm('${f.id}')">
+      <div class="film-poster"><span style="position:relative;z-index:1">${f.genre?.split(' ')[0]||'🎬'}</span>${f.year?`<span class="film-year-badge">${f.year}</span>`:''}</div>
+      ${f.heart?'<span class="film-heart">❤️</span>':''}
+      <div class="film-body">
+        <div class="film-title">${f.title}</div>
+        <div class="film-scores">
+          ${f.scoreLouis?`<span class="film-score score-louis">L: ${f.scoreLouis}/10</span>`:''}
+          ${f.scoreElisa?`<span class="film-score score-elisa">E: ${f.scoreElisa}/10</span>`:''}
+        </div>
+        <span class="film-tag tag-seen">✅ Vu</span>
+        ${f.rewatch?'<span class="film-tag" style="background:rgba(46,109,126,.1);color:#1a5c6e;border:1px solid rgba(46,109,126,.2);margin-left:.25rem">🔄</span>':''}
+      </div>
+    </div>`).join('');
+  watchGrid.innerHTML=!watchlist.length?'<div class="empty-state" style="grid-column:1/-1"><div class="big-emoji">📋</div><p>Aucun film à voir.</p></div>':
+    watchlist.map(f=>`<div class="film-card" onclick="openFilm('${f.id}')">
+      <div class="film-poster"><span>${f.genre?.split(' ')[0]||'🎬'}</span>${f.year?`<span class="film-year-badge">${f.year}</span>`:''}</div>
+      <div class="film-body">
+        <div class="film-title">${f.title}</div>
+        <span class="film-tag tag-watchlist">📋 À voir</span>
+      </div>
+    </div>`).join('');
+  document.getElementById('badge-films').textContent=films.length;
+}
+
+window.openFilm = function(id){
+  const f=films.find(x=>x.id===id); if(!f) return;
+  currentFilmId=id;
+  document.getElementById('fm-title').textContent=f.title;
+  const badges=[
+    f.status==='seen'?'<span class="film-tag tag-seen">✅ Vu</span>':'<span class="film-tag tag-watchlist">📋 À voir</span>',
+    f.heart?'<span class="film-tag" style="background:rgba(219,39,119,.1);color:#be185d;border:1px solid rgba(219,39,119,.2)">❤️ Coup de cœur</span>':'',
+    f.rewatch?'<span class="film-tag" style="background:rgba(46,109,126,.1);color:#1a5c6e;border:1px solid rgba(46,109,126,.2)">🔄 À revoir</span>':'',
+    f.genre?`<span class="film-tag" style="background:rgba(107,63,160,.08);color:#5a3585;border:1px solid rgba(107,63,160,.15)">${f.genre}</span>`:''
+  ].filter(Boolean).join('');
+  document.getElementById('fm-tags').innerHTML=badges;
+  document.getElementById('fm-score-louis').textContent=f.scoreLouis||'—';
+  document.getElementById('fm-score-elisa').textContent=f.scoreElisa||'—';
+  let details='';
+  if(f.director) details+=`<div>🎬 <b>Réalisateur :</b> ${f.director}</div>`;
+  if(f.year) details+=`<div>📅 <b>Année :</b> ${f.year}</div>`;
+  if(f.date) details+=`<div>🗓 <b>Vu le :</b> ${f.date}</div>`;
+  if(f.location) details+=`<div>📍 <b>Lieu :</b> ${f.location}</div>`;
+  document.getElementById('fm-details').innerHTML=details||'Aucun détail.';
+  const quoteEl=document.getElementById('fm-quote-section');
+  if(f.quote){ quoteEl.style.display='block'; document.getElementById('fm-quote').textContent=`"${f.quote}"`; } else quoteEl.style.display='none';
+  const comEl=document.getElementById('fm-comment-section');
+  if(f.comment){ comEl.style.display='block'; document.getElementById('fm-comment').textContent=f.comment; } else comEl.style.display='none';
+  document.getElementById('film-modal').classList.add('open');
+};
+window.deleteCurrentFilm = async function(){
+  if(!confirm('Supprimer ce film ?')) return;
+  await fbDel('films',currentFilmId);
+  closeModal('film-modal'); showToast('🗑 Film supprimé');
+};
+
+window.generateFilmRecos = async function(){
+  const btn=document.getElementById('reco-btn');
+  btn.disabled=true; btn.textContent='…';
+  document.getElementById('reco-loading').style.display='block';
+  document.getElementById('reco-list').innerHTML='';
+  const seen=films.filter(f=>f.status==='seen');
+  if(!seen.length){ showToast('⚠️ Ajoutez des films vus d\'abord !'); btn.disabled=false; btn.textContent='🎬 Générer'; document.getElementById('reco-loading').style.display='none'; return; }
+  const filmList=seen.map(f=>`${f.title}${f.scoreLouis||f.scoreElisa?' (L:'+f.scoreLouis+' E:'+f.scoreElisa+')':''}`).slice(0,15).join(', ');
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
+        messages:[{role:'user',content:`Films regardés par un couple : ${filmList}. Suggère 5 films qu'ils adoreraient. Réponds UNIQUEMENT en JSON sans markdown:\n[{"title":"titre","year":"année","genre":"genre","why":"pourquoi ils vont adorer (2 phrases)","emoji":"emoji représentatif"}]`}]})
+    });
+    const data=await resp.json();
+    const text=data.content.map(b=>b.text||'').join('');
+    const recos=JSON.parse(text.replace(/```json|```/g,'').trim());
+    document.getElementById('reco-list').innerHTML=recos.map((r,i)=>`
+      <div class="reco-card" style="animation-delay:${i*.08}s">
+        <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.35rem">
+          <span style="font-size:1.6rem">${r.emoji||'🎬'}</span>
+          <div><div class="reco-title">${r.title}</div><div style="font-size:.72rem;color:var(--muted)">${r.year||''}</div></div>
+        </div>
+        <div class="reco-why">${r.why}</div>
+        <div class="reco-meta"><span class="reco-tag">${r.genre||''}</span></div>
+      </div>`).join('');
+  } catch(e){ showToast('❌ Erreur IA'); console.error(e); }
+  finally{ document.getElementById('reco-loading').style.display='none'; btn.disabled=false; btn.textContent='🎬 Générer'; }
+};
+
+window.addSuggestion = async function(){
+  const title=document.getElementById('sug-title').value.trim(); if(!title) return;
+  await fbAdd('suggestions',{title,from:document.getElementById('sug-from').value,why:document.getElementById('sug-why').value});
+  document.getElementById('sug-title').value=''; document.getElementById('sug-why').value='';
+  showToast('💌 Suggestion envoyée !');
+};
+window.deleteSuggestion = async function(id){ await fbDel('suggestions',id); };
+
+function renderSuggestions(list){
+  suggestions=list;
+  const el=document.getElementById('suggestions-list');
+  if(!list.length){ el.innerHTML='<div class="empty-state"><div class="big-emoji">💌</div><p>Aucune suggestion.</p></div>'; return; }
+  el.innerHTML=list.map(s=>`<div class="suggest-card">
+    <div class="suggest-from">${s.from}</div>
+    <div class="suggest-title-text">🎬 ${s.title}</div>
+    ${s.why?`<div class="suggest-why">${s.why}</div>`:''}
+    <button class="suggest-del" onclick="deleteSuggestion('${s.id}')">✕</button>
+  </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+// GAMES
+// ═══════════════════════════════════════
+let games=[], bets=[], betFilter='all';
+let selectedGame=null;
+let searchTimer=null, monthlyChart=null;
+
+window.addGame = async function(){
+  const winner=document.getElementById('game-winner').value;
+  if(!winner){ showToast('⚠️ Sélectionnez un gagnant !'); return; }
+  const name=selectedGame?.name||document.getElementById('game-search').value.trim();
+  if(!name){ showToast('⚠️ Entrez le nom d\'un jeu !'); return; }
+  const date=document.getElementById('game-date').value||new Date().toISOString().split('T')[0];
+  await fbAdd('games',{
+    name, bggId:selectedGame?.id||null, thumb:selectedGame?.thumb||null,
+    winner, scoreP1:document.getElementById('score-p1').value,
+    scoreP2:document.getElementById('score-p2').value,
+    notes:document.getElementById('game-notes').value, date
+  });
+  const flash=document.getElementById('theme-overlay');
+  flash.classList.add('flash'); setTimeout(()=>flash.classList.remove('flash'),200);
+  showToast(winner==='Égalité'?'🤝 Égalité !':`🏆 ${winner} gagne !`);
+  ['score-p1','score-p2','game-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('game-date').value='';
+  clearGame();
+};
+
+window.clearGame = function(){
+  selectedGame=null;
+  document.getElementById('selected-game-display').classList.remove('visible');
+  document.getElementById('search-wrapper').style.display='block';
+  document.getElementById('game-search').value='';
+  document.getElementById('search-results').innerHTML='';
+  document.getElementById('search-results').classList.remove('open');
+};
+
+window.clearAllGames = async function(){
+  if(!confirm('Effacer tout l\'historique ?')) return;
+  const all=await fbGetAll('games');
+  for(const g of all) await fbDel('games',g.id);
+  showToast('🗑 Historique effacé');
+};
+
+window.deleteGame = async function(id){
+  await fbDel('games',id); showToast('🗑 Partie supprimée');
+};
+
+function renderGames(){
+  const p1=games.filter(g=>g.winner==='Louis').length;
+  const p2=games.filter(g=>g.winner==='Elisa').length;
+  document.getElementById('wins-p1').textContent=p1;
+  document.getElementById('wins-p2').textContent=p2;
+  document.getElementById('wins-p1').className='player-wins'+(p1>p2?' leading':'');
+  document.getElementById('wins-p2').className='player-wins'+(p2>p1?' leading':'');
+  document.getElementById('stat-total').textContent=games.length;
+  const crown=document.getElementById('crown');
+  crown.textContent=p1>p2?'👑':p2>p1?'👑':'🤝';
+  // fav game
+  const counts={};
+  games.forEach(g=>{ counts[g.name]=(counts[g.name]||0)+1; });
+  const fav=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('stat-fav').textContent=fav?fav[0].substring(0,10):'—';
+  // streak
+  let streak=0;
+  if(games.length){
+    const last=games[0].winner;
+    for(const g of games){ if(g.winner===last&&g.winner!=='Égalité') streak++; else break; }
+  }
+  document.getElementById('stat-streak').textContent=streak;
+  document.getElementById('badge-games').textContent=games.length;
+  // history
+  const hist=document.getElementById('history-list');
+  if(!games.length){ hist.innerHTML='<div class="empty-state"><div class="big-emoji">🎲</div><p>Aucune partie.</p></div>'; }
+  else hist.innerHTML=games.map(g=>`<div class="game-entry" style="--entry-color:${g.winner==='Louis'?'#2563eb':g.winner==='Elisa'?'#db2777':'#888'}">
+    <div class="${g.thumb?'entry-thumb-ph':'entry-thumb-ph'}">${g.thumb?`<img src="${g.thumb}" class="entry-thumb">`:'🎲'}</div>
+    <div class="entry-info"><div class="entry-game">${g.name}</div><div class="entry-meta">${g.date||''} ${g.scoreP1||g.scoreP2?`· ${g.scoreP1||'?'} vs ${g.scoreP2||'?'}`:''} ${g.notes?`· ${g.notes}`:''}</div></div>
+    <div class="entry-winner"><small>Gagnant</small>${g.winner}</div>
+    <button class="delete-btn" onclick="deleteGame('${g.id}')">🗑</button>
+  </div>`).join('');
+  // recents
+  const seen=new Set(); const recents=[];
+  for(const g of games){ if(!seen.has(g.name)){ seen.add(g.name); recents.push(g); if(recents.length===5) break; } }
+  const rc=document.getElementById('recent-chips');
+  if(recents.length){ document.getElementById('recents-section').style.display='block';
+    rc.innerHTML=recents.map(g=>`<div class="recent-chip" onclick="selectRecentGame('${g.name}','${g.bggId||''}','${g.thumb||''}')">
+      ${g.thumb?`<img src="${g.thumb}" style="width:18px;height:18px;border-radius:3px;object-fit:cover">`:'🎲'} ${g.name}
+    </div>`).join('');
+  }
+}
+
+window.selectRecentGame = function(name, bggId, thumb){
+  selectedGame={name,id:bggId,thumb:thumb||null};
+  document.getElementById('sel-name').textContent=name;
+  document.getElementById('sel-meta').textContent='Récemment joué';
+  const tw=document.getElementById('sel-thumb-wrap');
+  tw.innerHTML=thumb?`<img src="${thumb}" class="sel-thumb">`:'<div class="sel-thumb-ph">🎲</div>';
+  document.getElementById('selected-game-display').classList.add('visible');
+  document.getElementById('search-wrapper').style.display='none';
+};
+
+function renderStats(){
+  const p1=games.filter(g=>g.winner==='Louis').length;
+  const p2=games.filter(g=>g.winner==='Elisa').length;
+  const draws=games.filter(g=>g.winner==='Égalité').length;
+  const tot=p1+p2||1;
+  document.getElementById('h2h-wins-louis').textContent=p1;
+  document.getElementById('h2h-wins-elisa').textContent=p2;
+  document.getElementById('h2h-draws').textContent=`${draws} égalité${draws>1?'s':''}`;
+  document.getElementById('h2h-pct-louis').textContent=`${Math.round(p1/tot*100)}%`;
+  document.getElementById('h2h-pct-elisa').textContent=`${Math.round(p2/tot*100)}%`;
+  document.getElementById('h2h-bar-l').style.width=(p1/tot*100)+'%';
+  document.getElementById('h2h-bar-e').style.width=(p2/tot*100)+'%';
+  // monthly chart
+  const months={};
+  games.forEach(g=>{
+    const d=g.date?new Date(g.date):null; if(!d||isNaN(d)) return;
+    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    months[k]=(months[k]||0)+1;
+  });
+  const labels=Object.keys(months).sort().slice(-12);
+  const data=labels.map(k=>months[k]);
+  const ctx=document.getElementById('chart-monthly')?.getContext('2d');
+  if(ctx){
+    if(monthlyChart) monthlyChart.destroy();
+    monthlyChart=new Chart(ctx,{type:'bar',data:{labels:labels.map(l=>{const[y,m]=l.split('-');return ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'][+m-1]+' '+y.slice(2);}),datasets:[{data,backgroundColor:'rgba(176,90,53,.55)',borderColor:'var(--accent)',borderWidth:1.5,borderRadius:5}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+  }
+  // by game
+  const byGame={};
+  games.forEach(g=>{
+    if(!byGame[g.name]) byGame[g.name]={name:g.name,thumb:g.thumb,louis:0,elisa:0,total:0};
+    if(g.winner==='Louis') byGame[g.name].louis++;
+    else if(g.winner==='Elisa') byGame[g.name].elisa++;
+    byGame[g.name].total++;
+  });
+  const sorted=Object.values(byGame).sort((a,b)=>b.total-a.total).slice(0,8);
+  const sbg=document.getElementById('stats-by-game');
+  if(!sorted.length){ sbg.innerHTML='<div class="stats-empty">Pas encore de données.</div>'; }
+  else sbg.innerHTML=sorted.map(g=>{
+    const tot=g.louis+g.elisa||1;
+    return `<div class="game-stat-row">
+      <div class="gs-thumb">${g.thumb?`<img src="${g.thumb}">`:'🎲'}</div>
+      <div class="gs-info"><div class="gs-name">${g.name}</div><div class="gs-count">${g.total} partie${g.total>1?'s':''}</div></div>
+      <div class="gs-bar-wrap">
+        <div class="gs-bar"><div class="gs-bar-l" style="width:${g.louis/tot*100}%"></div><div class="gs-bar-e" style="width:${g.elisa/tot*100}%"></div></div>
+        <div class="gs-bar-legend"><span>L:${g.louis}</span><span>E:${g.elisa}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+  // records
+  const mostLouis=Object.values(byGame).sort((a,b)=>b.louis-a.louis)[0];
+  const mostElisa=Object.values(byGame).sort((a,b)=>b.elisa-a.elisa)[0];
+  const datesPlayed=games.filter(g=>g.date).map(g=>g.date).sort();
+  document.getElementById('stats-records').innerHTML=`
+    <div class="record-card"><div class="record-icon">🏆</div><div class="record-val">${mostLouis?.name?.substring(0,14)||'—'}</div><div class="record-label">Jeu favori Louis</div></div>
+    <div class="record-card"><div class="record-icon">🏆</div><div class="record-val">${mostElisa?.name?.substring(0,14)||'—'}</div><div class="record-label">Jeu favori Elisa</div></div>
+    <div class="record-card"><div class="record-icon">📅</div><div class="record-val">${datesPlayed[0]||'—'}</div><div class="record-label">Première partie</div></div>
+    <div class="record-card"><div class="record-icon">🎯</div><div class="record-val">${Object.keys(byGame).length}</div><div class="record-label">Jeux différents</div></div>`;
+}
+
+// BGG Search
+document.getElementById('game-search').addEventListener('input', function(){
+  clearTimeout(searchTimer);
+  const q=this.value.trim();
+  if(!q){ document.getElementById('search-results').classList.remove('open'); return; }
+  searchTimer=setTimeout(()=>searchBGG(q), 420);
+});
+document.addEventListener('click', function(e){
+  if(!e.target.closest('#search-wrapper')) document.getElementById('search-results').classList.remove('open');
+});
+
+async function searchBGG(q){
+  const sr=document.getElementById('search-results');
+  sr.innerHTML='<div class="search-status"><span class="spinner"></span></div>';
+  sr.classList.add('open');
+  try{
+    const resp=await fetch(`https://boardgamegeek.com/xmlapi2/search?query=${encodeURIComponent(q)}&type=boardgame&exact=0`);
+    const text=await resp.text();
+    const xml=new DOMParser().parseFromString(text,'text/xml');
+    const items=[...xml.querySelectorAll('item')].slice(0,6);
+    if(!items.length){ sr.innerHTML='<div class="search-status">Aucun résultat</div>'; return; }
+    const results=items.map(i=>({
+      id:i.getAttribute('id'),
+      name:i.querySelector('name')?.getAttribute('value')||'?',
+      year:i.querySelector('yearpublished')?.getAttribute('value')||''
+    }));
+    sr.innerHTML=results.map(r=>`<div class="result-item" onclick="selectBGGGame('${r.id}','${r.name.replace(/'/g,"\\'")}','${r.year}')">
+      <div class="result-thumb-ph">🎲</div>
+      <div><div class="result-name">${r.name}</div>${r.year?`<div class="result-year">${r.year}</div>`:''}</div>
+    </div>`).join('');
+    // Try to load thumbnails
+    loadBGGThumbs(results);
+  } catch(e){ sr.innerHTML='<div class="search-status">Recherche BGG indisponible</div>'; }
+}
+
+async function loadBGGThumbs(results){
+  try{
+    const ids=results.map(r=>r.id).join(',');
+    const resp=await fetch(`https://boardgamegeek.com/xmlapi2/thing?id=${ids}`);
+    const text=await resp.text();
+    const xml=new DOMParser().parseFromString(text,'text/xml');
+    xml.querySelectorAll('item').forEach(item=>{
+      const id=item.getAttribute('id');
+      const thumb=item.querySelector('thumbnail')?.textContent;
+      if(thumb){
+        const el=document.querySelector(`.result-item[onclick*="${id}"]`);
+        if(el){ const ph=el.querySelector('.result-thumb-ph'); if(ph){ const img=document.createElement('img'); img.className='result-thumb'; img.src=thumb; img.onerror=()=>{}; ph.replaceWith(img); } }
+      }
+    });
+  } catch(e){}
+}
+
+window.selectBGGGame = async function(id, name, year){
+  document.getElementById('search-results').classList.remove('open');
+  document.getElementById('game-search').value='';
+  let thumb=null;
+  try{
+    const resp=await fetch(`https://boardgamegeek.com/xmlapi2/thing?id=${id}`);
+    const text=await resp.text();
+    const xml=new DOMParser().parseFromString(text,'text/xml');
+    thumb=xml.querySelector('thumbnail')?.textContent||null;
+  } catch(e){}
+  selectedGame={id,name,year,thumb};
+  document.getElementById('sel-name').textContent=name;
+  document.getElementById('sel-meta').textContent=year?`BoardGameGeek · ${year}`:'BoardGameGeek';
+  const tw=document.getElementById('sel-thumb-wrap');
+  tw.innerHTML=thumb?`<img src="${thumb}" class="sel-thumb">`:'<div class="sel-thumb-ph">🎲</div>';
+  document.getElementById('selected-game-display').classList.add('visible');
+  document.getElementById('search-wrapper').style.display='none';
+};
+
+// Bets
+window.addBet = async function(){
+  const desc=document.getElementById('bet-desc').value.trim(); if(!desc){ showToast('⚠️ Décrivez le pari !'); return; }
+  const cats={'🎮 Jeux':'🎮','🎬 Films':'🎬','🏃 Sport':'🏃','🍕 Nourriture':'🍕','📚 Culture':'📚','💼 Quotidien':'💼','❓ Autre':'❓'};
+  const cat=document.getElementById('bet-category').value;
+  await fbAdd('bets',{
+    desc, stake:document.getElementById('bet-stake').value,
+    proposer:document.getElementById('bet-proposer').value,
+    deadline:document.getElementById('bet-deadline').value,
+    category:cat, emoji:cats[cat]||'🎰', status:'open', winner:null
+  });
+  showToast('🤝 Pari créé !');
+  ['bet-desc','bet-stake','bet-deadline'].forEach(id=>document.getElementById(id).value='');
+};
+
+window.filterBets = function(f, btn){
+  betFilter=f;
+  document.querySelectorAll('.bet-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); renderBets();
+};
+
+window.resolveBet = async function(id, winner){
+  await fbSet('bets',id,{status:winner,winner});
+  showToast(winner==='Louis'?'🏆 Louis gagne !':winner==='Elisa'?'🏆 Elisa gagne !':'Pari annulé');
+};
+window.deleteBet = async function(id){ await fbDel('bets',id); };
+
+function renderBets(){
+  let list=bets;
+  if(betFilter==='open') list=bets.filter(b=>b.status==='open');
+  else if(betFilter==='louis') list=bets.filter(b=>b.status==='Louis');
+  else if(betFilter==='elisa') list=bets.filter(b=>b.status==='Elisa');
+  const open=bets.filter(b=>b.status==='open').length;
+  const louis=bets.filter(b=>b.status==='Louis').length;
+  const elisa=bets.filter(b=>b.status==='Elisa').length;
+  document.getElementById('bet-stat-open').textContent=open;
+  document.getElementById('bet-stat-louis').textContent=louis;
+  document.getElementById('bet-stat-elisa').textContent=elisa;
+  const el=document.getElementById('bets-list');
+  if(!list.length){ el.innerHTML='<div class="empty-state"><div class="big-emoji">🎰</div><p>Aucun pari.</p></div>'; return; }
+  el.innerHTML=list.map(b=>{
+    const col=b.status==='open'?'var(--gold)':b.status==='Louis'?'#2563eb':b.status==='Elisa'?'#db2777':'#888';
+    const badge=b.status==='open'?'<span class="bet-status-badge badge-open">En cours</span>':b.status==='Louis'?'<span class="bet-status-badge badge-louis">Louis ✓</span>':b.status==='Elisa'?'<span class="bet-status-badge badge-elisa">Elisa ✓</span>':'<span class="bet-status-badge badge-cancelled">Annulé</span>';
+    const actions=b.status==='open'?`<div class="bet-actions"><button class="bet-btn bet-btn-louis" onclick="resolveBet('${b.id}','Louis')">Louis gagne</button><button class="bet-btn bet-btn-elisa" onclick="resolveBet('${b.id}','Elisa')">Elisa gagne</button><button class="bet-btn bet-btn-cancel" onclick="resolveBet('${b.id}','cancelled')">Annuler</button></div>`:'';
+    return `<div class="bet-entry" style="--bet-color:${col}">
+      <div class="bet-top">
+        <div class="bet-emoji-wrap">${b.emoji||'🎰'}</div>
+        <div class="bet-body">
+          <div class="bet-desc">${b.desc}</div>
+          <div class="bet-meta">${badge} ${b.category||''} ${b.proposer?`· proposé par ${b.proposer}`:''} ${b.deadline?`· échéance ${b.deadline}`:''}</div>
+          ${b.stake?`<div style="margin-top:.25rem"><span class="bet-stake">🏆 ${b.stake}</span></div>`:''}
+        </div>
+        <button class="bet-btn-delete" onclick="deleteBet('${b.id}')">🗑</button>
+      </div>
+      ${actions}
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// INIT APP
+// ═══════════════════════════════════════
+function initApp(){
+  updateAnniversary();
+  setInterval(updateAnniversary, 60000);
+  initParticles();
+  initStarRatings();
+  // Set today's date for game form
+  document.getElementById('game-date').value=new Date().toISOString().split('T')[0];
+  // Firestore listeners
+  unsubscribers.push(
+    fbListen('recipes', list=>{ recipes=list; renderRecipes(); if(currentRecipeId){ const r=list.find(x=>x.id===currentRecipeId); if(r){ renderComments(r); renderModalIngredients(r); } } }),
+    fbListen('shopping', list=>renderShoppingList(list)),
+    fbListen('travels', list=>{ travels=list; renderTravelList(); renderTravelMap(); if(currentTravelId){ const t=list.find(x=>x.id===currentTravelId); if(t){ renderExpenses(t); renderJournal(t); } } }),
+    fbListen('bucket', list=>renderBucketList(list)),
+    fbListen('films', list=>{ films=list; renderFilms(); }),
+    fbListen('suggestions', list=>renderSuggestions(list)),
+    fbListen('games', list=>{ games=list; renderGames(); }),
+    fbListen('bets', list=>{ bets=list; renderBets(); })
+  );
+  // Update travel modal when data changes
+  
+}
+</script>
+</body>
+</html>
