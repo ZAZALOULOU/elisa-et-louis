@@ -1573,11 +1573,11 @@ window.generateFilmRecos = async function(){
   const filmList=seen.map(f=>`${f.title}${f.scoreLouis||f.scoreElisa?' (L:'+f.scoreLouis+' E:'+f.scoreElisa+')':''}`).slice(0,15).join(', ');
   try{
     const classics=[
-      {title:'Everything Everywhere All at Once',year:'2022',genre:'Sci-Fi / Comédie',why:'Un film unique en son genre, mélange parfait d'action, d'émotion et d'humour. Vous ne regretterez pas !',emoji:'🥢'},
-      {title:'Parasite',year:'2019',genre:'Thriller',why:'Un chef-d'œuvre de Bong Joon-ho. Tension, humour et critique sociale — impossible de décrocher.',emoji:'🏠'},
-      {title:'La La Land',year:'2016',genre:'Romance / Musical',why:'Parfait pour regarder en couple. Magnifique, émouvant et musicalement inoubliable.',emoji:'🎭'},
-      {title:'Interstellar',year:'2014',genre:'Sci-Fi',why:'Un voyage épique dans l'espace qui touche profondément. Visuellement époustouflant.',emoji:'🚀'},
-      {title:'Coco',year:'2017',genre:'Animation',why:'Un Pixar qui fait pleurer et sourire à la fois. Parfait pour une soirée cocooning.',emoji:'💀'}
+      {title:"Everything Everywhere All at Once",year:"2022",genre:"Sci-Fi / Comédie",why:"Un film unique en son genre, mélange parfait d'action et d'émotion. Vous ne regretterez pas !",emoji:"🥢"},
+      {title:"Parasite",year:"2019",genre:"Thriller",why:"Un chef-d'oeuvre de Bong Joon-ho. Tension, humour et critique sociale — impossible de décrocher.",emoji:"🏠"},
+      {title:"La La Land",year:"2016",genre:"Romance / Musical",why:"Parfait pour regarder en couple. Magnifique, émouvant et musicalement inoubliable.",emoji:"🎭"},
+      {title:"Interstellar",year:"2014",genre:"Sci-Fi",why:"Un voyage épique dans l'espace qui touche profondément. Visuellement époustouflant.",emoji:"🚀"},
+      {title:"Coco",year:"2017",genre:"Animation",why:"Un Pixar qui fait pleurer et sourire à la fois. Parfait pour une soirée cocooning.",emoji:"💀"}
     ];
     document.getElementById('reco-list').innerHTML=classics.map((r,i)=>`
       <div class="reco-card" style="animation-delay:${i*.08}s">
