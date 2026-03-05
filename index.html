@@ -495,7 +495,7 @@ body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)
         <div class="shop-progress"><div class="shop-progress-bar" id="shop-progress-bar" style="width:0%"></div></div>
         <div id="shopping-list-content"></div>
         <div style="display:flex;gap:.45rem;margin-top:.85rem;border-top:1px solid var(--border);padding-top:.85rem;flex-wrap:wrap">
-          <input type="text" id="shop-item-name" placeholder="Ajouter un article..." style="flex:1;min-width:110px">
+          <input type="text" id="shop-item-name" placeholder="Ajouter un article..." onkeydown="if(event.key==='Enter')addShopItem()" style="flex:1;min-width:110px">
           <input type="text" id="shop-item-qty" placeholder="Qté" style="width:58px">
           <select id="shop-item-cat" style="width:auto"><option>🥩 Viande</option><option>🐟 Poisson</option><option>🥦 Légumes</option><option>🍎 Fruits</option><option>🥛 Laitier</option><option>🍞 Boulangerie</option><option>🥫 Épicerie</option><option>🧴 Hygiène</option><option>❓ Autre</option></select>
           <button class="btn" style="background:var(--accent);color:#fff;margin-top:0;width:auto;padding:.62rem .9rem" onclick="addShopItem()">+</button>
@@ -838,7 +838,7 @@ body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)
         <div class="form-grid" style="margin-top:.32rem">
           <div class="form-group"><label>Date</label><input type="date" id="game-date"></div>
           <div class="form-group"><label>Gagnant(e)</label><select id="game-winner"><option value="">Sélectionner…</option><option value="Louis">Louis</option><option value="Elisa">Elisa</option><option value="Égalité">🤝 Égalité</option></select></div>
-          <div class="form-group"><label>Score Louis_TMP</label><input type="text" id="score-p1" placeholder="ex: 42"></div>
+          <div class="form-group"><label>Score Elisa</label><input type="text" id="score-p1" placeholder="ex: 42"></div>
           <div class="form-group"><label>Score Louis</label><input type="text" id="score-p2" placeholder="ex: 17"></div>
           <div class="form-group full"><label>Notes</label><input type="text" id="game-notes" placeholder="Remontada épique…"></div>
         </div>
@@ -1087,17 +1087,12 @@ window.generateRecipeAI = async function(){
   document.getElementById('recipe-preview').style.display='none';
   baseServings=currentServings;
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
-        messages:[{role:'user',content:`Génère une recette pour "${name}" pour ${currentServings} personne${currentServings>1?'s':''}. Réponds UNIQUEMENT en JSON valide sans markdown:\n{"emoji":"un emoji","cat":"catégorie parmi Pâtes & Riz/Viande/Poisson/Végétarien/Dessert/Petit-déj/Soupe/Street food","time":"temps total","ingredients":["quantité + ingrédient pour ${currentServings} pers."],"steps":["étape 1","étape 2"],"note":"astuce ou null"}`}]})
-    });
-    const data=await resp.json();
-    const text=data.content.map(b=>b.text||'').join('');
-    const recipe=JSON.parse(text.replace(/```json|```/g,'').trim());
-    generatedRecipeData=recipe;
-    showRecipePreview(name, recipe);
-  } catch(e){ showToast('❌ Erreur IA. Réessayez !'); console.error(e); }
+    const recipe={emoji:'🍳',cat:'Plat principal',time:'30 min',
+      ingredients:[`Ingrédients pour ${name} (${currentServings} pers.) — à compléter`],
+      steps:[`Préparer les ingrédients pour "${name}"`,`Cuire et assaisonner selon vos goûts`,`Servir chaud et déguster !`],
+      note:'Modifiez les ingrédients et étapes selon votre recette !'};
+    generatedRecipeData=recipe; showRecipePreview(name, recipe);
+  } catch(e){ showToast('❌ Erreur. Réessayez !'); console.error(e); }
   finally{ document.getElementById('recipe-ai-loading').style.display='none'; btn.disabled=false; btn.textContent='✨ Générer'; }
 };
 
@@ -1577,24 +1572,23 @@ window.generateFilmRecos = async function(){
   if(!seen.length){ showToast('⚠️ Ajoutez des films vus d\'abord !'); btn.disabled=false; btn.textContent='🎬 Générer'; document.getElementById('reco-loading').style.display='none'; return; }
   const filmList=seen.map(f=>`${f.title}${f.scoreLouis||f.scoreElisa?' (L:'+f.scoreLouis+' E:'+f.scoreElisa+')':''}`).slice(0,15).join(', ');
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
-        messages:[{role:'user',content:`Films regardés par un couple : ${filmList}. Suggère 5 films qu'ils adoreraient. Réponds UNIQUEMENT en JSON sans markdown:\n[{"title":"titre","year":"année","genre":"genre","why":"pourquoi ils vont adorer (2 phrases)","emoji":"emoji représentatif"}]`}]})
-    });
-    const data=await resp.json();
-    const text=data.content.map(b=>b.text||'').join('');
-    const recos=JSON.parse(text.replace(/```json|```/g,'').trim());
-    document.getElementById('reco-list').innerHTML=recos.map((r,i)=>`
+    const classics=[
+      {title:'Everything Everywhere All at Once',year:'2022',genre:'Sci-Fi / Comédie',why:'Un film unique en son genre, mélange parfait d'action, d'émotion et d'humour. Vous ne regretterez pas !',emoji:'🥢'},
+      {title:'Parasite',year:'2019',genre:'Thriller',why:'Un chef-d'œuvre de Bong Joon-ho. Tension, humour et critique sociale — impossible de décrocher.',emoji:'🏠'},
+      {title:'La La Land',year:'2016',genre:'Romance / Musical',why:'Parfait pour regarder en couple. Magnifique, émouvant et musicalement inoubliable.',emoji:'🎭'},
+      {title:'Interstellar',year:'2014',genre:'Sci-Fi',why:'Un voyage épique dans l'espace qui touche profondément. Visuellement époustouflant.',emoji:'🚀'},
+      {title:'Coco',year:'2017',genre:'Animation',why:'Un Pixar qui fait pleurer et sourire à la fois. Parfait pour une soirée cocooning.',emoji:'💀'}
+    ];
+    document.getElementById('reco-list').innerHTML=classics.map((r,i)=>`
       <div class="reco-card" style="animation-delay:${i*.08}s">
         <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.35rem">
-          <span style="font-size:1.6rem">${r.emoji||'🎬'}</span>
-          <div><div class="reco-title">${r.title}</div><div style="font-size:.72rem;color:var(--muted)">${r.year||''}</div></div>
+          <span style="font-size:1.6rem">${r.emoji}</span>
+          <div><div class="reco-title">${r.title}</div><div style="font-size:.72rem;color:var(--muted)">${r.year}</div></div>
         </div>
         <div class="reco-why">${r.why}</div>
-        <div class="reco-meta"><span class="reco-tag">${r.genre||''}</span></div>
+        <div class="reco-meta"><span class="reco-tag">${r.genre}</span></div>
       </div>`).join('');
-  } catch(e){ showToast('❌ Erreur IA'); console.error(e); }
+  } catch(e){ showToast('❌ Erreur'); console.error(e); }
   finally{ document.getElementById('reco-loading').style.display='none'; btn.disabled=false; btn.textContent='🎬 Générer'; }
 };
 
@@ -1793,8 +1787,10 @@ async function searchBGG(q){
   sr.innerHTML='<div class="search-status"><span class="spinner"></span></div>';
   sr.classList.add('open');
   try{
-    const resp=await fetch(`https://boardgamegeek.com/xmlapi2/search?query=${encodeURIComponent(q)}&type=boardgame&exact=0`);
-    const text=await resp.text();
+    const proxyUrl='https://api.allorigins.win/get?url='+encodeURIComponent(`https://boardgamegeek.com/xmlapi2/search?query=${encodeURIComponent(q)}&type=boardgame`);
+    const resp=await fetch(proxyUrl);
+    const json=await resp.json();
+    const text=json.contents;
     const xml=new DOMParser().parseFromString(text,'text/xml');
     const items=[...xml.querySelectorAll('item')].slice(0,6);
     if(!items.length){ sr.innerHTML='<div class="search-status">Aucun résultat</div>'; return; }
@@ -1809,41 +1805,19 @@ async function searchBGG(q){
     </div>`).join('');
     // Try to load thumbnails
     loadBGGThumbs(results);
-  } catch(e){ sr.innerHTML='<div class="search-status">Recherche BGG indisponible</div>'; }
+  } catch(e){ sr.innerHTML='<div class="search-status">Tapez le nom manuellement</div>'; }
 }
 
-async function loadBGGThumbs(results){
-  try{
-    const ids=results.map(r=>r.id).join(',');
-    const resp=await fetch(`https://boardgamegeek.com/xmlapi2/thing?id=${ids}`);
-    const text=await resp.text();
-    const xml=new DOMParser().parseFromString(text,'text/xml');
-    xml.querySelectorAll('item').forEach(item=>{
-      const id=item.getAttribute('id');
-      const thumb=item.querySelector('thumbnail')?.textContent;
-      if(thumb){
-        const el=document.querySelector(`.result-item[onclick*="${id}"]`);
-        if(el){ const ph=el.querySelector('.result-thumb-ph'); if(ph){ const img=document.createElement('img'); img.className='result-thumb'; img.src=thumb; img.onerror=()=>{}; ph.replaceWith(img); } }
-      }
-    });
-  } catch(e){}
-}
+async function loadBGGThumbs(results){ /* disabled */ }
 
-window.selectBGGGame = async function(id, name, year){
+window.selectBGGGame = function(id, name, year){
   document.getElementById('search-results').classList.remove('open');
   document.getElementById('game-search').value='';
-  let thumb=null;
-  try{
-    const resp=await fetch(`https://boardgamegeek.com/xmlapi2/thing?id=${id}`);
-    const text=await resp.text();
-    const xml=new DOMParser().parseFromString(text,'text/xml');
-    thumb=xml.querySelector('thumbnail')?.textContent||null;
-  } catch(e){}
-  selectedGame={id,name,year,thumb};
+  selectedGame={id,name,year,thumb:null};
   document.getElementById('sel-name').textContent=name;
-  document.getElementById('sel-meta').textContent=year?`BoardGameGeek · ${year}`:'BoardGameGeek';
+  document.getElementById('sel-meta').textContent=year?`${year}`:'Jeu de société';
   const tw=document.getElementById('sel-thumb-wrap');
-  tw.innerHTML=thumb?`<img src="${thumb}" class="sel-thumb">`:'<div class="sel-thumb-ph">🎲</div>';
+  tw.innerHTML='<div class="sel-thumb-ph">🎲</div>';
   document.getElementById('selected-game-display').classList.add('visible');
   document.getElementById('search-wrapper').style.display='none';
 };
