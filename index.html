@@ -1519,7 +1519,9 @@ window.searchFilmAI = async function searchFilmAI(q){
       const data=await resp.json();
       const text=data.choices?.[0]?.message?.content||'';
       const films=JSON.parse(text.replace(/```json|```/g,'').trim());
-      sr.innerHTML=films.map(f=>`<div onclick="selectFilm(${JSON.stringify(f)})" style="padding:.55rem 1rem;cursor:pointer;border-bottom:1px solid var(--border);display:flex;gap:.6rem;align-items:center" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">
+      // Store films in a temp global to avoid JSON in onclick
+      window._filmSuggestions = films;
+      sr.innerHTML=films.map((f,i)=>`<div onclick="window.selectFilm(window._filmSuggestions[${i}])" style="padding:.55rem 1rem;cursor:pointer;border-bottom:1px solid var(--border);display:flex;gap:.6rem;align-items:center" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">
         <span style="font-size:1.2rem">🎬</span>
         <div><div style="font-weight:600;font-size:.85rem">${f.title}</div><div style="font-size:.72rem;color:var(--muted)">${f.year||''}${f.director?' · '+f.director:''}${f.genre?' · '+f.genre:''}</div></div>
       </div>`).join('');
