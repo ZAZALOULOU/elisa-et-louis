@@ -401,6 +401,63 @@ body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)
 .game-theme-name { font-weight:700; font-size:.9rem; }
 .game-theme-sub { font-size:.72rem; opacity:.7; margin-top:.1rem; }
 
+
+/* ===== PAGE IDENTITIES ===== */
+#page-recipes { background: linear-gradient(160deg, #fdf6ee 0%, #f5ece0 50%, #fdf6ee 100%); min-height:100dvh; }
+#page-recipes .eyebrow { color: #b05a35; }
+#page-recipes h1 em { color: #b05a35; }
+#page-recipes .card { background:rgba(255,253,249,.94); border:1px solid rgba(176,90,53,.1); }
+#page-recipes .page-header::before, #page-travel .page-header::before, #page-films .page-header::before {
+  content:''; display:block; width:80px; height:2px; margin:0 auto .6rem;
+  border-radius:2px;
+}
+#page-recipes .page-header::before { background:linear-gradient(90deg,transparent,#b05a35,transparent); }
+
+#page-travel { background: linear-gradient(160deg, #eef6fd 0%, #e4f0f8 40%, #f0f7ee 100%); min-height:100dvh; }
+#page-travel .eyebrow { color: #2e6d7e; }
+#page-travel h1 em { color: #2e6d7e; }
+#page-travel .card { background:rgba(248,253,255,.94); border:1px solid rgba(46,109,126,.1); }
+#page-travel .page-header::before { background:linear-gradient(90deg,transparent,#2e6d7e,transparent); }
+
+#page-films { background: linear-gradient(160deg, #f4f0f8 0%, #ede8f4 40%, #f4f0f8 100%); min-height:100dvh; }
+#page-films .eyebrow { color: #6b3fa0; }
+#page-films h1 em { color: #6b3fa0; }
+#page-films .card { background:rgba(252,250,255,.94); border:1px solid rgba(107,63,160,.1); }
+#page-films .tab-btn.active { background: #6b3fa0 !important; }
+#page-films .page-header::before { background:linear-gradient(90deg,transparent,#6b3fa0,transparent); }
+
+#page-games { min-height:100dvh; }
+
+.page-deco { text-align:center; font-size:1.1rem; opacity:.3; letter-spacing:.3em; margin-bottom:.3rem; }
+
+/* GAME THEME BANNER */
+.game-theme-banner {
+  display:flex; align-items:center; gap:.85rem;
+  background:rgba(255,255,255,.18);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.3) !important;
+  border-radius:18px !important; padding:.9rem 1.1rem !important;
+  box-shadow:0 4px 24px rgba(0,0,0,.07);
+  margin-bottom:1.2rem;
+}
+.game-theme-icon {
+  width:46px; height:46px; flex-shrink:0;
+  background:rgba(255,255,255,.25); border-radius:13px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem !important; box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+.game-theme-name { font-weight:700; font-size:.9rem; letter-spacing:-.01em; }
+.game-theme-sub { font-size:.7rem; opacity:.6; margin-top:.1rem; font-style:italic; }
+.game-theme-count {
+  margin-left:auto; flex-shrink:0;
+  font-size:.67rem; font-weight:700; letter-spacing:.04em;
+  background:rgba(255,255,255,.25); border:1px solid rgba(255,255,255,.3);
+  padding:.22rem .65rem; border-radius:20px;
+}
+.game-theme-badge {
+  font-size:.65rem; opacity:.55; margin-top:.15rem; font-weight:500;
+}
+
 </style>
 </head>
 <body>
@@ -486,7 +543,7 @@ body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)
 <!-- RECIPES -->
 <div class="page" id="page-recipes">
   <div class="container">
-    <div class="page-header"><span class="eyebrow">Elisa & Louis</span><h1>Nos <em>Recettes</em></h1><p>Cuisiner ensemble</p></div>
+    <div class="page-header"><div class="page-deco">🫒 · 🧄 · 🫙</div><span class="eyebrow">Elisa & Louis</span><h1>Nos <em>Recettes</em></h1><p>Cuisiner ensemble</p></div>
     <div class="tabs-bar">
       <button class="tab-btn active" onclick="switchTab('recipes','list',this)">📋 Toutes</button>
       <button class="tab-btn" onclick="switchTab('recipes','shopping',this)">🛒 Courses</button>
@@ -620,7 +677,7 @@ body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)
 <!-- TRAVEL -->
 <div class="page" id="page-travel">
   <div class="container">
-    <div class="page-header"><span class="eyebrow">Elisa & Louis</span><h1>Nos <em>Voyages</em></h1><p>Le monde nous appartient</p></div>
+    <div class="page-header"><div class="page-deco">✈️ · 🗺️ · 🌍</div><span class="eyebrow">Elisa & Louis</span><h1>Nos <em>Voyages</em></h1><p>Le monde nous appartient</p></div>
     <div class="tabs-bar">
       <button class="tab-btn active" onclick="switchTab('travel','map',this)">🗺️ Carte</button>
       <button class="tab-btn" onclick="switchTab('travel','list',this)">📋 Liste</button>
@@ -1731,21 +1788,21 @@ window.deleteGame = async function(id){
 
 
 const GAME_THEMES = {
-  "catan":      {bg:"#f0e6c8",bg2:"#e8d9b0",accent:"#8b4513",accent2:"#2d6a2d",em:"🏔️",title:"Les Colons",sub:"Construis, echange, conquiers !",icon:"⚓"},
-  "carcassonne":{bg:"#f5f0e0",bg2:"#ede4c8",accent:"#7a5c2e",accent2:"#4a7c3f",em:"🏰",title:"Les Chevaliers",sub:"Tuiles, meeples, victoire !",icon:"🗺️"},
-  "monopoly":   {bg:"#e8f4e8",bg2:"#d4ecd4",accent:"#1a5e1a",accent2:"#c0392b",em:"🎩",title:"Les Magnats",sub:"L'argent fait le bonheur !",icon:"💰"},
-  "uno":        {bg:"#fff3e0",bg2:"#ffe0b2",accent:"#e53935",accent2:"#1e88e5",em:"🃏",title:"Les As du Uno",sub:"+4 et bonne chance !",icon:"🌈"},
-  "risk":       {bg:"#fce4ec",bg2:"#f8bbd0",accent:"#b71c1c",accent2:"#1a237e",em:"⚔️",title:"Conquete Mondiale",sub:"A l'attaque !",icon:"🌍"},
-  "scrabble":   {bg:"#f3e5f5",bg2:"#e1bee7",accent:"#6a1b9a",accent2:"#2e7d32",em:"📝",title:"Les Linguistes",sub:"Chaque lettre compte !",icon:"🔤"},
-  "chess":      {bg:"#efebe9",bg2:"#d7ccc8",accent:"#3e2723",accent2:"#827717",em:"♟️",title:"Les Strategies",sub:"Echec et mat !",icon:"👑"},
-  "dixit":      {bg:"#e8eaf6",bg2:"#c5cae9",accent:"#283593",accent2:"#ad1457",em:"🌙",title:"Conteurs de Reves",sub:"Laisse ton imagination parler",icon:"✨"},
-  "pandemic":   {bg:"#e0f2f1",bg2:"#b2dfdb",accent:"#00695c",accent2:"#d32f2f",em:"🦠",title:"Les Soigneurs",sub:"Sauver le monde ensemble",icon:"💊"},
-  "ticket":     {bg:"#fff8e1",bg2:"#ffecb3",accent:"#e65100",accent2:"#1565c0",em:"🚂",title:"Les Voyageurs",sub:"En route pour l'aventure !",icon:"🛤️"},
-  "azul":       {bg:"#e3f2fd",bg2:"#bbdefb",accent:"#0d47a1",accent2:"#b71c1c",em:"🔷",title:"Les Artisans",sub:"Cree le plus beau palais",icon:"🎨"},
-  "codenames":  {bg:"#f1f8e9",bg2:"#dcedc8",accent:"#33691e",accent2:"#bf360c",em:"🕵️",title:"Les Espions",sub:"Chaque mot est un indice",icon:"🔍"},
-  "7wonders":   {bg:"#fff3e0",bg2:"#ffe0b2",accent:"#bf360c",accent2:"#1b5e20",em:"🏛️",title:"Batisseurs de Merveilles",sub:"Erige ta civilisation !",icon:"⭐"},
-  "splendor":   {bg:"#fce4ec",bg2:"#f8bbd0",accent:"#880e4f",accent2:"#1a237e",em:"💎",title:"Les Marchands",sub:"Gemmes et prestige !",icon:"💍"},
-  "hanabi":     {bg:"#e8f5e9",bg2:"#c8e6c9",accent:"#2e7d32",accent2:"#f57f17",em:"🎆",title:"Le Feu d'Artifice",sub:"Ensemble vers les etoiles",icon:"🌟"},
+  "catan":{"bg":"linear-gradient(135deg,#fdf3e7,#f5e6cc,#ede0b8)","accent":"#8b4513","em":"🏔️","icon":"⚓","title":"Les Colons de Catane","sub":"Bois, minerai, blé — la conquête","badge":"Stratégie · 3-4j"},
+  "carcassonne":{"bg":"linear-gradient(135deg,#f0ede0,#e5dfc8,#d8d0b0)","accent":"#5c4a1e","em":"🏰","icon":"🗺️","title":"Carcassonne","sub":"Tuiles et meeples, bâtis ton royaume","badge":"Stratégie · 2-5j"},
+  "monopoly":{"bg":"linear-gradient(135deg,#e8f5e9,#c8e6c9,#a5d6a7)","accent":"#1b5e20","em":"🎩","icon":"💰","title":"Monopoly","sub":"L'argent est roi, les rues aussi","badge":"Classique · 2-8j"},
+  "uno":{"bg":"linear-gradient(135deg,#fff8e1,#ffecb3,#ffe082)","accent":"#e65100","em":"🃏","icon":"🌈","title":"UNO","sub":"+4 couleur, bonne chance !","badge":"Ambiance · 2-10j"},
+  "risk":{"bg":"linear-gradient(135deg,#fce4ec,#f8bbd0,#f48fb1)","accent":"#880e4f","em":"⚔️","icon":"🌍","title":"Risk","sub":"Conquête mondiale, chaque armée compte","badge":"Stratégie · 2-6j"},
+  "scrabble":{"bg":"linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8)","accent":"#6a1b9a","em":"📝","icon":"🔤","title":"Scrabble","sub":"Chaque lettre vaut son pesant d'or","badge":"Mots · 2-4j"},
+  "chess":{"bg":"linear-gradient(135deg,#efebe9,#d7ccc8,#bcaaa4)","accent":"#3e2723","em":"♟️","icon":"👑","title":"Échecs","sub":"Un coup d'avance, toujours","badge":"Stratégie · 2j"},
+  "dixit":{"bg":"linear-gradient(135deg,#e8eaf6,#c5cae9,#9fa8da)","accent":"#283593","em":"🌙","icon":"✨","title":"Dixit","sub":"Conte-moi une histoire en images","badge":"Créativité · 3-6j"},
+  "pandemic":{"bg":"linear-gradient(135deg,#e0f2f1,#b2dfdb,#80cbc4)","accent":"#004d40","em":"🦠","icon":"💊","title":"Pandemic","sub":"Sauver l'humanité ensemble","badge":"Coopératif · 2-4j"},
+  "ticket":{"bg":"linear-gradient(135deg,#fff8e1,#ffecb3,#ffd54f)","accent":"#bf360c","em":"🚂","icon":"🛤️","title":"Aventuriers du Rail","sub":"De Paris à New York en wagon","badge":"Stratégie · 2-5j"},
+  "azul":{"bg":"linear-gradient(135deg,#e3f2fd,#bbdefb,#90caf9)","accent":"#0d47a1","em":"🔷","icon":"🎨","title":"Azul","sub":"Crée le plus beau palais de Lisbonne","badge":"Abstrait · 2-4j"},
+  "codenames":{"bg":"linear-gradient(135deg,#f1f8e9,#dcedc8,#c5e1a5)","accent":"#33691e","em":"🕵️","icon":"🔍","title":"Codenames","sub":"Un mot, mille indices","badge":"Déduction · 4-8j"},
+  "7wonders":{"bg":"linear-gradient(135deg,#fff3e0,#ffe0b2,#ffcc80)","accent":"#e65100","em":"🏛️","icon":"⭐","title":"7 Wonders","sub":"Bâtis une civilisation éternelle","badge":"Civilisation · 3-7j"},
+  "splendor":{"bg":"linear-gradient(135deg,#fce4ec,#f8bbd0,#f48fb1)","accent":"#880e4f","em":"💎","icon":"💍","title":"Splendor","sub":"Gemmes, prestige, noblesse","badge":"Stratégie · 2-4j"},
+  "hanabi":{"bg":"linear-gradient(135deg,#e8f5e9,#c8e6c9,#a5d6a7)","accent":"#1b5e20","em":"🎆","icon":"🌟","title":"Hanabi","sub":"Le feu d'artifice parfait ensemble","badge":"Coopératif · 2-5j"}
 };
 
 function getGameTheme(gameName) {
@@ -1757,294 +1814,31 @@ function getGameTheme(gameName) {
   return null;
 }
 
-function applyGameTheme(gameName) {
+function applyGameTheme(gameName, gameCount) {
   const page = document.getElementById('page-games');
   const theme = getGameTheme(gameName);
-  
-  // Remove old banner
   const old = document.getElementById('game-theme-banner');
   if(old) old.remove();
-  
   if(!theme || !gameName) {
-    page.style.removeProperty('--local-bg');
-    page.style.removeProperty('--local-accent');
     page.style.removeProperty('background');
-    document.getElementById('main-title').innerHTML = 'Notre <em>Arène</em>';
+    document.getElementById('main-title').innerHTML = 'Notre <em>Arene</em>';
     return;
   }
-  
-  // Apply background
-  page.style.background = `linear-gradient(135deg, ${theme.bg} 0%, ${theme.bg2} 100%)`;
-  
-  // Update title
-  document.getElementById('main-title').innerHTML = `${theme.em} <em>${theme.title}</em>`;
-  
-  // Insert theme banner
+  page.style.background = theme.bg;
+  document.getElementById('main-title').innerHTML = theme.em + ' <em>Arene</em>';
   const banner = document.createElement('div');
   banner.id = 'game-theme-banner';
   banner.className = 'game-theme-banner';
-  banner.innerHTML = `
-    <div class="game-theme-icon">${theme.icon}</div>
-    <div>
-      <div class="game-theme-name">🏆 Jeu favori : ${gameName}</div>
-      <div class="game-theme-sub">${theme.sub}</div>
-    </div>`;
+  banner.innerHTML =
+    '<div class="game-theme-icon">'+theme.icon+'</div>' +
+    '<div style="flex:1;min-width:0">' +
+      '<div class="game-theme-name">'+theme.title+'</div>' +
+      '<div class="game-theme-sub">'+theme.sub+'</div>' +
+      '<div class="game-theme-badge">'+theme.badge+'</div>' +
+    '</div>' +
+    (gameCount ? '<div class="game-theme-count">'+gameCount+' parties</div>' : '');
   const container = page.querySelector('.container');
-  const header = container.querySelector('.page-header');
-  container.insertBefore(banner, header.nextSibling);
+  container.insertBefore(banner, container.querySelector('.page-header').nextSibling);
 }
 
-function renderGames(){
-  const p1=games.filter(g=>g.winner==='Louis').length;
-  const p2=games.filter(g=>g.winner==='Elisa').length;
-  document.getElementById('wins-p1').textContent=p1;
-  document.getElementById('wins-p2').textContent=p2;
-  document.getElementById('wins-p1').className='player-wins'+(p1>p2?' leading':'');
-  document.getElementById('wins-p2').className='player-wins'+(p2>p1?' leading':'');
-  document.getElementById('stat-total').textContent=games.length;
-  const crown=document.getElementById('crown');
-  crown.textContent=p1>p2?'👑':p2>p1?'👑':'🤝';
-  // fav game
-  const counts={};
-  games.forEach(g=>{ counts[g.name]=(counts[g.name]||0)+1; });
-  const fav=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('stat-fav').textContent=fav?fav[0].substring(0,10):'—';
-  applyGameTheme(fav?fav[0]:null);
-  // streak
-  let streak=0;
-  if(games.length){
-    const last=games[0].winner;
-    for(const g of games){ if(g.winner===last&&g.winner!=='Égalité') streak++; else break; }
-  }
-  document.getElementById('stat-streak').textContent=streak;
-  document.getElementById('badge-games').textContent=games.length;
-  // history
-  const hist=document.getElementById('history-list');
-  if(!games.length){ hist.innerHTML='<div class="empty-state"><div class="big-emoji">🎲</div><p>Aucune partie.</p></div>'; }
-  else hist.innerHTML=games.map(g=>`<div class="game-entry" style="--entry-color:${g.winner==='Louis'?'#2563eb':g.winner==='Elisa'?'#db2777':'#888'}">
-    <div class="${g.thumb?'entry-thumb-ph':'entry-thumb-ph'}">${g.thumb?`<img src="${g.thumb}" class="entry-thumb">`:'🎲'}</div>
-    <div class="entry-info"><div class="entry-game">${g.name}</div><div class="entry-meta">${g.date||''} ${g.scoreP1||g.scoreP2?`· ${g.scoreP1||'?'} vs ${g.scoreP2||'?'}`:''} ${g.notes?`· ${g.notes}`:''}</div></div>
-    <div class="entry-winner"><small>Gagnant</small>${g.winner}</div>
-    <button class="delete-btn" onclick="deleteGame('${g.id}')">🗑</button>
-  </div>`).join('');
-  // recents
-  const seen=new Set(); const recents=[];
-  for(const g of games){ if(!seen.has(g.name)){ seen.add(g.name); recents.push(g); if(recents.length===5) break; } }
-  const rc=document.getElementById('recent-chips');
-  if(recents.length){ document.getElementById('recents-section').style.display='block';
-    rc.innerHTML=recents.map(g=>`<div class="recent-chip" onclick="selectRecentGame('${g.name}','${g.bggId||''}','${g.thumb||''}')">
-      ${g.thumb?`<img src="${g.thumb}" style="width:18px;height:18px;border-radius:3px;object-fit:cover">`:'🎲'} ${g.name}
-    </div>`).join('');
-  }
-}
 
-window.selectRecentGame = function(name, bggId, thumb){
-  selectedGame={name,id:bggId,thumb:thumb||null};
-  document.getElementById('sel-name').textContent=name;
-  document.getElementById('sel-meta').textContent='Récemment joué';
-  const tw=document.getElementById('sel-thumb-wrap');
-  tw.innerHTML=thumb?`<img src="${thumb}" class="sel-thumb">`:'<div class="sel-thumb-ph">🎲</div>';
-  document.getElementById('selected-game-display').classList.add('visible');
-  document.getElementById('search-wrapper').style.display='none';
-};
-
-function renderStats(){
-  const p1=games.filter(g=>g.winner==='Louis').length;
-  const p2=games.filter(g=>g.winner==='Elisa').length;
-  const draws=games.filter(g=>g.winner==='Égalité').length;
-  const tot=p1+p2||1;
-  document.getElementById('h2h-wins-louis').textContent=p1;
-  document.getElementById('h2h-wins-elisa').textContent=p2;
-  document.getElementById('h2h-draws').textContent=`${draws} égalité${draws>1?'s':''}`;
-  document.getElementById('h2h-pct-louis').textContent=`${Math.round(p1/tot*100)}%`;
-  document.getElementById('h2h-pct-elisa').textContent=`${Math.round(p2/tot*100)}%`;
-  document.getElementById('h2h-bar-l').style.width=(p1/tot*100)+'%';
-  document.getElementById('h2h-bar-e').style.width=(p2/tot*100)+'%';
-  // monthly chart
-  const months={};
-  games.forEach(g=>{
-    const d=g.date?new Date(g.date):null; if(!d||isNaN(d)) return;
-    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-    months[k]=(months[k]||0)+1;
-  });
-  const labels=Object.keys(months).sort().slice(-12);
-  const data=labels.map(k=>months[k]);
-  const ctx=document.getElementById('chart-monthly')?.getContext('2d');
-  if(ctx){
-    if(monthlyChart) monthlyChart.destroy();
-    monthlyChart=new Chart(ctx,{type:'bar',data:{labels:labels.map(l=>{const[y,m]=l.split('-');return ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'][+m-1]+' '+y.slice(2);}),datasets:[{data,backgroundColor:'rgba(176,90,53,.55)',borderColor:'var(--accent)',borderWidth:1.5,borderRadius:5}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
-  }
-  // by game
-  const byGame={};
-  games.forEach(g=>{
-    if(!byGame[g.name]) byGame[g.name]={name:g.name,thumb:g.thumb,louis:0,elisa:0,total:0};
-    if(g.winner==='Louis') byGame[g.name].louis++;
-    else if(g.winner==='Elisa') byGame[g.name].elisa++;
-    byGame[g.name].total++;
-  });
-  const sorted=Object.values(byGame).sort((a,b)=>b.total-a.total).slice(0,8);
-  const sbg=document.getElementById('stats-by-game');
-  if(!sorted.length){ sbg.innerHTML='<div class="stats-empty">Pas encore de données.</div>'; }
-  else sbg.innerHTML=sorted.map(g=>{
-    const tot=g.louis+g.elisa||1;
-    return `<div class="game-stat-row">
-      <div class="gs-thumb">${g.thumb?`<img src="${g.thumb}">`:'🎲'}</div>
-      <div class="gs-info"><div class="gs-name">${g.name}</div><div class="gs-count">${g.total} partie${g.total>1?'s':''}</div></div>
-      <div class="gs-bar-wrap">
-        <div class="gs-bar"><div class="gs-bar-l" style="width:${g.louis/tot*100}%"></div><div class="gs-bar-e" style="width:${g.elisa/tot*100}%"></div></div>
-        <div class="gs-bar-legend"><span>L:${g.louis}</span><span>E:${g.elisa}</span></div>
-      </div>
-    </div>`;
-  }).join('');
-  // records
-  const mostLouis=Object.values(byGame).sort((a,b)=>b.louis-a.louis)[0];
-  const mostElisa=Object.values(byGame).sort((a,b)=>b.elisa-a.elisa)[0];
-  const datesPlayed=games.filter(g=>g.date).map(g=>g.date).sort();
-  document.getElementById('stats-records').innerHTML=`
-    <div class="record-card"><div class="record-icon">🏆</div><div class="record-val">${mostLouis?.name?.substring(0,14)||'—'}</div><div class="record-label">Jeu favori Louis</div></div>
-    <div class="record-card"><div class="record-icon">🏆</div><div class="record-val">${mostElisa?.name?.substring(0,14)||'—'}</div><div class="record-label">Jeu favori Elisa</div></div>
-    <div class="record-card"><div class="record-icon">📅</div><div class="record-val">${datesPlayed[0]||'—'}</div><div class="record-label">Première partie</div></div>
-    <div class="record-card"><div class="record-icon">🎯</div><div class="record-val">${Object.keys(byGame).length}</div><div class="record-label">Jeux différents</div></div>`;
-}
-
-// BGG Search
-document.getElementById('game-search').addEventListener('input', function(){
-  clearTimeout(searchTimer);
-  const q=this.value.trim();
-  if(!q){ document.getElementById('search-results').classList.remove('open'); return; }
-  searchTimer=setTimeout(()=>searchBGG(q), 420);
-});
-document.addEventListener('click', function(e){
-  if(!e.target.closest('#search-wrapper')) document.getElementById('search-results').classList.remove('open');
-});
-
-async function searchBGG(q){
-  const sr=document.getElementById('search-results');
-  if(!q||q.length<2){ sr.classList.remove('open'); return; }
-  sr.classList.add('open');
-  sr.innerHTML='<div class="search-status"><span class="spinner"></span> Recherche…</div>';
-  try{
-    const key=atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==');
-    const resp=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
-      body:JSON.stringify({model:'google/gemma-3-4b-it:free',max_tokens:400,
-        messages:[{role:'user',content:'Liste 5 jeux de societe dont le nom contient ou ressemble a "'+q+'". Reponds UNIQUEMENT en JSON sans markdown: [{"name":"nom exact","year":"annee de sortie","genre":"type de jeu"}]'}]})
-    });
-    const data=await resp.json();
-    const text=data.choices?.[0]?.message?.content||'';
-    const games=JSON.parse(text.replace(/```json|```/g,'').trim());
-    sr.innerHTML=games.map(g=>{
-      const gname=g.name.replace(/'/g,"\'").replace(/"/g,'&quot;');
-      return `<div class="result-item" onclick="selectBGGGame('ai','${gname}','${g.year||''}')">
-      <div class="result-thumb-ph">🎲</div>
-      <div><div class="result-name">${g.name}</div><div class="result-year">${g.year||''}${g.genre?' · '+g.genre:''}</div></div>
-    </div>`;}).join('');
-  } catch(e){
-    const safe=q.replace(/'/g,"\'").replace(/"/g,'&quot;');
-    sr.innerHTML=`<div class="result-item" onclick="selectBGGGame('manual','${safe}','')">
-      <div class="result-thumb-ph">🎲</div>
-      <div><div class="result-name">${q}</div><div class="result-year">✓ Utiliser ce nom</div></div>
-    </div>`;
-  }
-}
-
-async function loadBGGThumbs(results){ /* disabled */ }
-
-window.selectBGGGame = function(id, name, year){
-  document.getElementById('search-results').classList.remove('open');
-  document.getElementById('game-search').value='';
-  selectedGame={id,name,year,thumb:null};
-  document.getElementById('sel-name').textContent=name;
-  document.getElementById('sel-meta').textContent=year?`${year}`:'Jeu de société';
-  const tw=document.getElementById('sel-thumb-wrap');
-  tw.innerHTML='<div class="sel-thumb-ph">🎲</div>';
-  document.getElementById('selected-game-display').classList.add('visible');
-  document.getElementById('search-wrapper').style.display='none';
-};
-
-// Bets
-window.addBet = async function(){
-  const desc=document.getElementById('bet-desc').value.trim(); if(!desc){ showToast('⚠️ Décrivez le pari !'); return; }
-  const cats={'🎮 Jeux':'🎮','🎬 Films':'🎬','🏃 Sport':'🏃','🍕 Nourriture':'🍕','📚 Culture':'📚','💼 Quotidien':'💼','❓ Autre':'❓'};
-  const cat=document.getElementById('bet-category').value;
-  await fbAdd('bets',{
-    desc, stake:document.getElementById('bet-stake').value,
-    proposer:document.getElementById('bet-proposer').value,
-    deadline:document.getElementById('bet-deadline').value,
-    category:cat, emoji:cats[cat]||'🎰', status:'open', winner:null
-  });
-  showToast('🤝 Pari créé !');
-  ['bet-desc','bet-stake','bet-deadline'].forEach(id=>document.getElementById(id).value='');
-};
-
-window.filterBets = function(f, btn){
-  betFilter=f;
-  document.querySelectorAll('.bet-filter').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); renderBets();
-};
-
-window.resolveBet = async function(id, winner){
-  await fbSet('bets',id,{status:winner,winner});
-  showToast(winner==='Louis'?'🏆 Louis gagne !':winner==='Elisa'?'🏆 Elisa gagne !':'Pari annulé');
-};
-window.deleteBet = async function(id){ await fbDel('bets',id); };
-
-function renderBets(){
-  let list=bets;
-  if(betFilter==='open') list=bets.filter(b=>b.status==='open');
-  else if(betFilter==='louis') list=bets.filter(b=>b.status==='Louis');
-  else if(betFilter==='elisa') list=bets.filter(b=>b.status==='Elisa');
-  const open=bets.filter(b=>b.status==='open').length;
-  const louis=bets.filter(b=>b.status==='Louis').length;
-  const elisa=bets.filter(b=>b.status==='Elisa').length;
-  document.getElementById('bet-stat-open').textContent=open;
-  document.getElementById('bet-stat-louis').textContent=louis;
-  document.getElementById('bet-stat-elisa').textContent=elisa;
-  const el=document.getElementById('bets-list');
-  if(!list.length){ el.innerHTML='<div class="empty-state"><div class="big-emoji">🎰</div><p>Aucun pari.</p></div>'; return; }
-  el.innerHTML=list.map(b=>{
-    const col=b.status==='open'?'var(--gold)':b.status==='Louis'?'#2563eb':b.status==='Elisa'?'#db2777':'#888';
-    const badge=b.status==='open'?'<span class="bet-status-badge badge-open">En cours</span>':b.status==='Louis'?'<span class="bet-status-badge badge-louis">Louis ✓</span>':b.status==='Elisa'?'<span class="bet-status-badge badge-elisa">Elisa ✓</span>':'<span class="bet-status-badge badge-cancelled">Annulé</span>';
-    const actions=b.status==='open'?`<div class="bet-actions"><button class="bet-btn bet-btn-louis" onclick="resolveBet('${b.id}','Louis')">Louis gagne</button><button class="bet-btn bet-btn-elisa" onclick="resolveBet('${b.id}','Elisa')">Elisa gagne</button><button class="bet-btn bet-btn-cancel" onclick="resolveBet('${b.id}','cancelled')">Annuler</button></div>`:'';
-    return `<div class="bet-entry" style="--bet-color:${col}">
-      <div class="bet-top">
-        <div class="bet-emoji-wrap">${b.emoji||'🎰'}</div>
-        <div class="bet-body">
-          <div class="bet-desc">${b.desc}</div>
-          <div class="bet-meta">${badge} ${b.category||''} ${b.proposer?`· proposé par ${b.proposer}`:''} ${b.deadline?`· échéance ${b.deadline}`:''}</div>
-          ${b.stake?`<div style="margin-top:.25rem"><span class="bet-stake">🏆 ${b.stake}</span></div>`:''}
-        </div>
-        <button class="bet-btn-delete" onclick="deleteBet('${b.id}')">🗑</button>
-      </div>
-      ${actions}
-    </div>`;
-  }).join('');
-}
-
-// ═══════════════════════════════════════
-// INIT APP
-// ═══════════════════════════════════════
-function initApp(){
-  updateAnniversary();
-  setInterval(updateAnniversary, 60000);
-  initParticles();
-  initStarRatings();
-  // Set today's date for game form
-  document.getElementById('game-date').value=new Date().toISOString().split('T')[0];
-  // Firestore listeners
-  unsubscribers.push(
-    fbListen('recipes', list=>{ recipes=list; renderRecipes(); if(currentRecipeId){ const r=list.find(x=>x.id===currentRecipeId); if(r){ renderComments(r); renderModalIngredients(r); } } }),
-    fbListen('shopping', list=>renderShoppingList(list)),
-    fbListen('travels', list=>{ travels=list; renderTravelList(); renderTravelMap(); if(currentTravelId){ const t=list.find(x=>x.id===currentTravelId); if(t){ renderExpenses(t); renderJournal(t); } } }),
-    fbListen('bucket', list=>renderBucketList(list)),
-    fbListen('films', list=>{ films=list; renderFilms(); }),
-    fbListen('suggestions', list=>renderSuggestions(list)),
-    fbListen('games', list=>{ games=list; renderGames(); }),
-    fbListen('bets', list=>{ bets=list; renderBets(); })
-  );
-  // Update travel modal when data changes
-  
-}
-</script>
-</body>
-</html>
