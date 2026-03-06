@@ -1213,14 +1213,8 @@ window.generateRecipeAI = async function(){
   document.getElementById('recipe-preview').style.display='none';
   baseServings=currentServings;
   try{
-    const resp=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==')+'','HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
-      body:JSON.stringify({model:'google/gemma-3-4b-it:free',max_tokens:1200,
-        messages:[{role:'user',content:`Tu es un chef cuisinier. Génère une recette détaillée pour "${name}" pour ${currentServings} personne${currentServings>1?'s':''}. Réponds UNIQUEMENT en JSON valide sans markdown ni texte autour:
-{"emoji":"emoji adapté","cat":"Pâtes & Riz ou Viande ou Poisson ou Végétarien ou Dessert ou Petit-déj ou Soupe ou Street food","time":"temps total ex: 30 min","ingredients":["100g de farine","2 oeufs","etc"],"steps":["Étape détaillée 1","Étape détaillée 2","Étape détaillée 3"],"note":"astuce du chef ou null"}`}]})
-    });
-    const data=await resp.json();
-    const text=data.choices?.[0]?.message?.content||'';
+    const text=await callAI(`Tu es un chef cuisinier. Génère une recette pour "${name}" pour ${currentServings} personne${currentServings>1?"s":""}. Réponds UNIQUEMENT en JSON sans markdown:
+{"emoji":"emoji adapté","cat":"Pâtes & Riz ou Viande ou Poisson ou Végétarien ou Dessert ou Petit-déj ou Soupe ou Street food","time":"temps total ex: 30 min","ingredients":["100g de farine","2 oeufs","etc"],"steps":["Étape 1","Étape 2","Étape 3"],"note":"astuce du chef ou null"}`, 1200);
     const clean=text.replace(/```json|```/g,'').trim();
     const recipe=JSON.parse(clean);
     generatedRecipeData=recipe;
@@ -1616,14 +1610,8 @@ window.searchFilmAI = async function searchFilmAI(q){
     sr.style.display='block';
     sr.innerHTML='<div style="padding:.6rem 1rem;color:var(--muted);font-size:.8rem"><span class="spinner"></span> Recherche…</div>';
     try{
-      const key=atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==');
-      const resp=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
-        body:JSON.stringify({model:'google/gemma-3-4b-it:free',max_tokens:500,
-          messages:[{role:'user',content:'Liste 5 films dont le titre contient ou ressemble a "'+q+'". Reponds UNIQUEMENT en JSON sans markdown: [{"title":"titre exact","year":"annee","director":"realisateur","genre":"genre principal parmi Drama/Comedy/Sci-Fi/Horror/Romance/Action/Thriller/Fantasy/Animation"}]'}]})
-      });
-      const data=await resp.json();
-      const text=data.choices?.[0]?.message?.content||'';
+      const text=await callAICached('Liste 5 films dont le titre contient ou ressemble a "'+q+'". Reponds UNIQUEMENT en JSON sans markdown: [{"title":"titre exact","year":"annee","director":"realisateur","genre":"genre principal parmi Drama/Comedy/Sci-Fi/Horror/Romance/Action/Thriller/Fantasy/Animation"}]', 500);
+      if(!text) throw new Error('no response');
       const films=JSON.parse(text.replace(/```json|```/g,'').trim());
       // Store films in a temp global to avoid JSON in onclick
       window._filmSuggestions = films;
@@ -1890,36 +1878,938 @@ function applyGameTheme(gameName, gameCount) {
   container.insertBefore(banner, container.querySelector('.page-header').nextSibling);
 }
 
+
+// ── AI avec fallback automatique ──
+const AI_MODELS = [
+  'mistralai/mistral-small-3.1-24b-instruct:free',
+  'google/gemma-3-4b-it:free',
+  'meta-llama/llama-3.2-3b-instruct:free',
+  'qwen/qwen-2.5-7b-instruct:free',
+  'microsoft/phi-3-mini-128k-instruct:free'
+];
+const AI_KEY = atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==');
+
+async function callAI(prompt, maxTokens=400) {
+  for(const model of AI_MODELS) {
+    try {
+      const ctrl = new AbortController();
+      const timeout = setTimeout(()=>ctrl.abort(), 8000);
+      const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method:'POST', signal: ctrl.signal,
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+AI_KEY,'HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
+        body:JSON.stringify({model, max_tokens:maxTokens, messages:[{role:'user',content:prompt}]})
+      });
+      clearTimeout(timeout);
+      if(resp.status===429) continue; // essaie le suivant
+      if(!resp.ok) continue;
+      const data = await resp.json();
+      const text = data.choices?.[0]?.message?.content||'';
+      if(!text) continue;
+      return text;
+    } catch(e){ continue; }
+  }
+  return null; // tous les modèles ont échoué
+}
+
+
+// ── Cache IA (évite les 429) ──
+const AI_CACHE = {};
+async function callAICached(prompt, maxTokens=400) {
+  const key = prompt.slice(0, 80);
+  if(AI_CACHE[key]) return AI_CACHE[key];
+  const result = await callAI(prompt, maxTokens);
+  if(result) AI_CACHE[key] = result;
+  return result;
+}
+
 let _bggTimer=null;
 window.searchBGG = function(q){
   clearTimeout(_bggTimer);
   const sr=document.getElementById('search-results');
   if(!q||q.length<2){ sr.classList.remove('open'); return; }
   _bggTimer=setTimeout(async()=>{
-  sr.classList.add('open');
-  sr.innerHTML='<div class="search-status"><span class="spinner"></span> Recherche…</div>';
-  try{
-    const key=atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==');
-    const resp=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
-      body:JSON.stringify({model:'google/gemma-3-4b-it:free',max_tokens:400,
-        messages:[{role:'user',content:'Liste 5 jeux de societe dont le nom contient ou ressemble a "'+q+'". Reponds UNIQUEMENT en JSON sans markdown: [{"name":"nom exact","year":"annee","genre":"type de jeu"}]'}]})
-    });
-    const data=await resp.json();
-    const text=data.choices?.[0]?.message?.content||'';
-    const games=JSON.parse(text.replace(/```json|```/g,'').trim());
-    window._gameSuggestions=games;
-    sr.innerHTML=games.map((g,i)=>`<div class="result-item" onclick="selectBGGGame('ai','${g.name.replace(/'/g,"\\'")}','${g.year||''}')">
-      <div class="result-thumb-ph">🎲</div>
-      <div><div class="result-name">${g.name}</div><div class="result-year">${g.year||''}${g.genre?' · '+g.genre:''}</div></div>
-    </div>`).join('');
-  } catch(e){
-    const safe=q.replace(/'/g,"\\'");
+    sr.classList.add('open');
+    sr.innerHTML='<div class="search-status"><span class="spinner"></span> Recherche…</div>';
+    const text=await callAICached('Liste 5 jeux de societe dont le nom contient ou ressemble a "'+q+'". Reponds UNIQUEMENT en JSON sans markdown: [{"name":"nom exact","year":"annee","genre":"type de jeu"}]');
+    if(text){
+      try{
+        const games=JSON.parse(text.replace(/```json|```/g,'').trim());
+        sr.innerHTML=games.map(g=>`<div class="result-item" onclick="selectBGGGame('ai','${g.name.replace(/'/g,"\'")}','${g.year||''}')">
+          <div class="result-thumb-ph">🎲</div>
+          <div><div class="result-name">${g.name}</div><div class="result-year">${g.year||''}${g.genre?' · '+g.genre:''}</div></div>
+        </div>`).join('');
+        return;
+      }catch(e){}
+    }
+    const safe=q.replace(/'/g,"\'");
     sr.innerHTML=`<div class="result-item" onclick="selectBGGGame('manual','${safe}','')">
       <div class="result-thumb-ph">🎲</div>
       <div><div class="result-name">${q}</div><div class="result-year">✓ Utiliser ce nom</div></div>
     </div>`;
+  }, 600);
+};
+
+window.selectRecentGame = function(name, bggId, thumb){
+  selectedGame={name, id:bggId, thumb:thumb||null};
+  document.getElementById('sel-name').textContent=name;
+  document.getElementById('sel-meta').textContent='';
+  if(thumb){
+    document.getElementById('sel-thumb-wrap').innerHTML=`<img src="${thumb}" class="sel-thumb">`;
+  } else {
+    document.getElementById('sel-thumb-wrap').innerHTML='🎲';
   }
+  document.getElementById('selected-game-display').style.display='flex';
+  document.getElementById('search-wrapper').style.display='none';
+  document.getElementById('recents-section').style.display='none';
+  applyGameTheme(name);
+};
+
+window.selectBGGGame = function(id, name, year){
+  selectedGame={name, id, thumb:null};
+  document.getElementById('sel-name').textContent=name;
+  document.getElementById('sel-meta').textContent=year?`${year}`:'';
+  document.getElementById('sel-thumb-wrap').innerHTML='🎲';
+  document.getElementById('selected-game-display').style.display='flex';
+  document.getElementById('search-wrapper').style.display='none';
+  document.getElementById('recents-section').style.display='none';
+  document.getElementById('search-results').classList.remove('open');
+  applyGameTheme(name);
+};
+
+function renderGames(){
+  const p1=games.filter(g=>g.winner==='Louis').length;
+  const p2=games.filter(g=>g.winner==='Elisa').length;
+  document.getElementById('wins-p1').textContent=p1;
+  document.getElementById('wins-p2').textContent=p2;
+  document.getElementById('wins-p1').className='player-wins'+(p1>p2?' leading':'');
+  document.getElementById('wins-p2').className='player-wins'+(p2>p1?' leading':'');
+  document.getElementById('stat-total').textContent=games.length;
+  const crown=document.getElementById('crown');
+  crown.textContent=p1>p2?'👑':p2>p1?'👑':'🤝';
+  // fav game
+  const counts={};
+  games.forEach(g=>{ counts[g.name]=(counts[g.name]||0)+1; });
+  const fav=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('stat-fav').textContent=fav?fav[0].substring(0,10):'—';
+  applyGameTheme(fav?fav[0]:null, fav?fav[1]:0);
+  // streak
+  let streak=0;
+  if(games.length){
+    const last=games[0].winner;
+    for(const g of games){ if(g.winner===last&&g.winner!=='Égalité') streak++; else break; }
+  }
+  document.getElementById('stat-streak').textContent=streak;
+  document.getElementById('badge-games').textContent=games.length;
+  // history
+  const hist=document.getElementById('history-list');
+  if(!games.length){ hist.innerHTML='<div class="empty-state"><div class="big-emoji">🎲</div><p>Aucune partie.</p></div>'; }
+  else hist.innerHTML=games.map(g=>`<div class="game-entry" style="--entry-color:${g.winner==='Louis'?'#2563eb':g.winner==='Elisa'?'#db2777':'#888'}">
+    <div class="entry-thumb-ph">${g.thumb?`<img src="${g.thumb}" class="entry-thumb">`:'🎲'}</div>
+    <div class="entry-info"><div class="entry-game">${g.name}</div><div class="entry-meta">${g.date||''} ${g.scoreP1||g.scoreP2?`· ${g.scoreP1||'?'} vs ${g.scoreP2||'?'}`:''} ${g.notes?`· ${g.notes}`:''}</div></div>
+    <div class="entry-winner"><small>Gagnant</small>${g.winner}</div>
+    <button class="delete-btn" onclick="deleteGame('${g.id}')">🗑</button>
+  </div>`).join('');
+  // recents
+  const seen=new Set(); const recents=[];
+  for(const g of games){ if(!seen.has(g.name)){ seen.add(g.name); recents.push(g); if(recents.length===5) break; } }
+  const rc=document.getElementById('recent-chips');
+  if(recents.length){ document.getElementById('recents-section').style.display='block';
+    rc.innerHTML=recents.map(g=>`<div class="recent-chip" onclick="selectRecentGame('${g.name}','${g.bggId||''}','${g.thumb||''}')">
+      ${g.thumb?`<img src="${g.thumb}" style="width:18px;height:18px;border-radius:3px;object-fit:cover">`:'🎲'} ${g.name}
+    </div>`).join('');
+  }
+  // stats
+  if(games.length){
+    const wL=games.filter(g=>g.winner==='Louis').length;
+    const wE=games.filter(g=>g.winner==='Elisa').length;
+    const tot=games.length;
+    document.getElementById('h2h-wins-louis').textContent=wL;
+    document.getElementById('h2h-wins-elisa').textContent=wE;
+    document.getElementById('h2h-pct-louis').textContent=tot?Math.round(wL/tot*100)+'%':'—';
+    document.getElementById('h2h-pct-elisa').textContent=tot?Math.round(wE/tot*100)+'%':'—';
+    const pL=tot?wL/tot*100:50, pE=tot?wE/tot*100:50;
+    document.getElementById('h2h-bar-l').style.width=pL+'%';
+    document.getElementById('h2h-bar-e').style.width=pE+'%';
+    const draws=games.filter(g=>g.winner==='Égalité').length;
+    document.getElementById('h2h-draws').textContent=draws+' égalité'+(draws>1?'s':'');
+  }
+}
+
+// ── Bets ──
+const CAT_COLORS={'🎮 Jeux':'#b05a35','🎬 Films & Séries':'#7b5ea7','🏃 Sport & Défi':'#4a7c6b','🍕 Nourriture':'#c9a040','📚 Culture':'#2e6d7e','💼 Vie quotidienne':'#c9a040','❓ Autre':'#9a8e7e'};
+
+window.addBet = async function(){
+  const desc=document.getElementById('bet-desc').value.trim();
+  const stake=document.getElementById('bet-stake').value.trim();
+  if(!desc){ showToast('⚠️ Décrivez le pari !'); return; }
+  if(!stake){ showToast('⚠️ Ajoutez un enjeu !'); return; }
+  await fbAdd('bets',{
+    desc, stake,
+    proposer:document.getElementById('bet-proposer').value,
+    deadline:document.getElementById('bet-deadline').value,
+    category:document.getElementById('bet-category').value,
+    status:'open'
+  });
+  showToast('🤝 Pari enregistré !');
+  document.getElementById('bet-desc').value='';
+  document.getElementById('bet-stake').value='';
+  document.getElementById('bet-deadline').value='';
+};
+
+window.resolveBet = async function(id, winner){
+  await fbSet('bets', id, {status:winner, resolvedAt:new Date().toISOString().split('T')[0]});
+  showToast('🏆 '+(winner==='louis'?'Louis':'Elisa')+' remporte le pari !');
+};
+window.cancelBet = async function(id){ await fbSet('bets',id,{status:'cancelled'}); showToast('❌ Pari annulé'); };
+window.deleteBet = async function(id){ await fbDel('bets',id); };
+window.filterBets = function(f, btn){
+  document.querySelectorAll('.bet-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBets(f);
+};
+
+function renderBets(filter){
+  const list=document.getElementById('bets-list');
+  let filtered=bets;
+  if(filter==='open') filtered=bets.filter(b=>b.status==='open');
+  else if(filter==='louis') filtered=bets.filter(b=>b.status==='louis');
+  else if(filter==='elisa') filtered=bets.filter(b=>b.status==='elisa');
+  if(!filtered.length){ list.innerHTML='<div class="empty-state"><div class="big-emoji">🎰</div><p>Aucun pari ici.</p></div>'; return; }
+  const color_fn=b=>CAT_COLORS[b.category]||'#888';
+  list.innerHTML=filtered.map(b=>{
+    const badge=b.status==='open'?'<span class="bet-status-badge badge-open">⏳ En cours</span>':b.status==='louis'?'<span class="bet-status-badge badge-louis">👑 Louis</span>':b.status==='elisa'?'<span class="bet-status-badge badge-elisa">👑 Elisa</span>':'<span class="bet-status-badge badge-cancelled">✕ Annulé</span>';
+    const dl=b.deadline?`📅 ${new Date(b.deadline+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})}`:'';
+    const actions=b.status==='open'?`<div class="bet-actions"><button class="bet-btn bet-btn-louis" onclick="resolveBet('${b.id}','louis')">👑 Louis</button><button class="bet-btn bet-btn-elisa" onclick="resolveBet('${b.id}','elisa')">👑 Elisa</button><button class="bet-btn bet-btn-cancel" onclick="cancelBet('${b.id}')">Annuler</button><button class="bet-btn-delete" onclick="deleteBet('${b.id}')">🗑</button></div>`:`<div class="bet-actions"><button class="bet-btn-delete" onclick="deleteBet('${b.id}')">🗑 Supprimer</button></div>`;
+    return `<div class="bet-entry" style="--bet-color:${color_fn(b)}"><div class="bet-top"><div class="bet-emoji-wrap">${(b.category||'❓').split(' ')[0]}</div><div class="bet-body"><div class="bet-desc">${b.desc}</div><div class="bet-meta"><span class="bet-stake">🏆 ${b.stake}</span>${dl?`<span>${dl}</span>`:''}</div><div class="bet-meta" style="margin-top:.22rem">Proposé par ${b.proposer||'—'} · ${badge}</div></div></div>${actions}</div>`;
+  }).join('');
+}
+
+function updateBetStats(){
+  document.getElementById('bet-stat-open').textContent=bets.filter(b=>b.status==='open').length;
+  document.getElementById('bet-stat-louis').textContent=bets.filter(b=>b.status==='louis').length;
+  document.getElementById('bet-stat-elisa').textContent=bets.filter(b=>b.status==='elisa').length;
+}
+
+// ── Init App ──
+async function initApp(){
+  updateAnniversary();
+  setInterval(updateAnniversary, 60000);
+  document.getElementById('game-date').value=new Date().toISOString().split('T')[0];
+  unsubscribers.push(
+    fbListen('recipes', list=>{ recipes=list; renderRecipes(); }),
+    fbListen('shopping', list=>renderShoppingList(list)),
+    fbListen('travels', list=>{ travels=list; renderTravelList(); renderTravelMap(); if(currentTravelId){ const t=list.find(x=>x.id===currentTravelId); if(t){ renderExpenses(t); renderJournal(t); } } }),
+    fbListen('bucket', list=>renderBucketList(list)),
+    fbListen('films', list=>{ films=list; renderFilms(); }),
+    fbListen('suggestions', list=>renderSuggestions(list)),
+    fbListen('games', list=>{ games=list; renderGames(); }),
+    fbListen('bets', list=>{ bets=list; renderBets(); updateBetStats(); })
+  );
+}
+</script>
+</body>
+</html`, 1200);
+    if(!text) throw new Error('no AI response');
+    const clean=text.replace(/```json|```/g,'').trim();
+    const recipe=JSON.parse(clean);
+    generatedRecipeData=recipe;
+    showRecipePreview(name, recipe);
+  } catch(e){ 
+    showToast('❌ Erreur IA. Vérifiez votre connexion !'); 
+    console.error(e); 
+  }
+  finally{ document.getElementById('recipe-ai-loading').style.display='none'; btn.disabled=false; btn.textContent='✨ Générer'; }
+};
+
+function showRecipePreview(name, recipe){
+  document.getElementById('preview-emoji').textContent=recipe.emoji||'🍳';
+  document.getElementById('preview-title').textContent=name;
+  document.getElementById('preview-meta').textContent=[recipe.cat, recipe.time?`⏱ ${recipe.time}`:'', `${currentServings} pers.`].filter(Boolean).join(' · ');
+  document.getElementById('preview-ingredients').innerHTML=recipe.ingredients.map(i=>`<li>${i}</li>`).join('');
+  document.getElementById('preview-steps').innerHTML=recipe.steps.map(s=>`<li>${s}</li>`).join('');
+  const n=document.getElementById('preview-note');
+  if(recipe.note){ n.textContent='💡 '+recipe.note; n.style.display='block'; } else n.style.display='none';
+  const s2=document.getElementById('servings-display-2'); if(s2) s2.textContent=currentServings;
+  document.getElementById('recipe-preview').style.display='block';
+}
+
+window.saveGeneratedRecipe = async function(){
+  if(!generatedRecipeData){ showToast('⚠️ Générez d\'abord une recette !'); return; }
+  const name=document.getElementById('r-name').value.trim();
+  if(!name){ showToast('⚠️ Entrez un nom !'); return; }
+  const scaledIng=scaleIngredients(generatedRecipeData.ingredients, baseServings, currentServings);
+  await fbAdd('recipes',{
+    name, emoji:generatedRecipeData.emoji||'🍳',
+    status:document.getElementById('r-status').value,
+    cat:generatedRecipeData.cat||'',
+    time:generatedRecipeData.time||'',
+    rating:document.getElementById('r-rating')?.value||'',
+    ingredients:scaledIng, steps:generatedRecipeData.steps||[],
+    note:document.getElementById('r-note')?.value||generatedRecipeData.note||'',
+    servings:currentServings, baseServings:currentServings, comments:[]
+  });
+  showToast(`🍳 "${name}" sauvegardée !`);
+  document.getElementById('r-name').value='';
+  document.getElementById('recipe-preview').style.display='none';
+  generatedRecipeData=null;
+  switchTab('recipes','list', document.querySelector('#page-recipes .tab-btn'));
+};
+
+window.filterRecipes = function(f, btn){
+  recipeFilter=f;
+  document.querySelectorAll('#rtab-list .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderRecipes();
+};
+
+function renderRecipes(){
+  const grid=document.getElementById('recipe-grid');
+  let list=recipes;
+  if(recipeFilter!=='all') list=recipes.filter(r=>r.status===recipeFilter);
+  if(!list.length){ grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="big-emoji">🍳</div><p>Aucune recette ici.</p></div>'; return; }
+  grid.innerHTML=list.map(r=>`
+    <div class="recipe-card" onclick="openRecipe('${r.id}')">
+      <div class="rc-img">${r.emoji||'🍳'}</div>
+      <div class="rc-body">
+        <div class="rc-title">${r.name}</div>
+        <div class="rc-meta">
+          <span class="recipe-tag ${r.status==='fav'?'tag-fav':r.status==='tried'?'tag-tried':'tag-want'}">${r.status==='fav'?'⭐ Fav':r.status==='tried'?'✅ Testée':'🔖 À tester'}</span>
+          ${r.time?`<span>⏱ ${r.time}</span>`:''}
+          ${r.rating?`<span class="stars">${'⭐'.repeat(+r.rating)}</span>`:''}
+        </div>
+      </div>
+    </div>`).join('');
+  document.getElementById('badge-recipes').textContent=recipes.length;
+}
+
+window.openRecipe = function(id){
+  const r=recipes.find(x=>x.id===id); if(!r) return;
+  currentRecipeId=id;
+  modalBaseServings=r.baseServings||r.servings||2;
+  modalServings=modalBaseServings;
+  document.getElementById('modal-servings-display').textContent=modalServings;
+  document.getElementById('rm-title').textContent=r.name;
+  document.getElementById('rm-emoji').textContent=r.emoji||'🍳';
+  const tag=r.status==='fav'?'<span class="recipe-tag tag-fav">⭐ Favorite</span>':r.status==='tried'?'<span class="recipe-tag tag-tried">✅ Testée</span>':'<span class="recipe-tag tag-want">🔖 À tester</span>';
+  const stars=r.rating?`<span class="stars">${'⭐'.repeat(+r.rating)}</span>`:'';
+  document.getElementById('rm-tags').innerHTML=tag+(r.cat?`<span style="font-size:.7rem;color:var(--muted)">${r.cat}</span>`:'')+( r.time?`<span style="font-size:.7rem;color:var(--muted)">⏱ ${r.time}</span>`:'')+stars;
+  renderModalIngredients(r);
+  const stepsS=document.getElementById('rm-steps-section');
+  if(r.steps?.length){ stepsS.style.display='block'; document.getElementById('rm-steps').innerHTML=r.steps.map(s=>`<li>${s}</li>`).join(''); } else stepsS.style.display='none';
+  const noteEl=document.getElementById('rm-note');
+  if(r.note){ noteEl.textContent='💡 '+r.note; noteEl.style.display='block'; } else noteEl.style.display='none';
+  renderComments(r);
+  document.getElementById('recipe-modal').classList.add('open');
+};
+
+function renderModalIngredients(r){
+  const s=document.getElementById('rm-ing-section');
+  if(!r?.ingredients?.length){ s.style.display='none'; return; }
+  s.style.display='block';
+  const sc=scaleIngredients(r.ingredients, modalBaseServings, modalServings);
+  document.getElementById('rm-ing').innerHTML=sc.map(i=>`<li>${i}</li>`).join('');
+}
+
+function renderComments(r){
+  const comments=r.comments||[];
+  document.getElementById('rm-comments').innerHTML=!comments.length?'<p style="font-size:.78rem;color:var(--muted)">Aucun commentaire.</p>':
+    comments.map((c,i)=>`<div class="comment-item">
+      <div class="comment-av ${c.author==='Louis'?'av-louis':'av-elisa'}">${c.author.charAt(0)}</div>
+      <div class="comment-body"><div class="comment-author">${c.author}</div><div class="comment-text">${c.text}</div><div class="comment-date">${c.date||''}</div></div>
+      <button class="comment-del" onclick="deleteComment(${i})">✕</button>
+    </div>`).join('');
+}
+
+window.addComment = async function(){
+  const r=recipes.find(x=>x.id===currentRecipeId); if(!r) return;
+  const text=document.getElementById('rm-comment-text').value.trim(); if(!text) return;
+  const author=document.getElementById('rm-comment-author').value;
+  const comments=[...(r.comments||[]),{author,text,date:new Date().toLocaleDateString('fr-FR')}];
+  await fbSet('recipes',currentRecipeId,{comments});
+  document.getElementById('rm-comment-text').value='';
+};
+window.deleteComment = async function(i){
+  const r=recipes.find(x=>x.id===currentRecipeId); if(!r) return;
+  const comments=[...(r.comments||[])]; comments.splice(i,1);
+  await fbSet('recipes',currentRecipeId,{comments});
+};
+window.deleteCurrentRecipe = async function(){
+  if(!confirm('Supprimer cette recette ?')) return;
+  await fbDel('recipes',currentRecipeId);
+  closeModal('recipe-modal');
+  showToast('🗑 Recette supprimée');
+};
+
+// Shopping list (Firestore)
+let shopList=[];
+window.addToShoppingList = async function(){
+  const r=recipes.find(x=>x.id===currentRecipeId); if(!r||!r.ingredients?.length){ showToast('⚠️ Pas d\'ingrédients'); return; }
+  const scaled=scaleIngredients(r.ingredients, modalBaseServings, modalServings);
+  const current=await fbGetAll('shopping');
+  for(const ing of scaled){
+    const m=ing.match(/^([\d.,/]+\s*(?:g|kg|ml|l|cl|pcs?|unité|unités|c\.s\.|c\.c\.|cs|cc|tbsp|tsp|cup|oz|lb)?\s+)(.*)/i);
+    const qty=m?m[1].trim():''; const name=m?m[2].trim():ing;
+    if(!current.find(s=>s.name?.toLowerCase()===name.toLowerCase()))
+      await fbAdd('shopping',{name,qty,cat:'🥫 Épicerie',done:false});
+  }
+  closeModal('recipe-modal');
+  switchTab('recipes','shopping', document.querySelectorAll('#page-recipes .tab-btn')[1]);
+  showToast(`🛒 Courses ajoutées (${modalServings} pers.) !`);
+};
+window.addShopItem = async function(){
+  const name=document.getElementById('shop-item-name').value.trim(); if(!name) return;
+  await fbAdd('shopping',{name,qty:document.getElementById('shop-item-qty').value,cat:document.getElementById('shop-item-cat').value,done:false});
+  document.getElementById('shop-item-name').value=''; document.getElementById('shop-item-qty').value='';
+};
+window.toggleShopItem = async function(id, done){
+  await fbSet('shopping',id,{done:!done});
+};
+window.removeShopItem = async function(id){
+  await fbDel('shopping',id);
+};
+window.clearCheckedShop = async function(){
+  const all=await fbGetAll('shopping');
+  for(const i of all.filter(x=>x.done)) await fbDel('shopping',i.id);
+};
+window.clearShopList = async function(){
+  if(!confirm('Vider toute la liste ?')) return;
+  const all=await fbGetAll('shopping');
+  for(const i of all) await fbDel('shopping',i.id);
+};
+
+function renderShoppingList(list){
+  shopList=list;
+  const total=list.length, done=list.filter(x=>x.done).length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('shop-progress-bar').style.width=pct+'%';
+  const cats={};
+  list.forEach(item=>{ if(!cats[item.cat]) cats[item.cat]=[]; cats[item.cat].push(item); });
+  const content=document.getElementById('shopping-list-content');
+  if(!list.length){ content.innerHTML='<div class="empty-state"><div class="big-emoji">🛒</div><p>Liste vide !</p></div>'; return; }
+  content.innerHTML=Object.entries(cats).map(([cat,items])=>`
+    <div style="margin-bottom:.7rem">
+      <div class="shop-cat-title">${cat}</div>
+      ${items.map(item=>`<div class="shop-item">
+        <div class="shop-check ${item.done?'done':''}" onclick="toggleShopItem('${item.id}',${item.done})"></div>
+        <span class="shop-label ${item.done?'done':''}">${item.name}</span>
+        ${item.qty?`<span class="shop-qty">${item.qty}</span>`:''}
+        <button class="shop-del" onclick="removeShopItem('${item.id}')">✕</button>
+      </div>`).join('')}
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+// TRAVEL
+// ═══════════════════════════════════════
+let travels=[], travelFilter='all', currentTravelId=null;
+let bucketList=[];
+
+window.addTravel = async function(){
+  const dest=document.getElementById('t-dest').value.trim(); if(!dest){ showToast('⚠️ Entrez une destination !'); return; }
+  await fbAdd('travels',{
+    dest, country:document.getElementById('t-country').value,
+    flag:document.getElementById('t-flag').value||'🌍',
+    status:document.getElementById('t-status').value,
+    date:document.getElementById('t-date').value,
+    budget:parseFloat(document.getElementById('t-budget').value)||0,
+    note:document.getElementById('t-note').value,
+    expenses:[], journal:[], instaUrl:''
+  });
+  showToast('✈️ Voyage ajouté !');
+  ['t-dest','t-country','t-flag','t-date','t-budget','t-note'].forEach(id=>document.getElementById(id).value='');
+  switchTab('travel','list', document.querySelectorAll('#page-travel .tab-btn')[1]);
+};
+
+window.filterTravel = function(f, btn){
+  travelFilter=f;
+  document.querySelectorAll('#ttab-list .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active'); renderTravelList();
+};
+
+function renderTravelList(){
+  const grid=document.getElementById('travel-grid');
+  const empty=document.getElementById('travel-empty');
+  let list=travelFilter==='all'?travels:travels.filter(t=>t.status===travelFilter);
+  if(!list.length){ grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML=list.map(t=>`
+    <div class="travel-card" onclick="openTravel('${t.id}')">
+      <div class="travel-flag">${t.flag||'🌍'}</div>
+      <div class="travel-body">
+        <div class="travel-title">${t.dest}</div>
+        <div class="travel-country">${t.country||''} ${t.date?`· ${t.date}`:''}</div>
+        <span class="travel-badge ${t.status==='done'?'badge-done':t.status==='planned'?'badge-planned':'badge-dream'}">${t.status==='done'?'✅ Visité':t.status==='planned'?'📅 Planifié':'💭 Rêve'}</span>
+      </div>
+    </div>`).join('');
+}
+
+function renderTravelMap(){
+  const pins=document.getElementById('travel-map-pins');
+  const empty=document.getElementById('travel-map-empty');
+  const done=travels.filter(t=>t.status==='done');
+  if(!done.length){ pins.innerHTML=''; empty.style.display='block'; }
+  else{
+    empty.style.display='none';
+    pins.innerHTML=done.map(t=>`<div class="map-pin" onclick="openTravel('${t.id}')">${t.flag||'🌍'} ${t.dest}</div>`).join('');
+  }
+  const totalSpent=travels.reduce((s,t)=>(t.expenses||[]).reduce((a,e)=>a+(+e.amount||0),s),0);
+  document.getElementById('t-stat-done').textContent=travels.filter(t=>t.status==='done').length;
+  document.getElementById('t-stat-budget').textContent=totalSpent>0?Math.round(totalSpent)+'€':'0€';
+  document.getElementById('t-stat-planned').textContent=travels.filter(t=>t.status==='planned').length;
+  document.getElementById('badge-travels').textContent=travels.length;
+}
+
+window.openTravel = function(id){
+  const t=travels.find(x=>x.id===id); if(!t) return;
+  currentTravelId=id;
+  document.getElementById('tm-title').textContent=t.dest;
+  document.getElementById('tm-flag').textContent=t.flag||'🌍';
+  const badge=t.status==='done'?'<span class="travel-badge badge-done">✅ Visité</span>':t.status==='planned'?'<span class="travel-badge badge-planned">📅 Planifié</span>':'<span class="travel-badge badge-dream">💭 Rêve</span>';
+  document.getElementById('tm-tags').innerHTML=badge+(t.country?`<span style="font-size:.76rem;color:var(--muted)">${t.country}</span>`:'')+( t.date?`<span style="font-size:.76rem;color:var(--muted)">${t.date}</span>`:'');
+  document.getElementById('tm-insta-url').value=t.instaUrl||'';
+  renderInstaPreview(t.instaUrl||'');
+  renderExpenses(t);
+  renderJournal(t);
+  document.getElementById('travel-modal').classList.add('open');
+};
+
+function renderInstaPreview(url){
+  const el=document.getElementById('tm-insta-preview');
+  if(!url){ el.innerHTML=''; return; }
+  el.innerHTML=`<div style="background:var(--bg2);border-radius:10px;padding:.8rem;display:flex;align-items:center;gap:.65rem;margin-top:.5rem">
+    <span style="font-size:1.6rem">📸</span>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:.78rem;font-weight:600;margin-bottom:.12rem">Photo Instagram</div>
+      <a href="${url}" target="_blank" style="font-size:.7rem;color:var(--accent);word-break:break-all;text-decoration:none">Voir sur Instagram →</a>
+    </div>
+  </div>`;
+}
+
+window.saveInstaLink = async function(){
+  const url=document.getElementById('tm-insta-url').value.trim();
+  await fbSet('travels',currentTravelId,{instaUrl:url});
+  renderInstaPreview(url);
+  showToast('📸 Lien sauvegardé !');
+};
+
+const EXP_COLORS={'🏨 Hébergement':'#e67e22','✈️ Transport':'#3498db','🍽️ Nourriture':'#2ecc71','🎟️ Activités':'#9b59b6','🛍️ Shopping':'#e91e63','❓ Autre':'#95a5a6'};
+function renderExpenses(t){
+  const exps=t.expenses||[];
+  const total=exps.reduce((s,e)=>s+(+e.amount||0),0);
+  const budget=t.budget||0;
+  const pct=budget>0?Math.min(100,Math.round(total/budget*100)):0;
+  document.getElementById('tm-budget-display').textContent=budget>0?`${Math.round(total)}€ / ${budget}€`:`${Math.round(total)}€ dépensé`;
+  const bar=document.getElementById('tm-budget-bar');
+  bar.style.width=pct+'%';
+  bar.style.background=pct>90?'#c0392b':pct>70?'#e67e22':'var(--accent2)';
+  document.getElementById('tm-expenses').innerHTML=!exps.length?'<p style="font-size:.78rem;color:var(--muted)">Aucune dépense.</p>':
+    exps.map((e,i)=>`<div class="expense-item">
+      <div class="exp-dot" style="background:${EXP_COLORS[e.cat]||'#95a5a6'}"></div>
+      <span class="expense-label">${e.label} <span style="font-size:.66rem;color:var(--muted)">${e.cat}</span></span>
+      <span class="expense-amount">${(+e.amount).toFixed(0)}€</span>
+      <button class="expense-del" onclick="deleteExpense(${i})">✕</button>
+    </div>`).join('');
+}
+
+window.addExpense = async function(){
+  const label=document.getElementById('tm-exp-label').value.trim();
+  const amount=parseFloat(document.getElementById('tm-exp-amount').value);
+  if(!label||!amount){ showToast('⚠️ Remplissez le libellé et le montant'); return; }
+  const t=travels.find(x=>x.id===currentTravelId); if(!t) return;
+  const exps=[...(t.expenses||[]),{label,amount,cat:document.getElementById('tm-exp-cat').value,date:new Date().toLocaleDateString('fr-FR')}];
+  await fbSet('travels',currentTravelId,{expenses:exps});
+  document.getElementById('tm-exp-label').value=''; document.getElementById('tm-exp-amount').value='';
+};
+window.deleteExpense = async function(i){
+  const t=travels.find(x=>x.id===currentTravelId); if(!t) return;
+  const exps=[...(t.expenses||[])]; exps.splice(i,1);
+  await fbSet('travels',currentTravelId,{expenses:exps});
+};
+
+function renderJournal(t){
+  const entries=t.journal||[];
+  document.getElementById('tm-journal').innerHTML=!entries.length?'<p style="font-size:.78rem;color:var(--muted)">Aucune note.</p>':
+    [...entries].reverse().map((e,i)=>`<div class="journal-entry">
+      <div class="journal-date">${e.date||''}</div>
+      <div class="journal-text">${e.text}</div>
+      <button class="journal-del" onclick="deleteJournal(${entries.length-1-i})">✕</button>
+    </div>`).join('');
+}
+window.addJournalEntry = async function(){
+  const text=document.getElementById('tm-journal-text').value.trim(); if(!text) return;
+  const t=travels.find(x=>x.id===currentTravelId); if(!t) return;
+  const journal=[...(t.journal||[]),{text,date:new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}];
+  await fbSet('travels',currentTravelId,{journal});
+  document.getElementById('tm-journal-text').value='';
+};
+window.deleteJournal = async function(i){
+  const t=travels.find(x=>x.id===currentTravelId); if(!t) return;
+  const journal=[...(t.journal||[])]; journal.splice(i,1);
+  await fbSet('travels',currentTravelId,{journal});
+};
+window.deleteCurrentTravel = async function(){
+  if(!confirm('Supprimer ce voyage ?')) return;
+  await fbDel('travels',currentTravelId);
+  closeModal('travel-modal'); showToast('🗑 Voyage supprimé');
+};
+
+// Bucket list
+window.addBucketItem = async function(){
+  const dest=document.getElementById('bucket-dest').value.trim(); if(!dest) return;
+  await fbAdd('bucket',{dest,flag:document.getElementById('bucket-flag').value||'🌍',done:false});
+  document.getElementById('bucket-dest').value=''; document.getElementById('bucket-flag').value='';
+};
+window.toggleBucket = async function(id, done){ await fbSet('bucket',id,{done:!done}); };
+window.deleteBucket = async function(id){ await fbDel('bucket',id); };
+
+function renderBucketList(list){
+  bucketList=list;
+  const el=document.getElementById('bucket-list');
+  if(!list.length){ el.innerHTML='<div class="empty-state"><div class="big-emoji">🔖</div><p>Votre bucket list est vide !</p></div>'; return; }
+  el.innerHTML=list.map(b=>`<div class="bucket-item">
+    <div class="bucket-check ${b.done?'done':''}" onclick="toggleBucket('${b.id}',${b.done})"></div>
+    <span style="font-size:1.2rem">${b.flag||'🌍'}</span>
+    <span style="flex:1;font-size:.88rem;${b.done?'text-decoration:line-through;opacity:.5':''}">${b.dest}</span>
+    <button class="delete-btn" onclick="deleteBucket('${b.id}')">🗑</button>
+  </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+// FILMS
+// ═══════════════════════════════════════
+let films=[], filmFilter='all', currentFilmId=null;
+let suggestions=[];
+let starValLouis=0, starValElisa=0;
+
+function initStarRatings(){
+  ['star-louis','star-elisa'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    let html='';
+    for(let i=1;i<=10;i++) html+=`<span class="star" data-v="${i}" onclick="setStar('${id}',${i})">★</span>`;
+    el.innerHTML=html;
+  });
+}
+window.setStar = function(id, val){
+  if(id==='star-louis') starValLouis=val; else starValElisa=val;
+  document.querySelectorAll(`#${id} .star`).forEach(s=>{
+    s.classList.toggle('filled', +s.dataset.v<=val);
+  });
+};
+
+let filmSearchTimer=null;
+window.searchFilmAI = async function searchFilmAI(q){
+  const sr=document.getElementById('film-search-results');
+  clearTimeout(filmSearchTimer);
+  if(!q||q.length<2){ sr.style.display='none'; return; }
+  filmSearchTimer=setTimeout(async()=>{
+    sr.style.display='block';
+    sr.innerHTML='<div style="padding:.6rem 1rem;color:var(--muted);font-size:.8rem"><span class="spinner"></span> Recherche…</div>';
+    try{
+      const text=await callAICached('Liste 5 films dont le titre contient ou ressemble a "'+q+'". Reponds UNIQUEMENT en JSON sans markdown: [{"title":"titre exact","year":"annee","director":"realisateur","genre":"genre principal parmi Drama/Comedy/Sci-Fi/Horror/Romance/Action/Thriller/Fantasy/Animation"}]', 500);
+      if(!text) throw new Error('no response');
+      const films=JSON.parse(text.replace(/```json|```/g,'').trim());
+      // Store films in a temp global to avoid JSON in onclick
+      window._filmSuggestions = films;
+      sr.innerHTML=films.map((f,i)=>`<div onclick="window.selectFilm(window._filmSuggestions[${i}])" style="padding:.55rem 1rem;cursor:pointer;border-bottom:1px solid var(--border);display:flex;gap:.6rem;align-items:center" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">
+        <span style="font-size:1.2rem">🎬</span>
+        <div><div style="font-weight:600;font-size:.85rem">${f.title}</div><div style="font-size:.72rem;color:var(--muted)">${f.year||''}${f.director?' · '+f.director:''}${f.genre?' · '+f.genre:''}</div></div>
+      </div>`).join('');
+    } catch(e){
+      sr.style.display='none';
+    }
+  }, 600);
+}
+window.selectFilm=function(f){
+  document.getElementById('f-title').value=f.title||'';
+  document.getElementById('f-year').value=f.year||'';
+  document.getElementById('f-director').value=f.director||'';
+  const genreMap={'Drama':'🎭 Drame','Comedy':'😂 Comédie','Sci-Fi':'🚀 Sci-Fi','Horror':'😱 Horreur','Romance':'💕 Romance','Action':'🔫 Action','Thriller':'🔍 Thriller','Fantasy':'🧙 Fantastique','Animation':'🌍 Animation'};
+  const sel=document.getElementById('f-genre');
+  const mapped=genreMap[f.genre]||'';
+  if(mapped) for(let o of sel.options) if(o.text===mapped){ o.selected=true; break; }
+  document.getElementById('film-search-results').style.display='none';
+};
+
+window.addFilm = async function(){
+  const title=document.getElementById('f-title').value.trim(); if(!title){ showToast('⚠️ Entrez un titre !'); return; }
+  await fbAdd('films',{
+    title, year:document.getElementById('f-year').value,
+    director:document.getElementById('f-director').value,
+    genre:document.getElementById('f-genre').value,
+    status:document.getElementById('f-status').value,
+    date:document.getElementById('f-date').value,
+    location:document.getElementById('f-location').value,
+    heart:+document.getElementById('f-heart').value,
+    rewatch:+document.getElementById('f-rewatch').value,
+    scoreLouis:starValLouis, scoreElisa:starValElisa,
+    quote:document.getElementById('f-quote').value,
+    comment:document.getElementById('f-comment').value
+  });
+  showToast('🎬 Film ajouté !');
+  ['f-title','f-year','f-director','f-location','f-quote','f-comment','f-date'].forEach(id=>document.getElementById(id).value='');
+  starValLouis=0; starValElisa=0;
+  document.querySelectorAll('.star').forEach(s=>s.classList.remove('filled'));
+  switchTab('films','seen', document.querySelector('#page-films .tab-btn'));
+};
+
+window.filterFilms = function(f, btn){
+  filmFilter=f;
+  document.querySelectorAll('#ftab-seen .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active'); renderFilms();
+};
+
+function renderFilms(){
+  const grid=document.getElementById('film-grid');
+  const watchGrid=document.getElementById('watchlist-grid');
+  const seen=films.filter(f=>f.status==='seen');
+  const watchlist=films.filter(f=>f.status==='watchlist');
+  let list=seen;
+  if(filmFilter==='heart') list=seen.filter(f=>f.heart);
+  if(filmFilter==='rewatchable') list=seen.filter(f=>f.rewatch);
+  grid.innerHTML=!list.length?'<div class="empty-state" style="grid-column:1/-1"><div class="big-emoji">🎬</div><p>Aucun film vu.</p></div>':
+    list.map(f=>`<div class="film-card" onclick="openFilm('${f.id}')">
+      <div class="film-poster"><span style="position:relative;z-index:1">${f.genre?.split(' ')[0]||'🎬'}</span>${f.year?`<span class="film-year-badge">${f.year}</span>`:''}</div>
+      ${f.heart?'<span class="film-heart">❤️</span>':''}
+      <div class="film-body">
+        <div class="film-title">${f.title}</div>
+        <div class="film-scores">
+          ${f.scoreLouis?`<span class="film-score score-louis">L: ${f.scoreLouis}/10</span>`:''}
+          ${f.scoreElisa?`<span class="film-score score-elisa">E: ${f.scoreElisa}/10</span>`:''}
+        </div>
+        <span class="film-tag tag-seen">✅ Vu</span>
+        ${f.rewatch?'<span class="film-tag" style="background:rgba(46,109,126,.1);color:#1a5c6e;border:1px solid rgba(46,109,126,.2);margin-left:.25rem">🔄</span>':''}
+      </div>
+    </div>`).join('');
+  watchGrid.innerHTML=!watchlist.length?'<div class="empty-state" style="grid-column:1/-1"><div class="big-emoji">📋</div><p>Aucun film à voir.</p></div>':
+    watchlist.map(f=>`<div class="film-card" onclick="openFilm('${f.id}')">
+      <div class="film-poster"><span>${f.genre?.split(' ')[0]||'🎬'}</span>${f.year?`<span class="film-year-badge">${f.year}</span>`:''}</div>
+      <div class="film-body">
+        <div class="film-title">${f.title}</div>
+        <span class="film-tag tag-watchlist">📋 À voir</span>
+      </div>
+    </div>`).join('');
+  document.getElementById('badge-films').textContent=films.length;
+}
+
+window.openFilm = function(id){
+  const f=films.find(x=>x.id===id); if(!f) return;
+  currentFilmId=id;
+  document.getElementById('fm-title').textContent=f.title;
+  const badges=[
+    f.status==='seen'?'<span class="film-tag tag-seen">✅ Vu</span>':'<span class="film-tag tag-watchlist">📋 À voir</span>',
+    f.heart?'<span class="film-tag" style="background:rgba(219,39,119,.1);color:#be185d;border:1px solid rgba(219,39,119,.2)">❤️ Coup de cœur</span>':'',
+    f.rewatch?'<span class="film-tag" style="background:rgba(46,109,126,.1);color:#1a5c6e;border:1px solid rgba(46,109,126,.2)">🔄 À revoir</span>':'',
+    f.genre?`<span class="film-tag" style="background:rgba(107,63,160,.08);color:#5a3585;border:1px solid rgba(107,63,160,.15)">${f.genre}</span>`:''
+  ].filter(Boolean).join('');
+  document.getElementById('fm-tags').innerHTML=badges;
+  document.getElementById('fm-score-louis').textContent=f.scoreLouis||'—';
+  document.getElementById('fm-score-elisa').textContent=f.scoreElisa||'—';
+  let details='';
+  if(f.director) details+=`<div>🎬 <b>Réalisateur :</b> ${f.director}</div>`;
+  if(f.year) details+=`<div>📅 <b>Année :</b> ${f.year}</div>`;
+  if(f.date) details+=`<div>🗓 <b>Vu le :</b> ${f.date}</div>`;
+  if(f.location) details+=`<div>📍 <b>Lieu :</b> ${f.location}</div>`;
+  document.getElementById('fm-details').innerHTML=details||'Aucun détail.';
+  const quoteEl=document.getElementById('fm-quote-section');
+  if(f.quote){ quoteEl.style.display='block'; document.getElementById('fm-quote').textContent=`"${f.quote}"`; } else quoteEl.style.display='none';
+  const comEl=document.getElementById('fm-comment-section');
+  if(f.comment){ comEl.style.display='block'; document.getElementById('fm-comment').textContent=f.comment; } else comEl.style.display='none';
+  document.getElementById('film-modal').classList.add('open');
+};
+window.deleteCurrentFilm = async function(){
+  if(!confirm('Supprimer ce film ?')) return;
+  await fbDel('films',currentFilmId);
+  closeModal('film-modal'); showToast('🗑 Film supprimé');
+};
+
+window.generateFilmRecos = async function(){
+  const btn=document.getElementById('reco-btn');
+  btn.disabled=true; btn.textContent='…';
+  document.getElementById('reco-loading').style.display='block';
+  document.getElementById('reco-list').innerHTML='';
+  const seen=films.filter(f=>f.status==='seen');
+  if(!seen.length){ showToast('⚠️ Ajoutez des films vus d\'abord !'); btn.disabled=false; btn.textContent='🎬 Générer'; document.getElementById('reco-loading').style.display='none'; return; }
+  const filmList=seen.map(f=>`${f.title}${f.scoreLouis||f.scoreElisa?' (L:'+f.scoreLouis+' E:'+f.scoreElisa+')':''}`).slice(0,15).join(', ');
+  try{
+    const classics=[
+      {title:"Everything Everywhere All at Once",year:"2022",genre:"Sci-Fi / Comédie",why:"Un film unique en son genre, mélange parfait d'action et d'émotion. Vous ne regretterez pas !",emoji:"🥢"},
+      {title:"Parasite",year:"2019",genre:"Thriller",why:"Un chef-d'oeuvre de Bong Joon-ho. Tension, humour et critique sociale — impossible de décrocher.",emoji:"🏠"},
+      {title:"La La Land",year:"2016",genre:"Romance / Musical",why:"Parfait pour regarder en couple. Magnifique, émouvant et musicalement inoubliable.",emoji:"🎭"},
+      {title:"Interstellar",year:"2014",genre:"Sci-Fi",why:"Un voyage épique dans l'espace qui touche profondément. Visuellement époustouflant.",emoji:"🚀"},
+      {title:"Coco",year:"2017",genre:"Animation",why:"Un Pixar qui fait pleurer et sourire à la fois. Parfait pour une soirée cocooning.",emoji:"💀"}
+    ];
+    document.getElementById('reco-list').innerHTML=classics.map((r,i)=>`
+      <div class="reco-card" style="animation-delay:${i*.08}s">
+        <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.35rem">
+          <span style="font-size:1.6rem">${r.emoji}</span>
+          <div><div class="reco-title">${r.title}</div><div style="font-size:.72rem;color:var(--muted)">${r.year}</div></div>
+        </div>
+        <div class="reco-why">${r.why}</div>
+        <div class="reco-meta"><span class="reco-tag">${r.genre}</span></div>
+      </div>`).join('');
+  } catch(e){ showToast('❌ Erreur'); console.error(e); }
+  finally{ document.getElementById('reco-loading').style.display='none'; btn.disabled=false; btn.textContent='🎬 Générer'; }
+};
+
+window.addSuggestion = async function(){
+  const title=document.getElementById('sug-title').value.trim(); if(!title) return;
+  await fbAdd('suggestions',{title,from:document.getElementById('sug-from').value,why:document.getElementById('sug-why').value});
+  document.getElementById('sug-title').value=''; document.getElementById('sug-why').value='';
+  showToast('💌 Suggestion envoyée !');
+};
+window.deleteSuggestion = async function(id){ await fbDel('suggestions',id); };
+
+function renderSuggestions(list){
+  suggestions=list;
+  const el=document.getElementById('suggestions-list');
+  if(!list.length){ el.innerHTML='<div class="empty-state"><div class="big-emoji">💌</div><p>Aucune suggestion.</p></div>'; return; }
+  el.innerHTML=list.map(s=>`<div class="suggest-card">
+    <div class="suggest-from">${s.from}</div>
+    <div class="suggest-title-text">🎬 ${s.title}</div>
+    ${s.why?`<div class="suggest-why">${s.why}</div>`:''}
+    <button class="suggest-del" onclick="deleteSuggestion('${s.id}')">✕</button>
+  </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+// GAMES
+// ═══════════════════════════════════════
+let games=[], bets=[], betFilter='all';
+let selectedGame=null;
+let searchTimer=null, monthlyChart=null;
+
+window.addGame = async function(){
+  const winner=document.getElementById('game-winner').value;
+  if(!winner){ showToast('⚠️ Sélectionnez un gagnant !'); return; }
+  const name=selectedGame?.name||document.getElementById('game-search').value.trim();
+  if(!name){ showToast('⚠️ Entrez le nom d\'un jeu !'); return; }
+  const date=document.getElementById('game-date').value||new Date().toISOString().split('T')[0];
+  await fbAdd('games',{
+    name, bggId:selectedGame?.id||null, thumb:selectedGame?.thumb||null,
+    winner, scoreP1:document.getElementById('score-p1').value,
+    scoreP2:document.getElementById('score-p2').value,
+    notes:document.getElementById('game-notes').value, date
+  });
+  const flash=document.getElementById('theme-overlay');
+  flash.classList.add('flash'); setTimeout(()=>flash.classList.remove('flash'),200);
+  showToast(winner==='Égalité'?'🤝 Égalité !':`🏆 ${winner} gagne !`);
+  ['score-p1','score-p2','game-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('game-date').value='';
+  clearGame();
+};
+
+window.clearGame = function(){
+  selectedGame=null;
+  document.getElementById('selected-game-display').classList.remove('visible');
+  document.getElementById('search-wrapper').style.display='block';
+  document.getElementById('game-search').value='';
+  document.getElementById('search-results').innerHTML='';
+  document.getElementById('search-results').classList.remove('open');
+};
+
+window.clearAllGames = async function(){
+  if(!confirm('Effacer tout l\'historique ?')) return;
+  const all=await fbGetAll('games');
+  for(const g of all) await fbDel('games',g.id);
+  showToast('🗑 Historique effacé');
+};
+
+window.deleteGame = async function(id){
+  await fbDel('games',id); showToast('🗑 Partie supprimée');
+};
+
+
+const GAME_THEMES = {
+  "catan":{"bg":"linear-gradient(145deg,#fdf3e7,#f0dfc0,#e8d4a8)","accent":"#8b4513","em":"🏔️","icon":"⚓","title":"Les Colons de Catane","sub":"Bois, minerai, blé — la conquête","badge":"Stratégie · 3-4 joueurs"},
+  "carcassonne":{"bg":"linear-gradient(145deg,#f2efe2,#e6dfc6,#d9d1ae)","accent":"#5c4a1e","em":"🏰","icon":"🗺️","title":"Carcassonne","sub":"Tuiles et meeples, bâtis ton royaume","badge":"Stratégie · 2-5 joueurs"},
+  "monopoly":{"bg":"linear-gradient(145deg,#eaf5ea,#cce8cc,#aed9ae)","accent":"#1b5e20","em":"🎩","icon":"💰","title":"Monopoly","sub":"L'argent est roi, les rues aussi","badge":"Classique · 2-8 joueurs"},
+  "uno":{"bg":"linear-gradient(145deg,#fffaed,#ffefb5,#ffe47a)","accent":"#e65100","em":"🃏","icon":"🌈","title":"UNO","sub":"+4 couleur, bonne chance !","badge":"Ambiance · 2-10 joueurs"},
+  "risk":{"bg":"linear-gradient(145deg,#fce8ef,#f9c0d4,#f499b8)","accent":"#880e4f","em":"⚔️","icon":"🌍","title":"Risk","sub":"Conquête mondiale, chaque armée compte","badge":"Stratégie · 2-6 joueurs"},
+  "scrabble":{"bg":"linear-gradient(145deg,#f5e8f7,#e5c4ec,#d49fe0)","accent":"#6a1b9a","em":"📝","icon":"🔤","title":"Scrabble","sub":"Chaque lettre vaut son pesant d'or","badge":"Mots · 2-4 joueurs"},
+  "chess":{"bg":"linear-gradient(145deg,#f0ece9,#dad1cc,#c4b8b2)","accent":"#3e2723","em":"♟️","icon":"👑","title":"Échecs","sub":"Un coup d'avance, toujours","badge":"Stratégie · 2 joueurs"},
+  "dixit":{"bg":"linear-gradient(145deg,#eaecf8,#c8ceee,#a7b0e3)","accent":"#283593","em":"🌙","icon":"✨","title":"Dixit","sub":"Conte-moi une histoire en images","badge":"Créativité · 3-6 joueurs"},
+  "pandemic":{"bg":"linear-gradient(145deg,#e2f4f2,#b5e3de,#88d1ca)","accent":"#004d40","em":"🦠","icon":"💊","title":"Pandemic","sub":"Sauver l'humanité ensemble","badge":"Coopératif · 2-4 joueurs"},
+  "ticket":{"bg":"linear-gradient(145deg,#fffaed,#ffefb5,#ffd54f)","accent":"#bf360c","em":"🚂","icon":"🛤️","title":"Aventuriers du Rail","sub":"De Paris à New York en wagon","badge":"Stratégie · 2-5 joueurs"},
+  "azul":{"bg":"linear-gradient(145deg,#e6f3fd,#bdddf9,#93c8f4)","accent":"#0d47a1","em":"🔷","icon":"🎨","title":"Azul","sub":"Crée le plus beau palais de Lisbonne","badge":"Abstrait · 2-4 joueurs"},
+  "codenames":{"bg":"linear-gradient(145deg,#f2f8e8,#deeec6,#c9e3a3)","accent":"#33691e","em":"🕵️","icon":"🔍","title":"Codenames","sub":"Un mot, mille indices","badge":"Déduction · 4-8 joueurs"},
+  "7wonders":{"bg":"linear-gradient(145deg,#fff5e2,#ffe3b0,#ffd07d)","accent":"#e65100","em":"🏛️","icon":"⭐","title":"7 Wonders","sub":"Bâtis une civilisation éternelle","badge":"Civilisation · 3-7 joueurs"},
+  "splendor":{"bg":"linear-gradient(145deg,#fce8ef,#f9c0d4,#f499b8)","accent":"#880e4f","em":"💎","icon":"💍","title":"Splendor","sub":"Gemmes, prestige, noblesse","badge":"Stratégie · 2-4 joueurs"},
+  "hanabi":{"bg":"linear-gradient(145deg,#eaf5ea,#cce8cc,#aed9ae)","accent":"#1b5e20","em":"🎆","icon":"🌟","title":"Hanabi","sub":"Le feu d'artifice parfait ensemble","badge":"Coopératif · 2-5 joueurs"}
+};
+
+function getGameTheme(gameName) {
+  if(!gameName) return null;
+  const lower = gameName.toLowerCase();
+  for(const [key, theme] of Object.entries(GAME_THEMES)) {
+    if(lower.includes(key)) return theme;
+  }
+  return null;
+}
+
+function applyGameTheme(gameName, gameCount) {
+  const page = document.getElementById('page-games');
+  const theme = getGameTheme(gameName);
+  const old = document.getElementById('game-theme-banner');
+  if(old) old.remove();
+  if(!theme || !gameName) {
+    page.style.removeProperty('background');
+    document.getElementById('main-title').innerHTML = 'Notre <em>Arène</em>';
+    return;
+  }
+  page.style.background = theme.bg;
+  document.getElementById('main-title').innerHTML = theme.em + ' <em>Arène</em>';
+  const banner = document.createElement('div');
+  banner.id = 'game-theme-banner';
+  banner.className = 'game-theme-banner';
+  banner.innerHTML =
+    '<div class="game-theme-icon">'+theme.icon+'</div>'+
+    '<div style="flex:1;min-width:0">'+
+      '<div class="game-theme-name">'+theme.title+'</div>'+
+      '<div class="game-theme-sub">'+theme.sub+'</div>'+
+      '<div class="game-theme-badge">'+theme.badge+'</div>'+
+    '</div>'+
+    (gameCount ? '<div class="game-theme-count">'+gameCount+'&nbsp;parties</div>' : '');
+  const container = page.querySelector('.container');
+  container.insertBefore(banner, container.querySelector('.page-header').nextSibling);
+}
+
+
+// ── AI avec fallback automatique ──
+const AI_MODELS = [
+  'mistralai/mistral-small-3.1-24b-instruct:free',
+  'google/gemma-3-4b-it:free',
+  'meta-llama/llama-3.2-3b-instruct:free',
+  'qwen/qwen-2.5-7b-instruct:free',
+  'microsoft/phi-3-mini-128k-instruct:free'
+];
+const AI_KEY = atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==');
+
+
+
+let _bggTimer=null;
+window.searchBGG = function(q){
+  clearTimeout(_bggTimer);
+  const sr=document.getElementById('search-results');
+  if(!q||q.length<2){ sr.classList.remove('open'); return; }
+  _bggTimer=setTimeout(async()=>{
+    sr.classList.add('open');
+    sr.innerHTML='<div class="search-status"><span class="spinner"></span> Recherche…</div>';
+    const text=await callAICached('Liste 5 jeux de societe dont le nom contient ou ressemble a "'+q+'". Reponds UNIQUEMENT en JSON sans markdown: [{"name":"nom exact","year":"annee","genre":"type de jeu"}]');
+    if(text){
+      try{
+        const games=JSON.parse(text.replace(/```json|```/g,'').trim());
+        sr.innerHTML=games.map(g=>`<div class="result-item" onclick="selectBGGGame('ai','${g.name.replace(/'/g,"\'")}','${g.year||''}')">
+          <div class="result-thumb-ph">🎲</div>
+          <div><div class="result-name">${g.name}</div><div class="result-year">${g.year||''}${g.genre?' · '+g.genre:''}</div></div>
+        </div>`).join('');
+        return;
+      }catch(e){}
+    }
+    const safe=q.replace(/'/g,"\'");
+    sr.innerHTML=`<div class="result-item" onclick="selectBGGGame('manual','${safe}','')">
+      <div class="result-thumb-ph">🎲</div>
+      <div><div class="result-name">${q}</div><div class="result-year">✓ Utiliser ce nom</div></div>
+    </div>`;
   }, 600);
 };
 
