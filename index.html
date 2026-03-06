@@ -1087,12 +1087,22 @@ window.generateRecipeAI = async function(){
   document.getElementById('recipe-preview').style.display='none';
   baseServings=currentServings;
   try{
-    const recipe={emoji:'🍳',cat:'Plat principal',time:'30 min',
-      ingredients:[`Ingrédients pour ${name} (${currentServings} pers.) — à compléter`],
-      steps:[`Préparer les ingrédients pour "${name}"`,`Cuire et assaisonner selon vos goûts`,`Servir chaud et déguster !`],
-      note:'Modifiez les ingrédients et étapes selon votre recette !'};
-    generatedRecipeData=recipe; showRecipePreview(name, recipe);
-  } catch(e){ showToast('❌ Erreur. Réessayez !'); console.error(e); }
+    const resp=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer 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','HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
+      body:JSON.stringify({model:'mistralai/mistral-7b-instruct:free',max_tokens:1200,
+        messages:[{role:'user',content:`Tu es un chef cuisinier. Génère une recette détaillée pour "${name}" pour ${currentServings} personne${currentServings>1?'s':''}. Réponds UNIQUEMENT en JSON valide sans markdown ni texte autour:
+{"emoji":"emoji adapté","cat":"Pâtes & Riz ou Viande ou Poisson ou Végétarien ou Dessert ou Petit-déj ou Soupe ou Street food","time":"temps total ex: 30 min","ingredients":["100g de farine","2 oeufs","etc"],"steps":["Étape détaillée 1","Étape détaillée 2","Étape détaillée 3"],"note":"astuce du chef ou null"}`}]})
+    });
+    const data=await resp.json();
+    const text=data.choices?.[0]?.message?.content||'';
+    const clean=text.replace(/```json|```/g,'').trim();
+    const recipe=JSON.parse(clean);
+    generatedRecipeData=recipe;
+    showRecipePreview(name, recipe);
+  } catch(e){ 
+    showToast('❌ Erreur IA. Vérifiez votre connexion !'); 
+    console.error(e); 
+  }
   finally{ document.getElementById('recipe-ai-loading').style.display='none'; btn.disabled=false; btn.textContent='✨ Générer'; }
 };
 
@@ -1787,10 +1797,9 @@ async function searchBGG(q){
   sr.innerHTML='<div class="search-status"><span class="spinner"></span></div>';
   sr.classList.add('open');
   try{
-    const proxyUrl='https://api.allorigins.win/get?url='+encodeURIComponent(`https://boardgamegeek.com/xmlapi2/search?query=${encodeURIComponent(q)}&type=boardgame`);
+    const proxyUrl='https://corsproxy.io/?'+encodeURIComponent(`https://boardgamegeek.com/xmlapi2/search?query=${encodeURIComponent(q)}&type=boardgame`);
     const resp=await fetch(proxyUrl);
-    const json=await resp.json();
-    const text=json.contents;
+    const text=await resp.text();
     const xml=new DOMParser().parseFromString(text,'text/xml');
     const items=[...xml.querySelectorAll('item')].slice(0,6);
     if(!items.length){ sr.innerHTML='<div class="search-status">Aucun résultat</div>'; return; }
