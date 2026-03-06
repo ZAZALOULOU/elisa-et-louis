@@ -1881,11 +1881,10 @@ function applyGameTheme(gameName, gameCount) {
 
 // ── AI avec fallback automatique ──
 const AI_MODELS = [
-  'mistralai/mistral-small-3.1-24b-instruct:free',
+  'mistralai/mistral-small-3.2-24b-instruct',
+  'meta-llama/llama-3.1-8b-instruct',
   'google/gemma-3-4b-it:free',
-  'meta-llama/llama-3.2-3b-instruct:free',
-  'qwen/qwen-2.5-7b-instruct:free',
-  'microsoft/phi-3-mini-128k-instruct:free'
+  'meta-llama/llama-3.2-3b-instruct:free'
 ];
 const AI_KEY = atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==');
 
@@ -2776,11 +2775,10 @@ function applyGameTheme(gameName, gameCount) {
 
 // ── AI avec fallback automatique ──
 const AI_MODELS = [
-  'mistralai/mistral-small-3.1-24b-instruct:free',
+  'mistralai/mistral-small-3.2-24b-instruct',
+  'meta-llama/llama-3.1-8b-instruct',
   'google/gemma-3-4b-it:free',
-  'meta-llama/llama-3.2-3b-instruct:free',
-  'qwen/qwen-2.5-7b-instruct:free',
-  'microsoft/phi-3-mini-128k-instruct:free'
+  'meta-llama/llama-3.2-3b-instruct:free'
 ];
 const AI_KEY = atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==');
 
@@ -2812,92 +2810,6 @@ window.searchBGG = function(q){
     </div>`;
   }, 600);
 };
-
-window.selectRecentGame = function(name, bggId, thumb){
-  selectedGame={name, id:bggId, thumb:thumb||null};
-  document.getElementById('sel-name').textContent=name;
-  document.getElementById('sel-meta').textContent='';
-  if(thumb){
-    document.getElementById('sel-thumb-wrap').innerHTML=`<img src="${thumb}" class="sel-thumb">`;
-  } else {
-    document.getElementById('sel-thumb-wrap').innerHTML='🎲';
-  }
-  document.getElementById('selected-game-display').style.display='flex';
-  document.getElementById('search-wrapper').style.display='none';
-  document.getElementById('recents-section').style.display='none';
-  applyGameTheme(name);
-};
-
-window.selectBGGGame = function(id, name, year){
-  selectedGame={name, id, thumb:null};
-  document.getElementById('sel-name').textContent=name;
-  document.getElementById('sel-meta').textContent=year?`${year}`:'';
-  document.getElementById('sel-thumb-wrap').innerHTML='🎲';
-  document.getElementById('selected-game-display').style.display='flex';
-  document.getElementById('search-wrapper').style.display='none';
-  document.getElementById('recents-section').style.display='none';
-  document.getElementById('search-results').classList.remove('open');
-  applyGameTheme(name);
-};
-
-function renderGames(){
-  const p1=games.filter(g=>g.winner==='Louis').length;
-  const p2=games.filter(g=>g.winner==='Elisa').length;
-  document.getElementById('wins-p1').textContent=p1;
-  document.getElementById('wins-p2').textContent=p2;
-  document.getElementById('wins-p1').className='player-wins'+(p1>p2?' leading':'');
-  document.getElementById('wins-p2').className='player-wins'+(p2>p1?' leading':'');
-  document.getElementById('stat-total').textContent=games.length;
-  const crown=document.getElementById('crown');
-  crown.textContent=p1>p2?'👑':p2>p1?'👑':'🤝';
-  // fav game
-  const counts={};
-  games.forEach(g=>{ counts[g.name]=(counts[g.name]||0)+1; });
-  const fav=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('stat-fav').textContent=fav?fav[0].substring(0,10):'—';
-  applyGameTheme(fav?fav[0]:null, fav?fav[1]:0);
-  // streak
-  let streak=0;
-  if(games.length){
-    const last=games[0].winner;
-    for(const g of games){ if(g.winner===last&&g.winner!=='Égalité') streak++; else break; }
-  }
-  document.getElementById('stat-streak').textContent=streak;
-  document.getElementById('badge-games').textContent=games.length;
-  // history
-  const hist=document.getElementById('history-list');
-  if(!games.length){ hist.innerHTML='<div class="empty-state"><div class="big-emoji">🎲</div><p>Aucune partie.</p></div>'; }
-  else hist.innerHTML=games.map(g=>`<div class="game-entry" style="--entry-color:${g.winner==='Louis'?'#2563eb':g.winner==='Elisa'?'#db2777':'#888'}">
-    <div class="entry-thumb-ph">${g.thumb?`<img src="${g.thumb}" class="entry-thumb">`:'🎲'}</div>
-    <div class="entry-info"><div class="entry-game">${g.name}</div><div class="entry-meta">${g.date||''} ${g.scoreP1||g.scoreP2?`· ${g.scoreP1||'?'} vs ${g.scoreP2||'?'}`:''} ${g.notes?`· ${g.notes}`:''}</div></div>
-    <div class="entry-winner"><small>Gagnant</small>${g.winner}</div>
-    <button class="delete-btn" onclick="deleteGame('${g.id}')">🗑</button>
-  </div>`).join('');
-  // recents
-  const seen=new Set(); const recents=[];
-  for(const g of games){ if(!seen.has(g.name)){ seen.add(g.name); recents.push(g); if(recents.length===5) break; } }
-  const rc=document.getElementById('recent-chips');
-  if(recents.length){ document.getElementById('recents-section').style.display='block';
-    rc.innerHTML=recents.map(g=>`<div class="recent-chip" onclick="selectRecentGame('${g.name}','${g.bggId||''}','${g.thumb||''}')">
-      ${g.thumb?`<img src="${g.thumb}" style="width:18px;height:18px;border-radius:3px;object-fit:cover">`:'🎲'} ${g.name}
-    </div>`).join('');
-  }
-  // stats
-  if(games.length){
-    const wL=games.filter(g=>g.winner==='Louis').length;
-    const wE=games.filter(g=>g.winner==='Elisa').length;
-    const tot=games.length;
-    document.getElementById('h2h-wins-louis').textContent=wL;
-    document.getElementById('h2h-wins-elisa').textContent=wE;
-    document.getElementById('h2h-pct-louis').textContent=tot?Math.round(wL/tot*100)+'%':'—';
-    document.getElementById('h2h-pct-elisa').textContent=tot?Math.round(wE/tot*100)+'%':'—';
-    const pL=tot?wL/tot*100:50, pE=tot?wE/tot*100:50;
-    document.getElementById('h2h-bar-l').style.width=pL+'%';
-    document.getElementById('h2h-bar-e').style.width=pE+'%';
-    const draws=games.filter(g=>g.winner==='Égalité').length;
-    document.getElementById('h2h-draws').textContent=draws+' égalité'+(draws>1?'s':'');
-  }
-}
 
 // ── Bets ──
 const CAT_COLORS={'🎮 Jeux':'#b05a35','🎬 Films & Séries':'#7b5ea7','🏃 Sport & Défi':'#4a7c6b','🍕 Nourriture':'#c9a040','📚 Culture':'#2e6d7e','💼 Vie quotidienne':'#c9a040','❓ Autre':'#9a8e7e'};
