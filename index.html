@@ -458,6 +458,55 @@ body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)
   font-size:.65rem; opacity:.55; margin-top:.15rem; font-weight:500;
 }
 
+
+/* ===== PAGE IDENTITIES ===== */
+#page-recipes { background: linear-gradient(160deg, #fdf6ee 0%, #f5ece0 60%, #fdf6ee 100%); min-height:100dvh; }
+#page-recipes .eyebrow { color: #b05a35 !important; }
+#page-recipes h1 em { color: #b05a35 !important; }
+#page-recipes .card { background:rgba(255,253,249,.95); border:1px solid rgba(176,90,53,.1); }
+
+#page-travel { background: linear-gradient(160deg, #eef6fd 0%, #e4f0f8 50%, #eef7ee 100%); min-height:100dvh; }
+#page-travel .eyebrow { color: #2e6d7e !important; }
+#page-travel h1 em { color: #2e6d7e !important; }
+#page-travel .card { background:rgba(248,253,255,.95); border:1px solid rgba(46,109,126,.1); }
+
+#page-films { background: linear-gradient(160deg, #f4f0f8 0%, #ede8f4 50%, #f4f0f8 100%); min-height:100dvh; }
+#page-films .eyebrow { color: #6b3fa0 !important; }
+#page-films h1 em { color: #6b3fa0 !important; }
+#page-films .card { background:rgba(252,250,255,.95); border:1px solid rgba(107,63,160,.1); }
+#page-films .tab-btn.active { background: #6b3fa0 !important; }
+
+#page-games { min-height:100dvh; transition: background .7s ease; }
+
+.page-deco { text-align:center; font-size:1rem; opacity:.25; letter-spacing:.35em; margin-bottom:.35rem; }
+
+/* ===== GAME THEME BANNER ===== */
+.game-theme-banner {
+  display:flex !important; align-items:center; gap:.85rem;
+  background:rgba(255,255,255,.2) !important;
+  backdrop-filter:blur(20px) !important; -webkit-backdrop-filter:blur(20px) !important;
+  border:1px solid rgba(255,255,255,.35) !important;
+  border-radius:18px !important; padding:.9rem 1.1rem !important;
+  box-shadow:0 4px 28px rgba(0,0,0,.06), 0 1px 0 rgba(255,255,255,.5) inset;
+  margin-bottom:1.2rem; animation: fadeUp .4s ease both;
+}
+.game-theme-icon {
+  width:48px; height:48px; flex-shrink:0;
+  background:rgba(255,255,255,.3); border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem !important;
+  box-shadow:0 2px 10px rgba(0,0,0,.1), 0 1px 0 rgba(255,255,255,.6) inset;
+}
+.game-theme-name { font-weight:700; font-size:.92rem; letter-spacing:-.01em; }
+.game-theme-sub { font-size:.7rem; opacity:.6; margin-top:.08rem; font-style:italic; }
+.game-theme-badge { font-size:.62rem; opacity:.5; margin-top:.12rem; font-weight:600; letter-spacing:.03em; text-transform:uppercase; }
+.game-theme-count {
+  margin-left:auto; flex-shrink:0;
+  font-size:.68rem; font-weight:700; letter-spacing:.03em;
+  background:rgba(255,255,255,.3); border:1px solid rgba(255,255,255,.4);
+  padding:.25rem .7rem; border-radius:20px;
+}
+
 </style>
 </head>
 <body>
@@ -1788,21 +1837,21 @@ window.deleteGame = async function(id){
 
 
 const GAME_THEMES = {
-  "catan":{"bg":"linear-gradient(135deg,#fdf3e7,#f5e6cc,#ede0b8)","accent":"#8b4513","em":"🏔️","icon":"⚓","title":"Les Colons de Catane","sub":"Bois, minerai, blé — la conquête","badge":"Stratégie · 3-4j"},
-  "carcassonne":{"bg":"linear-gradient(135deg,#f0ede0,#e5dfc8,#d8d0b0)","accent":"#5c4a1e","em":"🏰","icon":"🗺️","title":"Carcassonne","sub":"Tuiles et meeples, bâtis ton royaume","badge":"Stratégie · 2-5j"},
-  "monopoly":{"bg":"linear-gradient(135deg,#e8f5e9,#c8e6c9,#a5d6a7)","accent":"#1b5e20","em":"🎩","icon":"💰","title":"Monopoly","sub":"L'argent est roi, les rues aussi","badge":"Classique · 2-8j"},
-  "uno":{"bg":"linear-gradient(135deg,#fff8e1,#ffecb3,#ffe082)","accent":"#e65100","em":"🃏","icon":"🌈","title":"UNO","sub":"+4 couleur, bonne chance !","badge":"Ambiance · 2-10j"},
-  "risk":{"bg":"linear-gradient(135deg,#fce4ec,#f8bbd0,#f48fb1)","accent":"#880e4f","em":"⚔️","icon":"🌍","title":"Risk","sub":"Conquête mondiale, chaque armée compte","badge":"Stratégie · 2-6j"},
-  "scrabble":{"bg":"linear-gradient(135deg,#f3e5f5,#e1bee7,#ce93d8)","accent":"#6a1b9a","em":"📝","icon":"🔤","title":"Scrabble","sub":"Chaque lettre vaut son pesant d'or","badge":"Mots · 2-4j"},
-  "chess":{"bg":"linear-gradient(135deg,#efebe9,#d7ccc8,#bcaaa4)","accent":"#3e2723","em":"♟️","icon":"👑","title":"Échecs","sub":"Un coup d'avance, toujours","badge":"Stratégie · 2j"},
-  "dixit":{"bg":"linear-gradient(135deg,#e8eaf6,#c5cae9,#9fa8da)","accent":"#283593","em":"🌙","icon":"✨","title":"Dixit","sub":"Conte-moi une histoire en images","badge":"Créativité · 3-6j"},
-  "pandemic":{"bg":"linear-gradient(135deg,#e0f2f1,#b2dfdb,#80cbc4)","accent":"#004d40","em":"🦠","icon":"💊","title":"Pandemic","sub":"Sauver l'humanité ensemble","badge":"Coopératif · 2-4j"},
-  "ticket":{"bg":"linear-gradient(135deg,#fff8e1,#ffecb3,#ffd54f)","accent":"#bf360c","em":"🚂","icon":"🛤️","title":"Aventuriers du Rail","sub":"De Paris à New York en wagon","badge":"Stratégie · 2-5j"},
-  "azul":{"bg":"linear-gradient(135deg,#e3f2fd,#bbdefb,#90caf9)","accent":"#0d47a1","em":"🔷","icon":"🎨","title":"Azul","sub":"Crée le plus beau palais de Lisbonne","badge":"Abstrait · 2-4j"},
-  "codenames":{"bg":"linear-gradient(135deg,#f1f8e9,#dcedc8,#c5e1a5)","accent":"#33691e","em":"🕵️","icon":"🔍","title":"Codenames","sub":"Un mot, mille indices","badge":"Déduction · 4-8j"},
-  "7wonders":{"bg":"linear-gradient(135deg,#fff3e0,#ffe0b2,#ffcc80)","accent":"#e65100","em":"🏛️","icon":"⭐","title":"7 Wonders","sub":"Bâtis une civilisation éternelle","badge":"Civilisation · 3-7j"},
-  "splendor":{"bg":"linear-gradient(135deg,#fce4ec,#f8bbd0,#f48fb1)","accent":"#880e4f","em":"💎","icon":"💍","title":"Splendor","sub":"Gemmes, prestige, noblesse","badge":"Stratégie · 2-4j"},
-  "hanabi":{"bg":"linear-gradient(135deg,#e8f5e9,#c8e6c9,#a5d6a7)","accent":"#1b5e20","em":"🎆","icon":"🌟","title":"Hanabi","sub":"Le feu d'artifice parfait ensemble","badge":"Coopératif · 2-5j"}
+  "catan":{"bg":"linear-gradient(145deg,#fdf3e7,#f0dfc0,#e8d4a8)","accent":"#8b4513","em":"🏔️","icon":"⚓","title":"Les Colons de Catane","sub":"Bois, minerai, blé — la conquête","badge":"Stratégie · 3-4 joueurs"},
+  "carcassonne":{"bg":"linear-gradient(145deg,#f2efe2,#e6dfc6,#d9d1ae)","accent":"#5c4a1e","em":"🏰","icon":"🗺️","title":"Carcassonne","sub":"Tuiles et meeples, bâtis ton royaume","badge":"Stratégie · 2-5 joueurs"},
+  "monopoly":{"bg":"linear-gradient(145deg,#eaf5ea,#cce8cc,#aed9ae)","accent":"#1b5e20","em":"🎩","icon":"💰","title":"Monopoly","sub":"L'argent est roi, les rues aussi","badge":"Classique · 2-8 joueurs"},
+  "uno":{"bg":"linear-gradient(145deg,#fffaed,#ffefb5,#ffe47a)","accent":"#e65100","em":"🃏","icon":"🌈","title":"UNO","sub":"+4 couleur, bonne chance !","badge":"Ambiance · 2-10 joueurs"},
+  "risk":{"bg":"linear-gradient(145deg,#fce8ef,#f9c0d4,#f499b8)","accent":"#880e4f","em":"⚔️","icon":"🌍","title":"Risk","sub":"Conquête mondiale, chaque armée compte","badge":"Stratégie · 2-6 joueurs"},
+  "scrabble":{"bg":"linear-gradient(145deg,#f5e8f7,#e5c4ec,#d49fe0)","accent":"#6a1b9a","em":"📝","icon":"🔤","title":"Scrabble","sub":"Chaque lettre vaut son pesant d'or","badge":"Mots · 2-4 joueurs"},
+  "chess":{"bg":"linear-gradient(145deg,#f0ece9,#dad1cc,#c4b8b2)","accent":"#3e2723","em":"♟️","icon":"👑","title":"Échecs","sub":"Un coup d'avance, toujours","badge":"Stratégie · 2 joueurs"},
+  "dixit":{"bg":"linear-gradient(145deg,#eaecf8,#c8ceee,#a7b0e3)","accent":"#283593","em":"🌙","icon":"✨","title":"Dixit","sub":"Conte-moi une histoire en images","badge":"Créativité · 3-6 joueurs"},
+  "pandemic":{"bg":"linear-gradient(145deg,#e2f4f2,#b5e3de,#88d1ca)","accent":"#004d40","em":"🦠","icon":"💊","title":"Pandemic","sub":"Sauver l'humanité ensemble","badge":"Coopératif · 2-4 joueurs"},
+  "ticket":{"bg":"linear-gradient(145deg,#fffaed,#ffefb5,#ffd54f)","accent":"#bf360c","em":"🚂","icon":"🛤️","title":"Aventuriers du Rail","sub":"De Paris à New York en wagon","badge":"Stratégie · 2-5 joueurs"},
+  "azul":{"bg":"linear-gradient(145deg,#e6f3fd,#bdddf9,#93c8f4)","accent":"#0d47a1","em":"🔷","icon":"🎨","title":"Azul","sub":"Crée le plus beau palais de Lisbonne","badge":"Abstrait · 2-4 joueurs"},
+  "codenames":{"bg":"linear-gradient(145deg,#f2f8e8,#deeec6,#c9e3a3)","accent":"#33691e","em":"🕵️","icon":"🔍","title":"Codenames","sub":"Un mot, mille indices","badge":"Déduction · 4-8 joueurs"},
+  "7wonders":{"bg":"linear-gradient(145deg,#fff5e2,#ffe3b0,#ffd07d)","accent":"#e65100","em":"🏛️","icon":"⭐","title":"7 Wonders","sub":"Bâtis une civilisation éternelle","badge":"Civilisation · 3-7 joueurs"},
+  "splendor":{"bg":"linear-gradient(145deg,#fce8ef,#f9c0d4,#f499b8)","accent":"#880e4f","em":"💎","icon":"💍","title":"Splendor","sub":"Gemmes, prestige, noblesse","badge":"Stratégie · 2-4 joueurs"},
+  "hanabi":{"bg":"linear-gradient(145deg,#eaf5ea,#cce8cc,#aed9ae)","accent":"#1b5e20","em":"🎆","icon":"🌟","title":"Hanabi","sub":"Le feu d'artifice parfait ensemble","badge":"Coopératif · 2-5 joueurs"}
 };
 
 function getGameTheme(gameName) {
@@ -1821,24 +1870,182 @@ function applyGameTheme(gameName, gameCount) {
   if(old) old.remove();
   if(!theme || !gameName) {
     page.style.removeProperty('background');
-    document.getElementById('main-title').innerHTML = 'Notre <em>Arene</em>';
+    document.getElementById('main-title').innerHTML = 'Notre <em>Arène</em>';
     return;
   }
   page.style.background = theme.bg;
-  document.getElementById('main-title').innerHTML = theme.em + ' <em>Arene</em>';
+  document.getElementById('main-title').innerHTML = theme.em + ' <em>Arène</em>';
   const banner = document.createElement('div');
   banner.id = 'game-theme-banner';
   banner.className = 'game-theme-banner';
   banner.innerHTML =
-    '<div class="game-theme-icon">'+theme.icon+'</div>' +
-    '<div style="flex:1;min-width:0">' +
-      '<div class="game-theme-name">'+theme.title+'</div>' +
-      '<div class="game-theme-sub">'+theme.sub+'</div>' +
-      '<div class="game-theme-badge">'+theme.badge+'</div>' +
-    '</div>' +
-    (gameCount ? '<div class="game-theme-count">'+gameCount+' parties</div>' : '');
+    '<div class="game-theme-icon">'+theme.icon+'</div>'+
+    '<div style="flex:1;min-width:0">'+
+      '<div class="game-theme-name">'+theme.title+'</div>'+
+      '<div class="game-theme-sub">'+theme.sub+'</div>'+
+      '<div class="game-theme-badge">'+theme.badge+'</div>'+
+    '</div>'+
+    (gameCount ? '<div class="game-theme-count">'+gameCount+'&nbsp;parties</div>' : '');
   const container = page.querySelector('.container');
   container.insertBefore(banner, container.querySelector('.page-header').nextSibling);
 }
 
+window.selectRecentGame = function(name, bggId, thumb){
+  selectedGame={name, id:bggId, thumb:thumb||null};
+  document.getElementById('sel-name').textContent=name;
+  document.getElementById('sel-meta').textContent='';
+  if(thumb){
+    document.getElementById('sel-thumb-wrap').innerHTML=`<img src="${thumb}" class="sel-thumb">`;
+  } else {
+    document.getElementById('sel-thumb-wrap').innerHTML='🎲';
+  }
+  document.getElementById('selected-game-display').style.display='flex';
+  document.getElementById('search-wrapper').style.display='none';
+  document.getElementById('recents-section').style.display='none';
+  applyGameTheme(name);
+};
 
+window.selectBGGGame = function(id, name, year){
+  selectedGame={name, id, thumb:null};
+  document.getElementById('sel-name').textContent=name;
+  document.getElementById('sel-meta').textContent=year?`${year}`:'';
+  document.getElementById('sel-thumb-wrap').innerHTML='🎲';
+  document.getElementById('selected-game-display').style.display='flex';
+  document.getElementById('search-wrapper').style.display='none';
+  document.getElementById('recents-section').style.display='none';
+  document.getElementById('search-results').classList.remove('open');
+  applyGameTheme(name);
+};
+
+function renderGames(){
+  const p1=games.filter(g=>g.winner==='Louis').length;
+  const p2=games.filter(g=>g.winner==='Elisa').length;
+  document.getElementById('wins-p1').textContent=p1;
+  document.getElementById('wins-p2').textContent=p2;
+  document.getElementById('wins-p1').className='player-wins'+(p1>p2?' leading':'');
+  document.getElementById('wins-p2').className='player-wins'+(p2>p1?' leading':'');
+  document.getElementById('stat-total').textContent=games.length;
+  const crown=document.getElementById('crown');
+  crown.textContent=p1>p2?'👑':p2>p1?'👑':'🤝';
+  // fav game
+  const counts={};
+  games.forEach(g=>{ counts[g.name]=(counts[g.name]||0)+1; });
+  const fav=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('stat-fav').textContent=fav?fav[0].substring(0,10):'—';
+  applyGameTheme(fav?fav[0]:null, fav?fav[1]:0);
+  // streak
+  let streak=0;
+  if(games.length){
+    const last=games[0].winner;
+    for(const g of games){ if(g.winner===last&&g.winner!=='Égalité') streak++; else break; }
+  }
+  document.getElementById('stat-streak').textContent=streak;
+  document.getElementById('badge-games').textContent=games.length;
+  // history
+  const hist=document.getElementById('history-list');
+  if(!games.length){ hist.innerHTML='<div class="empty-state"><div class="big-emoji">🎲</div><p>Aucune partie.</p></div>'; }
+  else hist.innerHTML=games.map(g=>`<div class="game-entry" style="--entry-color:${g.winner==='Louis'?'#2563eb':g.winner==='Elisa'?'#db2777':'#888'}">
+    <div class="entry-thumb-ph">${g.thumb?`<img src="${g.thumb}" class="entry-thumb">`:'🎲'}</div>
+    <div class="entry-info"><div class="entry-game">${g.name}</div><div class="entry-meta">${g.date||''} ${g.scoreP1||g.scoreP2?`· ${g.scoreP1||'?'} vs ${g.scoreP2||'?'}`:''} ${g.notes?`· ${g.notes}`:''}</div></div>
+    <div class="entry-winner"><small>Gagnant</small>${g.winner}</div>
+    <button class="delete-btn" onclick="deleteGame('${g.id}')">🗑</button>
+  </div>`).join('');
+  // recents
+  const seen=new Set(); const recents=[];
+  for(const g of games){ if(!seen.has(g.name)){ seen.add(g.name); recents.push(g); if(recents.length===5) break; } }
+  const rc=document.getElementById('recent-chips');
+  if(recents.length){ document.getElementById('recents-section').style.display='block';
+    rc.innerHTML=recents.map(g=>`<div class="recent-chip" onclick="selectRecentGame('${g.name}','${g.bggId||''}','${g.thumb||''}')">
+      ${g.thumb?`<img src="${g.thumb}" style="width:18px;height:18px;border-radius:3px;object-fit:cover">`:'🎲'} ${g.name}
+    </div>`).join('');
+  }
+  // stats
+  if(games.length){
+    const wL=games.filter(g=>g.winner==='Louis').length;
+    const wE=games.filter(g=>g.winner==='Elisa').length;
+    const tot=games.length;
+    document.getElementById('h2h-wins-louis').textContent=wL;
+    document.getElementById('h2h-wins-elisa').textContent=wE;
+    document.getElementById('h2h-pct-louis').textContent=tot?Math.round(wL/tot*100)+'%':'—';
+    document.getElementById('h2h-pct-elisa').textContent=tot?Math.round(wE/tot*100)+'%':'—';
+    const pL=tot?wL/tot*100:50, pE=tot?wE/tot*100:50;
+    document.getElementById('h2h-bar-l').style.width=pL+'%';
+    document.getElementById('h2h-bar-e').style.width=pE+'%';
+    const draws=games.filter(g=>g.winner==='Égalité').length;
+    document.getElementById('h2h-draws').textContent=draws+' égalité'+(draws>1?'s':'');
+  }
+}
+
+// ── Bets ──
+let bets=[];
+const CAT_COLORS={'🎮 Jeux':'#b05a35','🎬 Films & Séries':'#7b5ea7','🏃 Sport & Défi':'#4a7c6b','🍕 Nourriture':'#c9a040','📚 Culture':'#2e6d7e','💼 Vie quotidienne':'#c9a040','❓ Autre':'#9a8e7e'};
+
+window.addBet = async function(){
+  const desc=document.getElementById('bet-desc').value.trim();
+  const stake=document.getElementById('bet-stake').value.trim();
+  if(!desc){ showToast('⚠️ Décrivez le pari !'); return; }
+  if(!stake){ showToast('⚠️ Ajoutez un enjeu !'); return; }
+  await fbAdd('bets',{
+    desc, stake,
+    proposer:document.getElementById('bet-proposer').value,
+    deadline:document.getElementById('bet-deadline').value,
+    category:document.getElementById('bet-category').value,
+    status:'open'
+  });
+  showToast('🤝 Pari enregistré !');
+  document.getElementById('bet-desc').value='';
+  document.getElementById('bet-stake').value='';
+  document.getElementById('bet-deadline').value='';
+};
+
+window.resolveBet = async function(id, winner){
+  await fbSet('bets', id, {status:winner, resolvedAt:new Date().toISOString().split('T')[0]});
+  showToast('🏆 '+(winner==='louis'?'Louis':'Elisa')+' remporte le pari !');
+};
+window.cancelBet = async function(id){ await fbSet('bets',id,{status:'cancelled'}); showToast('❌ Pari annulé'); };
+window.deleteBet = async function(id){ await fbDel('bets',id); };
+window.filterBets = function(f, btn){
+  document.querySelectorAll('.bet-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBets(f);
+};
+
+function renderBets(filter){
+  const list=document.getElementById('bets-list');
+  let filtered=bets;
+  if(filter==='open') filtered=bets.filter(b=>b.status==='open');
+  else if(filter==='louis') filtered=bets.filter(b=>b.status==='louis');
+  else if(filter==='elisa') filtered=bets.filter(b=>b.status==='elisa');
+  if(!filtered.length){ list.innerHTML='<div class="empty-state"><div class="big-emoji">🎰</div><p>Aucun pari ici.</p></div>'; return; }
+  const color_fn=b=>CAT_COLORS[b.category]||'#888';
+  list.innerHTML=filtered.map(b=>{
+    const badge=b.status==='open'?'<span class="bet-status-badge badge-open">⏳ En cours</span>':b.status==='louis'?'<span class="bet-status-badge badge-louis">👑 Louis</span>':b.status==='elisa'?'<span class="bet-status-badge badge-elisa">👑 Elisa</span>':'<span class="bet-status-badge badge-cancelled">✕ Annulé</span>';
+    const dl=b.deadline?`📅 ${new Date(b.deadline+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})}`:'';
+    const actions=b.status==='open'?`<div class="bet-actions"><button class="bet-btn bet-btn-louis" onclick="resolveBet('${b.id}','louis')">👑 Louis</button><button class="bet-btn bet-btn-elisa" onclick="resolveBet('${b.id}','elisa')">👑 Elisa</button><button class="bet-btn bet-btn-cancel" onclick="cancelBet('${b.id}')">Annuler</button><button class="bet-btn-delete" onclick="deleteBet('${b.id}')">🗑</button></div>`:`<div class="bet-actions"><button class="bet-btn-delete" onclick="deleteBet('${b.id}')">🗑 Supprimer</button></div>`;
+    return `<div class="bet-entry" style="--bet-color:${color_fn(b)}"><div class="bet-top"><div class="bet-emoji-wrap">${(b.category||'❓').split(' ')[0]}</div><div class="bet-body"><div class="bet-desc">${b.desc}</div><div class="bet-meta"><span class="bet-stake">🏆 ${b.stake}</span>${dl?`<span>${dl}</span>`:''}</div><div class="bet-meta" style="margin-top:.22rem">Proposé par ${b.proposer||'—'} · ${badge}</div></div></div>${actions}</div>`;
+  }).join('');
+}
+
+function updateBetStats(){
+  document.getElementById('bet-stat-open').textContent=bets.filter(b=>b.status==='open').length;
+  document.getElementById('bet-stat-louis').textContent=bets.filter(b=>b.status==='louis').length;
+  document.getElementById('bet-stat-elisa').textContent=bets.filter(b=>b.status==='elisa').length;
+}
+
+// ── Init App ──
+async function initApp(){
+  document.getElementById('game-date').value=new Date().toISOString().split('T')[0];
+  unsubscribers.push(
+    fbListen('recipes', list=>{ recipes=list; renderRecipes(); }),
+    fbListen('shopping', list=>renderShoppingList(list)),
+    fbListen('travels', list=>{ travels=list; renderTravelList(); renderTravelMap(); if(currentTravelId){ const t=list.find(x=>x.id===currentTravelId); if(t){ renderExpenses(t); renderJournal(t); } } }),
+    fbListen('bucket', list=>renderBucketList(list)),
+    fbListen('films', list=>{ films=list; renderFilms(); }),
+    fbListen('suggestions', list=>renderSuggestions(list)),
+    fbListen('games', list=>{ games=list; renderGames(); }),
+    fbListen('bets', list=>{ bets=list; renderBets(); updateBetStats(); })
+  );
+}
+</script>
+</body>
+</html>
