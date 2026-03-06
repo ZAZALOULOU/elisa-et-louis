@@ -1089,7 +1089,7 @@ window.generateRecipeAI = async function(){
   try{
     const resp=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==')+'','HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
-      body:JSON.stringify({model:'meta-llama/llama-3.2-3b-instruct:free',max_tokens:1200,
+      body:JSON.stringify({model:'google/gemma-3-4b-it:free',max_tokens:1200,
         messages:[{role:'user',content:`Tu es un chef cuisinier. Génère une recette détaillée pour "${name}" pour ${currentServings} personne${currentServings>1?'s':''}. Réponds UNIQUEMENT en JSON valide sans markdown ni texte autour:
 {"emoji":"emoji adapté","cat":"Pâtes & Riz ou Viande ou Poisson ou Végétarien ou Dessert ou Petit-déj ou Soupe ou Street food","time":"temps total ex: 30 min","ingredients":["100g de farine","2 oeufs","etc"],"steps":["Étape détaillée 1","Étape détaillée 2","Étape détaillée 3"],"note":"astuce du chef ou null"}`}]})
     });
@@ -1794,27 +1794,51 @@ document.addEventListener('click', function(e){
 
 async function searchBGG(q){
   const sr=document.getElementById('search-results');
-  sr.innerHTML='<div class="search-status"><span class="spinner"></span></div>';
+  if(!q||q.length<2){ sr.classList.remove('open'); return; }
   sr.classList.add('open');
-  try{
-    const proxyUrl='https://corsproxy.io/?'+encodeURIComponent(`https://boardgamegeek.com/xmlapi2/search?query=${encodeURIComponent(q)}&type=boardgame`);
-    const resp=await fetch(proxyUrl);
-    const text=await resp.text();
-    const xml=new DOMParser().parseFromString(text,'text/xml');
-    const items=[...xml.querySelectorAll('item')].slice(0,6);
-    if(!items.length){ sr.innerHTML='<div class="search-status">Aucun résultat</div>'; return; }
-    const results=items.map(i=>({
-      id:i.getAttribute('id'),
-      name:i.querySelector('name')?.getAttribute('value')||'?',
-      year:i.querySelector('yearpublished')?.getAttribute('value')||''
-    }));
-    sr.innerHTML=results.map(r=>`<div class="result-item" onclick="selectBGGGame('${r.id}','${r.name.replace(/'/g,"\\'")}','${r.year}')">
-      <div class="result-thumb-ph">🎲</div>
-      <div><div class="result-name">${r.name}</div>${r.year?`<div class="result-year">${r.year}</div>`:''}</div>
-    </div>`).join('');
-    // Try to load thumbnails
-    loadBGGThumbs(results);
-  } catch(e){ sr.innerHTML='<div class="search-status">Tapez le nom manuellement</div>'; }
+  const safe=q.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  sr.innerHTML=`<div class="result-item" onclick="selectBGGGame('manual','${safe}','')">
+    <div class="result-thumb-ph">🎲</div>
+    <div><div class="result-name">${q}</div><div class="result-year">✓ Utiliser ce nom directement</div></div>
+  </div><div class="search-status" style="font-size:.72rem;padding:.3rem .8rem;opacity:.6">Recherche BGG…</div>`;
+  const bggUrl='https://boardgamegeek.com/xmlapi2/search?query='+encodeURIComponent(q)+'&type=boardgame';
+  const proxies=[
+    `https://api.allorigins.win/get?url=${encodeURIComponent(bggUrl)}`,
+    `https://corsproxy.io/?${encodeURIComponent(bggUrl)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(bggUrl)}`,
+  ];
+  for(const proxyUrl of proxies){
+    try{
+      const ctrl=new AbortController();
+      const t=setTimeout(()=>ctrl.abort(),4000);
+      const resp=await fetch(proxyUrl,{signal:ctrl.signal});
+      clearTimeout(t);
+      if(!resp.ok) continue;
+      let text='';
+      try{ const j=await resp.json(); text=j.contents||j; if(typeof text!=='string') continue; }
+      catch(e){ text=await resp.text(); }
+      const xml=new DOMParser().parseFromString(text,'text/xml');
+      const items=[...xml.querySelectorAll('item')].slice(0,5);
+      if(!items.length) break;
+      const results=items.map(i=>({
+        id:i.getAttribute('id'),
+        name:i.querySelector('name')?.getAttribute('value')||'?',
+        year:i.querySelector('yearpublished')?.getAttribute('value')||''
+      }));
+      sr.innerHTML=`<div class="result-item" onclick="selectBGGGame('manual','${safe}','')">
+        <div class="result-thumb-ph">🎲</div>
+        <div><div class="result-name">${q}</div><div class="result-year">✓ Utiliser ce nom</div></div>
+      </div>`+results.map(r=>`<div class="result-item" onclick="selectBGGGame('${r.id}','${r.name.replace(/'/g,"\\'")}','${r.year}')">
+        <div class="result-thumb-ph">🎲</div>
+        <div><div class="result-name">${r.name}</div>${r.year?`<div class="result-year">${r.year}</div>`:''}</div>
+      </div>`).join('');
+      return;
+    }catch(e){ continue; }
+  }
+  sr.innerHTML=`<div class="result-item" onclick="selectBGGGame('manual','${safe}','')">
+    <div class="result-thumb-ph">🎲</div>
+    <div><div class="result-name">${q}</div><div class="result-year">✓ Utiliser ce nom</div></div>
+  </div>`;
 }
 
 async function loadBGGThumbs(results){ /* disabled */ }
