@@ -386,6 +386,21 @@ body.game-dark .tab-btn.active{background:rgba(255,255,255,.12);color:#eaeaea}
 body.game-dark #search-results{background:#12122a}
 body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)}
 @media(max-width:460px){.form-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}.records-grid{grid-template-columns:1fr}.h2h-wins{font-size:1.9rem}}
+
+/* ===== GAME THEMES ===== */
+#page-games { transition: background .6s ease, color .6s ease; }
+#page-games .page-header h1 em { transition: color .6s ease; }
+.game-theme-banner {
+  display:flex; align-items:center; gap:.75rem;
+  background: var(--theme-surface, rgba(255,255,255,.07));
+  border: 1px solid var(--theme-border, var(--border));
+  border-radius: 14px; padding: .65rem 1rem; margin-bottom: 1rem;
+  animation: fadeUp .4s ease;
+}
+.game-theme-icon { font-size: 2rem; line-height:1; }
+.game-theme-name { font-weight:700; font-size:.9rem; }
+.game-theme-sub { font-size:.72rem; opacity:.7; margin-top:.1rem; }
+
 </style>
 </head>
 <body>
@@ -763,7 +778,12 @@ body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)
       <div class="card">
         <h2>➕ Ajouter un Film</h2>
         <div class="form-grid">
-          <div class="form-group full"><label>Titre</label><input type="text" id="f-title" placeholder="ex: Inception"></div>
+          <div class="form-group full"><label>Titre</label>
+            <div style="position:relative">
+              <input type="text" id="f-title" placeholder="ex: Inception" autocomplete="off" oninput="searchFilmAI(this.value)">
+              <div id="film-search-results" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-md);max-height:220px;overflow-y:auto;margin-top:4px"></div>
+            </div>
+          </div>
           <div class="form-group"><label>Année</label><input type="text" id="f-year" placeholder="ex: 2010"></div>
           <div class="form-group"><label>Réalisateur</label><input type="text" id="f-director" placeholder="ex: Nolan"></div>
           <div class="form-group"><label>Genre</label>
@@ -1481,6 +1501,44 @@ window.setStar = function(id, val){
   });
 };
 
+let filmSearchTimer=null;
+async function searchFilmAI(q){
+  const sr=document.getElementById('film-search-results');
+  clearTimeout(filmSearchTimer);
+  if(!q||q.length<2){ sr.style.display='none'; return; }
+  filmSearchTimer=setTimeout(async()=>{
+    sr.style.display='block';
+    sr.innerHTML='<div style="padding:.6rem 1rem;color:var(--muted);font-size:.8rem"><span class="spinner"></span> Recherche…</div>';
+    try{
+      const key=atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==');
+      const resp=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
+        body:JSON.stringify({model:'google/gemma-3-4b-it:free',max_tokens:500,
+          messages:[{role:'user',content:'Liste 5 films dont le titre contient ou ressemble a "'+q+'". Reponds UNIQUEMENT en JSON sans markdown: [{"title":"titre exact","year":"annee","director":"realisateur","genre":"genre principal parmi Drama/Comedy/Sci-Fi/Horror/Romance/Action/Thriller/Fantasy/Animation"}]'}]})
+      });
+      const data=await resp.json();
+      const text=data.choices?.[0]?.message?.content||'';
+      const films=JSON.parse(text.replace(/```json|```/g,'').trim());
+      sr.innerHTML=films.map(f=>`<div onclick="selectFilm(${JSON.stringify(f)})" style="padding:.55rem 1rem;cursor:pointer;border-bottom:1px solid var(--border);display:flex;gap:.6rem;align-items:center" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">
+        <span style="font-size:1.2rem">🎬</span>
+        <div><div style="font-weight:600;font-size:.85rem">${f.title}</div><div style="font-size:.72rem;color:var(--muted)">${f.year||''}${f.director?' · '+f.director:''}${f.genre?' · '+f.genre:''}</div></div>
+      </div>`).join('');
+    } catch(e){
+      sr.style.display='none';
+    }
+  }, 450);
+}
+window.selectFilm=function(f){
+  document.getElementById('f-title').value=f.title||'';
+  document.getElementById('f-year').value=f.year||'';
+  document.getElementById('f-director').value=f.director||'';
+  const genreMap={'Drama':'🎭 Drame','Comedy':'😂 Comédie','Sci-Fi':'🚀 Sci-Fi','Horror':'😱 Horreur','Romance':'💕 Romance','Action':'🔫 Action','Thriller':'🔍 Thriller','Fantasy':'🧙 Fantastique','Animation':'🌍 Animation'};
+  const sel=document.getElementById('f-genre');
+  const mapped=genreMap[f.genre]||'';
+  if(mapped) for(let o of sel.options) if(o.text===mapped){ o.selected=true; break; }
+  document.getElementById('film-search-results').style.display='none';
+};
+
 window.addFilm = async function(){
   const title=document.getElementById('f-title').value.trim(); if(!title){ showToast('⚠️ Entrez un titre !'); return; }
   await fbAdd('films',{
@@ -1669,6 +1727,71 @@ window.deleteGame = async function(id){
   await fbDel('games',id); showToast('🗑 Partie supprimée');
 };
 
+
+const GAME_THEMES = {
+  "catan":      {bg:"#f0e6c8",bg2:"#e8d9b0",accent:"#8b4513",accent2:"#2d6a2d",em:"🏔️",title:"Les Colons",sub:"Construis, echange, conquiers !",icon:"⚓"},
+  "carcassonne":{bg:"#f5f0e0",bg2:"#ede4c8",accent:"#7a5c2e",accent2:"#4a7c3f",em:"🏰",title:"Les Chevaliers",sub:"Tuiles, meeples, victoire !",icon:"🗺️"},
+  "monopoly":   {bg:"#e8f4e8",bg2:"#d4ecd4",accent:"#1a5e1a",accent2:"#c0392b",em:"🎩",title:"Les Magnats",sub:"L'argent fait le bonheur !",icon:"💰"},
+  "uno":        {bg:"#fff3e0",bg2:"#ffe0b2",accent:"#e53935",accent2:"#1e88e5",em:"🃏",title:"Les As du Uno",sub:"+4 et bonne chance !",icon:"🌈"},
+  "risk":       {bg:"#fce4ec",bg2:"#f8bbd0",accent:"#b71c1c",accent2:"#1a237e",em:"⚔️",title:"Conquete Mondiale",sub:"A l'attaque !",icon:"🌍"},
+  "scrabble":   {bg:"#f3e5f5",bg2:"#e1bee7",accent:"#6a1b9a",accent2:"#2e7d32",em:"📝",title:"Les Linguistes",sub:"Chaque lettre compte !",icon:"🔤"},
+  "chess":      {bg:"#efebe9",bg2:"#d7ccc8",accent:"#3e2723",accent2:"#827717",em:"♟️",title:"Les Strategies",sub:"Echec et mat !",icon:"👑"},
+  "dixit":      {bg:"#e8eaf6",bg2:"#c5cae9",accent:"#283593",accent2:"#ad1457",em:"🌙",title:"Conteurs de Reves",sub:"Laisse ton imagination parler",icon:"✨"},
+  "pandemic":   {bg:"#e0f2f1",bg2:"#b2dfdb",accent:"#00695c",accent2:"#d32f2f",em:"🦠",title:"Les Soigneurs",sub:"Sauver le monde ensemble",icon:"💊"},
+  "ticket":     {bg:"#fff8e1",bg2:"#ffecb3",accent:"#e65100",accent2:"#1565c0",em:"🚂",title:"Les Voyageurs",sub:"En route pour l'aventure !",icon:"🛤️"},
+  "azul":       {bg:"#e3f2fd",bg2:"#bbdefb",accent:"#0d47a1",accent2:"#b71c1c",em:"🔷",title:"Les Artisans",sub:"Cree le plus beau palais",icon:"🎨"},
+  "codenames":  {bg:"#f1f8e9",bg2:"#dcedc8",accent:"#33691e",accent2:"#bf360c",em:"🕵️",title:"Les Espions",sub:"Chaque mot est un indice",icon:"🔍"},
+  "7wonders":   {bg:"#fff3e0",bg2:"#ffe0b2",accent:"#bf360c",accent2:"#1b5e20",em:"🏛️",title:"Batisseurs de Merveilles",sub:"Erige ta civilisation !",icon:"⭐"},
+  "splendor":   {bg:"#fce4ec",bg2:"#f8bbd0",accent:"#880e4f",accent2:"#1a237e",em:"💎",title:"Les Marchands",sub:"Gemmes et prestige !",icon:"💍"},
+  "hanabi":     {bg:"#e8f5e9",bg2:"#c8e6c9",accent:"#2e7d32",accent2:"#f57f17",em:"🎆",title:"Le Feu d'Artifice",sub:"Ensemble vers les etoiles",icon:"🌟"},
+};
+
+function getGameTheme(gameName) {
+  if(!gameName) return null;
+  const lower = gameName.toLowerCase();
+  for(const [key, theme] of Object.entries(GAME_THEMES)) {
+    if(lower.includes(key)) return theme;
+  }
+  return null;
+}
+
+function applyGameTheme(gameName) {
+  const page = document.getElementById('page-games');
+  const theme = getGameTheme(gameName);
+  
+  // Remove old banner
+  const old = document.getElementById('game-theme-banner');
+  if(old) old.remove();
+  
+  if(!theme || !gameName) {
+    page.style.removeProperty('--local-bg');
+    page.style.removeProperty('--local-accent');
+    page.style.removeProperty('background');
+    document.getElementById('main-title').innerHTML = 'Notre <em>Arène</em>';
+    return;
+  }
+  
+  // Apply background
+  page.style.background = `linear-gradient(135deg, ${theme.bg} 0%, ${theme.bg2} 100%)`;
+  
+  // Update title
+  document.getElementById('main-title').innerHTML = `${theme.em} <em>${theme.title}</em>`;
+  
+  // Insert theme banner
+  const banner = document.createElement('div');
+  banner.id = 'game-theme-banner';
+  banner.className = 'game-theme-banner';
+  banner.innerHTML = `
+    <div class="game-theme-icon">${theme.icon}</div>
+    <div>
+      <div class="game-theme-name">🏆 Jeu favori : ${gameName}</div>
+      <div class="game-theme-sub">${theme.sub}</div>
+    </div>`;
+  const container = page.querySelector('.container');
+  const header = container.querySelector('.page-header');
+  container.insertBefore(banner, header.nextSibling);
+}
+
 function renderGames(){
   const p1=games.filter(g=>g.winner==='Louis').length;
   const p2=games.filter(g=>g.winner==='Elisa').length;
@@ -1684,6 +1807,7 @@ function renderGames(){
   games.forEach(g=>{ counts[g.name]=(counts[g.name]||0)+1; });
   const fav=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
   document.getElementById('stat-fav').textContent=fav?fav[0].substring(0,10):'—';
+  applyGameTheme(fav?fav[0]:null);
   // streak
   let streak=0;
   if(games.length){
