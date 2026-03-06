@@ -2062,6 +2062,8 @@ function updateBetStats(){
 
 // ── Init App ──
 async function initApp(){
+  updateAnniversary();
+  setInterval(updateAnniversary, 60000);
   document.getElementById('game-date').value=new Date().toISOString().split('T')[0];
   unsubscribers.push(
     fbListen('recipes', list=>{ recipes=list; renderRecipes(); }),
