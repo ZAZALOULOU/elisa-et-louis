@@ -1089,7 +1089,7 @@ window.generateRecipeAI = async function(){
   try{
     const resp=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer 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','HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
-      body:JSON.stringify({model:'mistralai/mistral-7b-instruct:free',max_tokens:1200,
+      body:JSON.stringify({model:'meta-llama/llama-3.2-3b-instruct:free',max_tokens:1200,
         messages:[{role:'user',content:`Tu es un chef cuisinier. Génère une recette détaillée pour "${name}" pour ${currentServings} personne${currentServings>1?'s':''}. Réponds UNIQUEMENT en JSON valide sans markdown ni texte autour:
 {"emoji":"emoji adapté","cat":"Pâtes & Riz ou Viande ou Poisson ou Végétarien ou Dessert ou Petit-déj ou Soupe ou Street food","time":"temps total ex: 30 min","ingredients":["100g de farine","2 oeufs","etc"],"steps":["Étape détaillée 1","Étape détaillée 2","Étape détaillée 3"],"note":"astuce du chef ou null"}`}]})
     });
