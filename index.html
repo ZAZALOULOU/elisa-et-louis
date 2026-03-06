@@ -1502,7 +1502,7 @@ window.setStar = function(id, val){
 };
 
 let filmSearchTimer=null;
-async function searchFilmAI(q){
+window.searchFilmAI = async function searchFilmAI(q){
   const sr=document.getElementById('film-search-results');
   clearTimeout(filmSearchTimer);
   if(!q||q.length<2){ sr.style.display='none'; return; }
