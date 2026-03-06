@@ -960,7 +960,7 @@ body.game-dark .top-nav,body.game-dark .bottom-nav{background:rgba(26,26,46,.95)
         <h2 id="form-title">✨ Nouvelle Partie</h2>
         <div id="selected-game-display"><div id="sel-thumb-wrap"></div><div class="sel-info"><div class="sel-name" id="sel-name"></div><div class="sel-meta" id="sel-meta"></div></div><button class="clear-sel" onclick="clearGame()">✕</button></div>
         <div id="recents-section"><h3>🕐 Récemment joués</h3><div class="recent-chips" id="recent-chips"></div></div>
-        <div class="search-wrapper" id="search-wrapper"><span class="search-icon">🔍</span><input type="text" id="game-search" placeholder="Chercher un jeu…" autocomplete="off" spellcheck="false"><div id="search-results"></div></div>
+        <div class="search-wrapper" id="search-wrapper"><span class="search-icon">🔍</span><input type="text" id="game-search" placeholder="Chercher un jeu…" autocomplete="off" spellcheck="false" oninput="searchBGG(this.value)"><div id="search-results"></div></div>
         <div class="form-grid" style="margin-top:.32rem">
           <div class="form-group"><label>Date</label><input type="date" id="game-date"></div>
           <div class="form-group"><label>Gagnant(e)</label><select id="game-winner"><option value="">Sélectionner…</option><option value="Louis">Louis</option><option value="Elisa">Elisa</option><option value="Égalité">🤝 Égalité</option></select></div>
