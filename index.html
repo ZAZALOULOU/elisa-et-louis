@@ -1890,6 +1890,35 @@ function applyGameTheme(gameName, gameCount) {
   container.insertBefore(banner, container.querySelector('.page-header').nextSibling);
 }
 
+window.searchBGG = async function searchBGG(q){
+  const sr=document.getElementById('search-results');
+  if(!q||q.length<2){ sr.classList.remove('open'); return; }
+  sr.classList.add('open');
+  sr.innerHTML='<div class="search-status"><span class="spinner"></span> Recherche…</div>';
+  try{
+    const key=atob('c2stb3ItdjEtZmI2MWQxOGVlZTdhMjE0YjRmYzNhMzdjZTcxMmU0MDUzNjYzYTFjM2M5YTkwYzVlNjMxYjM1Yjg1MmIwZDNhNA==');
+    const resp=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':'https://zazaloulou.github.io','X-Title':'Elisa et Louis'},
+      body:JSON.stringify({model:'google/gemma-3-4b-it:free',max_tokens:400,
+        messages:[{role:'user',content:'Liste 5 jeux de societe dont le nom contient ou ressemble a "'+q+'". Reponds UNIQUEMENT en JSON sans markdown: [{"name":"nom exact","year":"annee","genre":"type de jeu"}]'}]})
+    });
+    const data=await resp.json();
+    const text=data.choices?.[0]?.message?.content||'';
+    const games=JSON.parse(text.replace(/```json|```/g,'').trim());
+    window._gameSuggestions=games;
+    sr.innerHTML=games.map((g,i)=>`<div class="result-item" onclick="selectBGGGame('ai','${g.name.replace(/'/g,"\\'")}','${g.year||''}')">
+      <div class="result-thumb-ph">🎲</div>
+      <div><div class="result-name">${g.name}</div><div class="result-year">${g.year||''}${g.genre?' · '+g.genre:''}</div></div>
+    </div>`).join('');
+  } catch(e){
+    const safe=q.replace(/'/g,"\\'");
+    sr.innerHTML=`<div class="result-item" onclick="selectBGGGame('manual','${safe}','')">
+      <div class="result-thumb-ph">🎲</div>
+      <div><div class="result-name">${q}</div><div class="result-year">✓ Utiliser ce nom</div></div>
+    </div>`;
+  }
+};
+
 window.selectRecentGame = function(name, bggId, thumb){
   selectedGame={name, id:bggId, thumb:thumb||null};
   document.getElementById('sel-name').textContent=name;
