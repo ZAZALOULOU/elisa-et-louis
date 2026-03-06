@@ -1634,7 +1634,7 @@ window.searchFilmAI = async function searchFilmAI(q){
     } catch(e){
       sr.style.display='none';
     }
-  }, 450);
+  }, 600);
 }
 window.selectFilm=function(f){
   document.getElementById('f-title').value=f.title||'';
@@ -1890,9 +1890,12 @@ function applyGameTheme(gameName, gameCount) {
   container.insertBefore(banner, container.querySelector('.page-header').nextSibling);
 }
 
-window.searchBGG = async function searchBGG(q){
+let _bggTimer=null;
+window.searchBGG = function(q){
+  clearTimeout(_bggTimer);
   const sr=document.getElementById('search-results');
   if(!q||q.length<2){ sr.classList.remove('open'); return; }
+  _bggTimer=setTimeout(async()=>{
   sr.classList.add('open');
   sr.innerHTML='<div class="search-status"><span class="spinner"></span> Recherche…</div>';
   try{
@@ -1917,6 +1920,7 @@ window.searchBGG = async function searchBGG(q){
       <div><div class="result-name">${q}</div><div class="result-year">✓ Utiliser ce nom</div></div>
     </div>`;
   }
+  }, 600);
 };
 
 window.selectRecentGame = function(name, bggId, thumb){
